@@ -83,4 +83,4 @@ If I have saved you time, please consider [sponsoring me](https://github.com/spo
 If you cannot financially support me, consider leaving a star on the repository and sharing it. Thanks!
 
 # License
-ChatGPT-Kotlin-API is licensed under the [MIT License](https://github.com/CJCrafter/ChatGPT-Java-API/blob/master/LICENSE).
+ChatGPT-Java-API is licensed under the [MIT License](https://github.com/CJCrafter/ChatGPT-Java-API/blob/master/LICENSE).
