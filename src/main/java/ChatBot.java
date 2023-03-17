@@ -104,10 +104,12 @@ public class ChatBot {
             rootObject = JsonParser.parseString(responseBody).getAsJsonObject();
             
             /*
+             * BEFORE
             if (rootObject.has("error"))
                 throw new IllegalArgumentException(rootObject.get("error").getAsJsonObject().get("message").getAsString());
 	    */
             
+            // NOW
 	    try {
 		rootObject = JsonParser.parseString(responseBody).getAsJsonObject();
 		if (rootObject.has("error")) {
