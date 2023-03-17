@@ -8,13 +8,13 @@
  */
 public class OkHttpsParameters {
 
-    public static final int OK_HTTP_READ_TIMEOUT_SECONDS = 300;
-    public static final int OK_HTTP_CONNECT_TIMEOUT_SECONDS = 300;
-    public static final int OK_HTTP_WRITE_TIMEOUT_SECONDS = 300;
+    public static final int OK_HTTP_DEFAULT_READ_TIMEOUT_SECONDS = 300;
+    public static final int OK_HTTP_DEFAULT_CONNECT_TIMEOUT_SECONDS = 300;
+    public static final int OK_HTTP_DEFAULT_WRITE_TIMEOUT_SECONDS = 300;
 
-    private int OkHttpReadTimeoutSeconds = OK_HTTP_READ_TIMEOUT_SECONDS;
-    private int OkHttpConnecTimeoutSeconds = OK_HTTP_CONNECT_TIMEOUT_SECONDS;
-    private int OkHttpWriteTimeoutSeconds = OK_HTTP_WRITE_TIMEOUT_SECONDS;
+    private int OkHttpReadTimeoutSeconds = OK_HTTP_DEFAULT_READ_TIMEOUT_SECONDS;
+    private int OkHttpConnecTimeoutSeconds = OK_HTTP_DEFAULT_CONNECT_TIMEOUT_SECONDS;
+    private int OkHttpWriteTimeoutSeconds = OK_HTTP_DEFAULT_WRITE_TIMEOUT_SECONDS;
 
     /**
      * Constructor

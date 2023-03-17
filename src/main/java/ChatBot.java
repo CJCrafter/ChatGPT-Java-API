@@ -1,15 +1,16 @@
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.annotations.SerializedName;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -30,19 +31,46 @@ public class ChatBot {
     private final String apiKey;
 
     /**
-     * Constructor requires your private API key.
+     * Constructor requires your private API key. 
+     * This will use an OkHttp instance configured
+     * with the {@link OkHttpsParameters} default values.
      *
      * @param apiKey Your OpenAI API key that starts with "sk-".
      */
     public ChatBot(String apiKey) {
         this.apiKey = apiKey;
         this.client = new OkHttpClient.Builder()
-                .connectTimeout(30, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS).build();
+                .connectTimeout(OkHttpsParameters.OK_HTTP_DEFAULT_CONNECT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+                .readTimeout(OkHttpsParameters.OK_HTTP_DEFAULT_READ_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+        	.writeTimeout(OkHttpsParameters.OK_HTTP_DEFAULT_WRITE_TIMEOUT_SECONDS, TimeUnit.SECONDS).build();
         this.mediaType = MediaType.get("application/json; charset=utf-8");
         this.gson = (new GsonBuilder()).create();
     }
+    
+    /**
+     * Constructor requires your private API key. This will use an OkHttp instance
+     * configured with the {@link OkHttpsParameters} default values.
+     *
+     * @param apiKey            Your OpenAI API key that starts with "sk-".
+     * @param okHttpsParameters allow fine tune configuration of HTTP parameters
+     *                          passed to underlying {@Code OkHttpClient}
+     **/
 
+    public ChatBot(String apiKey, OkHttpsParameters okHttpsParameters) {
+        this.apiKey = apiKey;
+        
+        Objects.requireNonNull(okHttpsParameters, "okHttpsParameters cannot be null");
+        
+        this.client = new OkHttpClient.Builder()
+                .connectTimeout(okHttpsParameters.getOkHttpConnecTimeoutSeconds(), TimeUnit.SECONDS)
+                .readTimeout(okHttpsParameters.getOkHttpReadTimeoutSeconds(), TimeUnit.SECONDS)
+        	.writeTimeout(okHttpsParameters.getOkHttpWriteTimeoutSeconds(), TimeUnit.SECONDS).build();
+        
+        this.mediaType = MediaType.get("application/json; charset=utf-8");
+        this.gson = (new GsonBuilder()).create();
+    }
+    
+   
     /**
      * Blocks the current thread until OpenAI responds to https request. The
      * returned value includes information including tokens, generated text,
