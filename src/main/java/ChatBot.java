@@ -103,13 +103,12 @@ public class ChatBot {
             // very developer friendly, we wrap for easy data access.
             rootObject = JsonParser.parseString(responseBody).getAsJsonObject();
             
-            /*
-             * BEFORE
-            if (rootObject.has("error"))
-                throw new IllegalArgumentException(rootObject.get("error").getAsJsonObject().get("message").getAsString());
-	    */
             
-            // NOW
+            //BEFORE ChatCompletionError creation
+            //if (rootObject.has("error"))
+            //    throw new IllegalArgumentException(rootObject.get("error").getAsJsonObject().get("message").getAsString());
+	    
+            // AFTER ChatCompletionError creation
 	    try {
 		rootObject = JsonParser.parseString(responseBody).getAsJsonObject();
 		if (rootObject.has("error")) {
@@ -406,6 +405,13 @@ public class ChatBot {
         public int getTotalTokens() {
             return this.totalTokens;
         }
+
+	@Override
+	public String toString() {
+	    return "ChatCompletionUsage [promptTokens=" + promptTokens + ", completionTokens=" + completionTokens
+		    + ", totalTokens=" + totalTokens + "]";
+	}
+        
     }
     
     public static class ChatCompletionError {
