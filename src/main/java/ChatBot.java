@@ -8,6 +8,7 @@ import java.util.stream.StreamSupport;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.annotations.SerializedName;
@@ -30,6 +31,8 @@ public class ChatBot {
     private final Gson gson;
     private final String apiKey;
 
+    private ChatCompletionError chatCompletionError;
+    
     /**
      * Constructor requires your private API key. 
      * This will use an OkHttp instance configured
@@ -94,12 +97,28 @@ public class ChatBot {
         JsonObject rootObject = null;
         try (Response response = this.client.newCall(httpRequest).execute()) {
 
+            String responseBody = response.body().string();
+            
             // Servers respond to API calls with json blocks. Since raw JSON isn't
             // very developer friendly, we wrap for easy data access.
-            rootObject = JsonParser.parseString(response.body().string()).getAsJsonObject();
+            rootObject = JsonParser.parseString(responseBody).getAsJsonObject();
+            
+            /*
             if (rootObject.has("error"))
                 throw new IllegalArgumentException(rootObject.get("error").getAsJsonObject().get("message").getAsString());
-
+	    */
+            
+	    try {
+		rootObject = JsonParser.parseString(responseBody).getAsJsonObject();
+		if (rootObject.has("error")) {
+		    chatCompletionError = new ChatCompletionError(rootObject.get("error").getAsJsonObject());
+		    throw new IllegalArgumentException(chatCompletionError.toString());
+		}
+	    } catch (Exception e) {
+		System.err.println("Cannot create ChatCompletionError: " + e.toString());
+		throw new IllegalArgumentException(rootObject.get("error").getAsJsonObject().get("message").getAsString());
+	    }
+	    
             return new ChatCompletionResponse(rootObject);
         } catch (Throwable ex) {
             System.err.println("Some error occurred whilst using the Chat Completion API");
@@ -109,6 +128,16 @@ public class ChatBot {
         }
     }
 
+    
+    
+    
+    /**
+     * Return the detailed Completion Error
+     * @return the detailed Completion Error
+     */
+    public ChatCompletionError getChatCompletionError() {
+        return chatCompletionError;
+    }
 
     /**
      * The ChatGPT API takes a list of 'roles' and 'content'. The role is
@@ -375,5 +404,95 @@ public class ChatBot {
         public int getTotalTokens() {
             return this.totalTokens;
         }
+    }
+    
+    public static class ChatCompletionError {
+
+	// {"error":{"message":"The server had an error while processing your request.
+	// Sorry about that!","type":"server_error","param":null,"code":null}}
+	// rootObject.get("error").getAsJsonObject()
+
+	private String errorMessage;
+	private String errorType;
+	private String errorParam;
+	private String errorCode;
+
+	public ChatCompletionError(String errorMessage, String errorType, String errorParam, String errorCode) {
+	    init(errorMessage, errorType, errorParam, errorCode);
+	}
+
+	/**
+	 * @param errorMessage
+	 * @param errorType
+	 * @param errorParam
+	 * @param errorCode
+	 */
+	private void init(String errorMessage, String errorType, String errorParam, String errorCode) {
+	    this.errorMessage = errorMessage;
+	    this.errorType = errorType;
+	    this.errorParam = errorParam;
+	    this.errorCode = errorCode;
+	}
+
+	public ChatCompletionError(JsonObject json) {
+
+	    String theErrrorMessage = null;
+	    if (json.get("message") != null) {
+		theErrrorMessage = json.get("message") != JsonNull.INSTANCE ? json.get("message").getAsString() : null;
+	    }
+
+	    String theErrorType = null;
+	    if (json.get("type") != null) {
+		theErrorType = json.get("type") != JsonNull.INSTANCE ? json.get("type").getAsString() : null;
+	    }
+
+	    // anonId = result.get("anonid") != JsonNull.INSTANCE ?
+	    // result.get("anonid").getAsString() : null;
+	    String theErrorParam = null;
+	    if (json.get("param") != null) {
+		theErrorParam = json.get("param") != JsonNull.INSTANCE ? json.get("param").getAsString() : null;
+	    }
+
+	    String theErrorCode = null;
+	    if (json.get("code") != null) {
+		theErrorCode = json.get("code") != JsonNull.INSTANCE ? json.get("code").getAsString() : null;
+	    }
+
+	    init(theErrrorMessage, theErrorType, theErrorParam, theErrorCode);
+	}
+
+	/**
+	 * @return the errorMessage
+	 */
+	public String getErrorMessage() {
+	    return errorMessage;
+	}
+
+	/**
+	 * @return the errorType
+	 */
+	public String getErrorType() {
+	    return errorType;
+	}
+
+	/**
+	 * @return the errorParam
+	 */
+	public String getErrorParam() {
+	    return errorParam;
+	}
+
+	/**
+	 * @return the errorCode
+	 */
+	public String getErrorCode() {
+	    return errorCode;
+	}
+
+	@Override
+	public String toString() {
+	    return "ChatCompletionError [errorMessage=" + errorMessage + ", errorType=" + errorType + ", errorParam="
+		    + errorParam + ", errorCode=" + errorCode + "]";
+	}
     }
 }
