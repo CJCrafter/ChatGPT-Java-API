@@ -1,7 +1,4 @@
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -10,9 +7,6 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Scanner scan = new Scanner(System.in);
         String key = "sk-YOUR KEY HERE";  // TODO Add your open ai key here
- 
-        Path path = Paths.get("I:\\_dev_sqlephant\\src\\main\\resources\\key.txt");
-        key = Files.readAllLines(path).get(0);
         
         // Create the initial prompt, we will reuse it later.
         String initialPrompt = "You are a customer support chat-bot. Write brief summaries of the user's questions so that agents can easily find the answer in a database.";
