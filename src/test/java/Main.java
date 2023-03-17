@@ -28,16 +28,33 @@ public class Main {
 
             // Generate a response, and print it to the user.
             messages.add(new ChatBot.ChatMessage("user", input));
-            ChatBot.ChatCompletionResponse response = bot.generateResponse(request);
-            
-            System.out.println("\n" + response.getChoices().get(0).getMessage().getContent());
-            
-            // Print our tokens consumption:
-            System.out.println(response.getUsage() + "\n");
-            
+           
+	    try {
+		ChatBot.ChatCompletionResponse response;
+		response = bot.generateResponse(request);
+		System.out.println("\n" + response.getChoices().get(0).getMessage().getContent());
 
-            // Save the generated message to the bot's conversational memory
-            messages.add(response.getChoices().get(0).getMessage());
+		// Print our tokens consumption:
+		System.out.println(response.getUsage() + "\n");
+
+		// Save the generated message to the bot's conversational memory
+		messages.add(response.getChoices().get(0).getMessage());
+	            
+	    } catch (Exception e) {
+			
+		if (bot.getChatCompletionError() == null) {
+		    throw e;
+		}
+		
+		System.err.println();
+		System.err.println("An Error occured:");
+		System.err.println("ErrorMessage: " +  bot.getChatCompletionError().getErrorMessage());
+		System.err.println("ErrorCode   : " +  bot.getChatCompletionError().getErrorCode());
+		System.err.println("ErrorType   : " +  bot.getChatCompletionError().getErrorType());
+		System.err.println("ErrorParam  : " +  bot.getChatCompletionError().getErrorParam());
+	    }	
+	    
+
         }
     }
 }
