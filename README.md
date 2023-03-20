@@ -4,6 +4,30 @@ works by wrapping HTTPS requests with java variables, making the generated resul
 
 Feel free to use, modify, and distribute this code as needed.
 
+# Installation
+For Gradle projects, add this to your `build.gradle` file in the dependencies block:
+```groovy
+dependencies {
+    implementation 'com.cjcrafter:openai:1.0.0'
+}
+```
+Or, if you are using Kotlin DSL (`build.gradle.kts`), add this to your dependencies block:
+```kotlin
+dependencies {
+    implementation("com.cjcrafter:openai:1.0.0")
+}
+```
+For Maven projects, add this to your `pom.xml` file in the `<dependencies>` block:
+```xml
+<dependency>
+    <groupId>com.cjcrafter</groupId>
+    <artifactId>openai</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+See the [maven repository](https://central.sonatype.com/artifact/com.cjcrafter/openai/1.0.0) for gradle/ant/etc.
+
+
 # Working Example
 ```java
 import java.io.IOException;
@@ -40,43 +64,6 @@ public class Main {
     }
 }
 ```
-
-# Installation
-1. Add [okhttp](https://square.github.io/okhttp/) and [gson](https://github.com/google/gson) as dependencies (see below)
-2. Drag and drop the [`ChatBot.java`](https://github.com/CJCrafter/ChatGPT-Java-API/blob/master/ChatBot.java) file into your project
-
-Maven:
-```xml
-  <dependencies>
-    <dependency>
-      <groupId>com.squareup.okhttp3</groupId>
-      <artifactId>okhttp</artifactId>
-      <version>4.9.2</version>
-    </dependency>
-    <dependency>
-      <groupId>com.google.code.gson</groupId>
-      <artifactId>gson</artifactId>
-      <version>2.8.9</version>
-    </dependency>
-  </dependencies>
-```
-
-Gradle KTS:
-```gradle
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    implementation("com.squareup.okhttp3:okhttp:4.9.2")
-    implementation("com.google.code.gson:gson:2.8.9")
-}
-```
-
-# More
-1. I also wrote a [Kotlin Version]() of the API.
-2. Need inspiration for prompts? Check out [awesome prompts](https://github.com/f/awesome-chatgpt-prompts).
-3. Looking for the official API? OpenAI only officially supports [python](https://github.com/openai/openai-python).
 
 # Support
 If I have saved you time, please consider [sponsoring me](https://github.com/sponsors/CJCrafter). 
