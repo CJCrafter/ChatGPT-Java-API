@@ -116,24 +116,42 @@ tasks.register<GithubReleaseTask>("createGithubRelease").configure {
     // https://github.com/BreadMoirai/github-release-gradle-plugin
     owner.set("CJCrafter")
     repo.set("ChatGPT-Java-API")
-    authorization.set("Token ${findProperty("GITHUB_PASSWORD").toString()}")
-    tagName.set(version.toString())
+    authorization.set("Token ${findProperty("GITHUB_TOKEN").toString()}")
+    tagName.set("$version")
     targetCommitish.set("master")
-    releaseName.set("v${version} BETA")
-    draft.set(true)
+    releaseName.set("$version")
+    draft.set(false)
     prerelease.set(false)
     generateReleaseNotes.set(true)
-    body.set("")
+    body.set(""" 
+For Gradle projects, add this to your `build.gradle` file in the dependencies block:
+```groovy
+dependencies {
+    implementation 'com.cjcrafter:openai:$version'
+}
+```
+Or, if you are using Kotlin DSL (`build.gradle.kts`), add this to your dependencies block:
+```kotlin
+dependencies {
+    implementation("com.cjcrafter:openai:$version")
+}
+```
+For Maven projects, add this to your `pom.xml` file in the `<dependencies>` block:
+```xml
+<dependency>
+    <groupId>com.cjcrafter</groupId>
+    <artifactId>openai</artifactId>
+    <version>$version</version>
+</dependency>
+```
+See the [maven repository](https://central.sonatype.com/artifact/com.cjcrafter/openai/$version) for gradle/ant/etc.
+    """.trimIndent())
     overwrite.set(false)
     allowUploadToExisting.set(false)
     apiEndpoint.set("https://api.github.com")
 
-    setReleaseAssets(/* TODO */)
+    setReleaseAssets(/* empty */)
 
     // If set to true, you can debug that this would do
     dryRun.set(false)
-
-    doFirst {
-        println("Creating GitHub release")
-    }
 }
