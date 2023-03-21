@@ -27,3 +27,6 @@ gradle.properties
 # Maven
 log/
 target/
+
+# ChatGPT-Java-API Specific Ignore
+src/test/resources/token.txt
