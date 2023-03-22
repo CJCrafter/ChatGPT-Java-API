@@ -19,8 +19,8 @@ import java.util.concurrent.TimeUnit
 class ChatBot(private val apiKey: String) {
 
     private val client: OkHttpClient = Builder()
-        .connectTimeout(30, TimeUnit.SECONDS)
-        .readTimeout(30, TimeUnit.SECONDS).build()
+        .connectTimeout(0, TimeUnit.SECONDS)
+        .readTimeout(0, TimeUnit.SECONDS).build()
     private val mediaType: MediaType = "application/json; charset=utf-8".toMediaType()
     private val gson: Gson = GsonBuilder()
         .registerTypeAdapter(ChatUser::class.java, JsonSerializer<ChatUser> { src, _, context -> context!!.serialize(src!!.name.lowercase())!! })
