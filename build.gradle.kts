@@ -1,12 +1,13 @@
 import com.github.breadmoirai.githubreleaseplugin.GithubReleaseTask
 
 group = "com.cjcrafter"
-version = "1.0.0"
+version = "1.1.0"
 
 plugins {
     `java-library`
     `maven-publish`
     signing
+    kotlin("jvm") version "1.7.20-RC"
     id("com.github.breadmoirai.github-release") version "2.4.1"
 }
 
@@ -17,6 +18,8 @@ repositories {
 dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.9.2")
     implementation("com.google.code.gson:gson:2.10.1")
+
+    testImplementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
 }
 
 java {
