@@ -28,6 +28,9 @@ class ChatResponse(
     /**
      * Shorthand for accessing the generated messages (shorthand for
      * [ChatResponse.choices]).
+     *
+     * @param index The index of the message (`0` for most use cases).
+     * @return The generated [ChatChoice] at the index.
      */
     operator fun get(index: Int): ChatChoice {
         return choices[index]

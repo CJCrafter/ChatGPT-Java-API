@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class JavaTest {
+public class JavaChatTest {
 
     public static void main(String[] args) throws IOException {
         Scanner scan = new Scanner(System.in);

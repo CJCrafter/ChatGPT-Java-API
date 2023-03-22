@@ -8,6 +8,7 @@ plugins {
     `maven-publish`
     signing
     kotlin("jvm") version "1.7.20-RC"
+    id("org.jetbrains.dokka") version "1.8.10" // KDoc Documentation Builder
     id("com.github.breadmoirai.github-release") version "2.4.1"
 }
 

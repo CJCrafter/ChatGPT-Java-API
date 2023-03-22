@@ -14,7 +14,25 @@ import java.util.concurrent.TimeUnit
 /**
  * The ChatBot class wraps the OpenAI API and lets you send messages and
  * receive responses. For more information on how this works, check out
- * the [OpenAI Documentation](https://platform.openai.com/docs/api-reference/completions)).
+ * the [OpenAI Documentation](https://platform.openai.com/docs/api-reference/chat)).
+ *
+ * [com.cjcrafter.openai.chat] differs from [com.cjcrafter.openai.completions].
+ * Chat has conversational memory, and is best suited to generate human-readable
+ * text. Think of chat as a human that insists on giving elaborate responses.
+ * If you are looking for more robotic or specific responses, consider using
+ * completions instead.
+ *
+ * To get your API key:
+ * 1. Log in to your account: Go to [https://www.openai.com/](openai.com) and
+ * log in.
+ * 2. Access the API dashboard: After logging in, click on the "API" tab.
+ * 3. Choose a subscription plan: Select a suitable plan based on your needs
+ * and complete the payment process.
+ * 4. Obtain your API key: After subscribing to a plan, you will be redirected
+ * to the API dashboard, where you can find your unique API key. Copy and store it securely.
+ *
+ * @property apiKey Your OpenAI API key. It starts with `"sk-"` (without the quotes).
+ * @constructor Create a ChatBot for responding to requests.
  */
 class ChatBot(private val apiKey: String) {
 
