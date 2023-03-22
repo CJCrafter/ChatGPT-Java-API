@@ -13,15 +13,16 @@ import com.google.gson.JsonObject
  * generate, the more tokens you use. In general, it is best to **ONLY**
  * generate 1 response, and to let the user regenerate the response.
  *
- * @param index        The index in the array... 0 if [ChatRequest.n]=1.
- * @param message      The generated text.
- * @param finishReason Why did the bot stop generating tokens?
+ * @property index        The index in the array... 0 if [ChatRequest.n]=1.
+ * @property message      The generated text.
+ * @property finishReason Why did the bot stop generating tokens?
+ * @constructor Create a new chat choice, for internal usage.
  * @see FinishReason
  */
 class ChatChoice(val index: Int, val message: ChatMessage, val finishReason: FinishReason?) {
 
     /**
-     * JSON constructor for internal use.
+     * JSON constructor for internal usage.
      */
     constructor(json: JsonObject) : this(
         json["index"].asInt,

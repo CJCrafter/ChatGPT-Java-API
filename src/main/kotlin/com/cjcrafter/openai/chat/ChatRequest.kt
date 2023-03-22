@@ -33,7 +33,7 @@ import com.google.gson.annotations.SerializedName
  * @property presencePenalty  Prevent talking about duplicate topics. Defaults to `0.0`.
  * @property frequencyPenalty Prevent repeating the same text. Defaults to `0.0`.
  * @property logitBias        Increase/Decrease the chances of a specific token to appear in generated text. Defaults to `null`.
- * @property user             Who send this request (for moderation).
+ * @property user             Who sent this request (for moderation).
  * @constructor Create a chat request
  * @see ChatBot.generateResponse
  * @see <a href="https://platform.openai.com/docs/api-reference/completions/create">OpenAI Wiki</a>

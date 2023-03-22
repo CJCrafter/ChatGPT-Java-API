@@ -3,8 +3,16 @@ package com.cjcrafter.openai.chat
 import com.google.gson.JsonObject
 
 /**
- * This is the object returned from the API. You want to access choices[0]
- * to get your response.
+ * The [ChatResponse] contains all the data returned by the OpenAI Chat API.
+ * For most use cases, [ChatResponse.get] (passing 0 to the index argument) is
+ * all you need.
+ *
+ * @property id
+ * @property object
+ * @property created
+ * @property choices
+ * @property usage
+ * @constructor Create empty Chat response
  */
 class ChatResponse(
     val id: String,

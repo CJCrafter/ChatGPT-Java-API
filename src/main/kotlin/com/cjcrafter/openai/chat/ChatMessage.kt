@@ -6,6 +6,10 @@ import com.google.gson.JsonObject
  * ChatGPT's biggest innovation is its conversation memory. To remember the
  * conversation, we need to map each message to who sent it. This data class
  * wraps a message with the user who sent the message.
+ *
+ * @property role The user who sent this message.
+ * @property content The string content of the message.
+ * @see ChatUser
  */
 data class ChatMessage(val role: ChatUser, val content: String) {
 
