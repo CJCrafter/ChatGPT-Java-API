@@ -36,7 +36,8 @@ import com.google.gson.annotations.SerializedName
  * @property user             Who sent this request (for moderation).
  * @constructor Create a chat request
  * @see ChatBot.generateResponse
- * @see <a href="https://platform.openai.com/docs/api-reference/completions/create">OpenAI Wiki</a>
+ * @see <a href="https://platform.openai.com/docs/api-reference/completions/create">Chat API Reference</a>
+ * @see <a href="https://platform.openai.com/docs/guides/chat">Chat User Reference</a>
  */
 data class ChatRequest @JvmOverloads constructor(
     var model: String,

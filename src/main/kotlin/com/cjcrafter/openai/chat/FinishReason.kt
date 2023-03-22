@@ -2,7 +2,7 @@ package com.cjcrafter.openai.chat
 
 /**
  * [FinishReason] wraps the possible reasons that a generation model may stop
- * generating tokens. For most **PROPER** use cases (see [best practices]()),
+ * generating tokens. For most **PROPER** use cases (see [best practices](https://platform.openai.com/docs/guides/chat/introduction)),
  * the finish reason will be [STOP]. When working with streams, finish reason
  * will be `null` since it has not completed the message yet.
  */

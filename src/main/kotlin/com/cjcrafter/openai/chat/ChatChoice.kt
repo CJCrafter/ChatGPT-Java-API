@@ -19,7 +19,7 @@ import com.google.gson.JsonObject
  * @constructor Create a new chat choice, for internal usage.
  * @see FinishReason
  */
-class ChatChoice(val index: Int, val message: ChatMessage, val finishReason: FinishReason?) {
+data class ChatChoice(val index: Int, val message: ChatMessage, val finishReason: FinishReason?) {
 
     /**
      * JSON constructor for internal usage.

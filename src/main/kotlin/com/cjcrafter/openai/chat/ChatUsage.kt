@@ -13,8 +13,9 @@ import com.google.gson.JsonObject
  * @param promptTokens     How many tokens the input used.
  * @param completionTokens How many tokens the output used.
  * @param totalTokens      How many tokens in total.
+ * @see <a href="https://platform.openai.com/docs/guides/chat/managing-tokens">Managing Tokens Guide</a>
  */
-class ChatUsage(val promptTokens: Int, val completionTokens: Int, val totalTokens: Int) {
+data class ChatUsage(val promptTokens: Int, val completionTokens: Int, val totalTokens: Int) {
 
     /**
      * JSON constructor for internal usage.
