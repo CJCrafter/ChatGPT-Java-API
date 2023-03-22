@@ -1,9 +1,6 @@
 package com.cjcrafter.openai.chat
 
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
+import com.google.gson.*
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -25,7 +22,9 @@ class ChatBot(private val apiKey: String) {
         .connectTimeout(30, TimeUnit.SECONDS)
         .readTimeout(30, TimeUnit.SECONDS).build()
     private val mediaType: MediaType = "application/json; charset=utf-8".toMediaType()
-    private val gson: Gson = GsonBuilder().create()
+    private val gson: Gson = GsonBuilder()
+        .registerTypeAdapter(ChatUser::class.java, JsonSerializer<ChatUser> { src, _, context -> context!!.serialize(src!!.name.lowercase())!! })
+        .create()
 
     /**
      * Blocks the current thread until OpenAI responds to https request. The
@@ -43,7 +42,7 @@ class ChatBot(private val apiKey: String) {
         val json = gson.toJson(request)
         val body: RequestBody = json.toRequestBody(mediaType)
         val httpRequest: Request = Request.Builder()
-            .url("https://api.openai.com/v11/chat/completions")
+            .url("https://api.openai.com/v1/chat/completions")
             .addHeader("Content-Type", "application/json")
             .addHeader("Authorization", "Bearer $apiKey")
             .post(body).build()

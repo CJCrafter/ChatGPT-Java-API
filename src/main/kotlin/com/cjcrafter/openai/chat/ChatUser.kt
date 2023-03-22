@@ -31,12 +31,5 @@ enum class ChatUser {
     /**
      * [ASSISTANT] is the AI that generates responses.
      */
-    ASSISTANT;
-
-    /**
-     * OpenAI's API expects the user to be lowercase.
-     */
-    override fun toString(): String {
-        return name.lowercase()
-    }
+    ASSISTANT
 }

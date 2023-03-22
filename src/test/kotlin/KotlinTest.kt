@@ -22,9 +22,9 @@ fun main(args: Array<String>) {
         // Generate a response, and print it to the user.
         messages.add(input.toUserMessage())
         val response = bot.generateResponse(request)
-        println("\n${response.choices[0].message.content}\n")
+        println("\n${response[0].message.content}\n")
 
         // Save the generated message to the bot's conversational memory
-        messages.add(response.choices[0].message)
+        messages.add(response[0].message)
     }
 }

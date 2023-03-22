@@ -1,6 +1,5 @@
 import com.cjcrafter.openai.chat.*;
 import io.github.cdimascio.dotenv.Dotenv;
-import okhttp3.MediaType;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,7 +18,6 @@ public class JavaTest {
         ChatRequest request = new ChatRequest("gpt-3.5-turbo", messages);
         ChatBot bot = new ChatBot(key);
 
-        MediaType.
         while (true) {
             System.out.println("Enter text below:\n\n");
             String input = scan.nextLine();
@@ -27,10 +25,10 @@ public class JavaTest {
             // Generate a response, and print it to the user.
             messages.add(new ChatMessage(ChatUser.USER, input));
             ChatResponse response = bot.generateResponse(request);
-            System.out.println("\n" + response.getChoices().get(0).getMessage().getContent());
+            System.out.println("\n" + response.get(0).getMessage().getContent());
 
             // Save the generated message to the bot's conversational memory
-            messages.add(response.getChoices().get(0).getMessage());
+            messages.add(response.get(0).getMessage());
         }
     }
 }
