@@ -7,6 +7,7 @@ plugins {
     `java-library`
     `maven-publish`
     signing
+    id("io.codearte.nexus-staging") version "0.30.0"
     kotlin("jvm") version "1.7.20-RC"
     id("org.jetbrains.dokka") version "1.8.10" // KDoc Documentation Builder
     id("com.github.breadmoirai.github-release") version "2.4.1"
@@ -51,6 +52,15 @@ val javadocJar by tasks.registering(Jar::class) {
 val sourcesJar by tasks.registering(Jar::class) {
     archiveClassifier.set("sources")
     from(sourceSets.main.get().allSource)
+}
+
+nexusStaging {
+    packageGroup = "com.cjcrafter"
+    stagingProfileId = findProperty("OSSRH_ID").toString()
+    username = findProperty("OSSRH_USERNAME").toString()
+    password = findProperty("OSSRH_PASSWORD").toString()
+    numberOfRetries = 30
+    delayBetweenRetriesInMillis = 3000
 }
 
 // Signing artifacts
@@ -114,6 +124,11 @@ publishing {
             }
         }
     }
+}
+
+// After publishing, the nexus plugin will automatically close and release
+tasks.named("publish") {
+    finalizedBy("closeAndReleaseRepository")
 }
 
 tasks.register<GithubReleaseTask>("createGithubRelease").configure {
