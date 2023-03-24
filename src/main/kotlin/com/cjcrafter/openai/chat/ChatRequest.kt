@@ -20,7 +20,9 @@ import com.google.gson.annotations.SerializedName
  * calls. You can easily store your [ChatRequest] as a string or as a json file
  * using google's GSON library to serialize the object as a JSON string.
  *
- * You should not set [stream]. TODO update docs after adding stream support
+ * You should not set [stream]. The stream option is handled using [ChatBot.streamResponse].
+ * This allows developers to get tokens in real time instead of all at once
+ * and after a long delay.
  *
  * @property model            The model used to generate the text. Recommended: `"gpt-3.5-turbo"` (without quotes).
  * @property messages         A mutable list of previous messages from the conversation.
