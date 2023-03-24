@@ -1,15 +1,14 @@
 package com.cjcrafter.openai.chat
 
 import com.google.gson.*
-import okhttp3.MediaType
+import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
 import okhttp3.OkHttpClient.Builder
-import okhttp3.Request
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
+import java.lang.IllegalArgumentException
 import java.util.concurrent.TimeUnit
+import java.util.function.Consumer
 
 /**
  * The ChatBot class wraps the OpenAI API and lets you send messages and
@@ -41,7 +40,9 @@ class ChatBot(private val apiKey: String) {
         .readTimeout(0, TimeUnit.SECONDS).build()
     private val mediaType: MediaType = "application/json; charset=utf-8".toMediaType()
     private val gson: Gson = GsonBuilder()
-        .registerTypeAdapter(ChatUser::class.java, JsonSerializer<ChatUser> { src, _, context -> context!!.serialize(src!!.name.lowercase())!! })
+        .registerTypeAdapter(
+            ChatUser::class.java,
+            JsonSerializer<ChatUser> { src, _, context -> context!!.serialize(src!!.name.lowercase())!! })
         .create()
 
     /**
@@ -56,7 +57,9 @@ class ChatBot(private val apiKey: String) {
      * @throws IllegalArgumentException If the input arguments are invalid.
      */
     @Throws(IOException::class)
-    fun generateResponse(request: ChatRequest?): ChatResponse {
+    fun generateResponse(request: ChatRequest): ChatResponse {
+        request.stream = false // use streamResponse for stream=true
+
         val json = gson.toJson(request)
         val body: RequestBody = json.toRequestBody(mediaType)
         val httpRequest: Request = Request.Builder()
@@ -82,5 +85,96 @@ class ChatBot(private val apiKey: String) {
             System.err.println("\nRoot Object:\n\n$rootObject")
             throw ex
         }
+    }
+
+    /**
+     * This is a helper method that calls [streamResponse], which lets you use
+     * the generated tokens in real time (As ChatGPT generates them).
+     *
+     * This method does not block the thread. Method calls to [onResponse] are
+     * not handled by the main thread. It is crucial to consider thread safety
+     * within the context of your program.
+     *
+     * @param request    The input information for ChatGPT.
+     * @param onResponse The method to call for each chunk.
+     * @since 1.2.0
+     */
+    fun streamResponseKotlin(request: ChatRequest, onResponse: ChatResponseChunk.() -> Unit) {
+        streamResponse(request, { it.onResponse() })
+    }
+
+    /**
+     * Uses ChatGPT to generate tokens in real time. As ChatGPT generates
+     * content, those tokens are sent in a stream in real time. This allows you
+     * to update the user without long delays between their input and OpenAI's
+     * response.
+     *
+     * For *"simpler"* calls, you can use [generateResponse] which will block
+     * the thread until the entire response is generated.
+     *
+     * Instead of using the [ChatResponse], this method uses [ChatResponseChunk].
+     * This means that it is not possible to retrieve the number of tokens from
+     * this method,
+     *
+     * This method does not block the thread. Method calls to [onResponse] are
+     * not handled by the main thread. It is crucial to consider thread safety
+     * within the context of your program.
+     *
+     * @param request    The input information for ChatGPT.
+     * @param onResponse The method to call for each chunk.
+     * @param onFailure  The method to call if the HTTP fails. This method will
+     *                   not be called if OpenAI returns an error.
+     * @see generateResponse
+     * @see streamResponseKotlin
+     * @since 1.2.0
+     */
+    @JvmOverloads
+    fun streamResponse(
+        request: ChatRequest,
+        onResponse: Consumer<ChatResponseChunk>, // use Consumer instead of Kotlin for better Java syntax
+        onFailure: Consumer<IOException> = Consumer { it.printStackTrace() }
+    ) {
+        request.stream = true // use requestResponse for stream=false
+
+        val json = gson.toJson(request)
+        val body: RequestBody = json.toRequestBody(mediaType)
+        val httpRequest: Request = Request.Builder()
+            .url("https://api.openai.com/v1/chat/completions")
+            .addHeader("Content-Type", "application/json")
+            .addHeader("Authorization", "Bearer $apiKey")
+            .post(body)
+            .build()
+
+        client.newCall(httpRequest).enqueue(object : Callback {
+            var cache: ChatResponseChunk? = null
+
+            override fun onFailure(call: Call, e: IOException) {
+                onFailure.accept(e)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                response.body?.source()?.use { source ->
+                    while (!source.exhausted()) {
+
+                        // Parse the JSON string as a map. Every string starts
+                        // with "data: ", so we need to remove that.
+                        var jsonResponse = source.readUtf8Line() ?: continue
+                        if (jsonResponse.isEmpty())
+                            continue
+                        jsonResponse = jsonResponse.substring("data: ".length)
+                        if (jsonResponse == "[DONE]")
+                            continue
+
+                        val rootObject = JsonParser.parseString(jsonResponse).asJsonObject
+                        if (cache == null)
+                            cache = ChatResponseChunk(rootObject)
+                        else
+                            cache!!.update(rootObject)
+
+                        onResponse.accept(cache!!)
+                    }
+                }
+            }
+        })
     }
 }

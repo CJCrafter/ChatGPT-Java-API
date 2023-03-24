@@ -1,5 +1,6 @@
 package com.cjcrafter.openai.chat
 
+import com.cjcrafter.openai.FinishReason
 import com.google.gson.JsonObject
 
 /**
@@ -15,11 +16,11 @@ import com.google.gson.JsonObject
  *
  * @property index        The index in the array... 0 if [ChatRequest.n]=1.
  * @property message      The generated text.
- * @property finishReason Why did the bot stop generating tokens?
+ * @property finishReason The reason the bot stopped generating tokens.
  * @constructor Create a new chat choice, for internal usage.
  * @see FinishReason
  */
-data class ChatChoice(val index: Int, val message: ChatMessage, val finishReason: FinishReason?) {
+data class ChatChoice(val index: Int, val message: ChatMessage, val finishReason: FinishReason) {
 
     /**
      * JSON constructor for internal usage.
@@ -27,6 +28,6 @@ data class ChatChoice(val index: Int, val message: ChatMessage, val finishReason
     constructor(json: JsonObject) : this(
         json["index"].asInt,
         ChatMessage(json["message"].asJsonObject),
-        if (json["finish_reason"].isJsonNull) null else FinishReason.valueOf(json["finish_reason"].asString.uppercase())
+        FinishReason.valueOf(json["finish_reason"].asString.uppercase())
     )
 }
