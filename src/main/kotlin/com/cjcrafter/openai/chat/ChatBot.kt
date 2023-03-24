@@ -31,19 +31,28 @@ import java.util.function.Consumer
  * to the API dashboard, where you can find your unique API key. Copy and store it securely.
  *
  * @property apiKey Your OpenAI API key. It starts with `"sk-"` (without the quotes).
+ * @property client Controls proxies, timeouts, etc.
  * @constructor Create a ChatBot for responding to requests.
  */
-class ChatBot(private val apiKey: String) {
+class ChatBot @JvmOverloads constructor(
+    private val apiKey: String,
+    private val client: OkHttpClient = OkHttpClient()
+) {
 
-    private val client: OkHttpClient = Builder()
-        .connectTimeout(0, TimeUnit.SECONDS)
-        .readTimeout(0, TimeUnit.SECONDS).build()
     private val mediaType: MediaType = "application/json; charset=utf-8".toMediaType()
     private val gson: Gson = GsonBuilder()
-        .registerTypeAdapter(
-            ChatUser::class.java,
-            JsonSerializer<ChatUser> { src, _, context -> context!!.serialize(src!!.name.lowercase())!! })
+        .registerTypeAdapter(ChatUser::class.java, JsonSerializer<ChatUser> { src, _, context -> context!!.serialize(src!!.name.lowercase())!! })
         .create()
+
+    private fun buildRequest(request: ChatRequest): Request {
+        val json = gson.toJson(request)
+        val body: RequestBody = json.toRequestBody(mediaType)
+        return Request.Builder()
+            .url("https://api.openai.com/v1/chat/completions")
+            .addHeader("Content-Type", "application/json")
+            .addHeader("Authorization", "Bearer $apiKey")
+            .post(body).build()
+    }
 
     /**
      * Blocks the current thread until OpenAI responds to https request. The
@@ -59,14 +68,7 @@ class ChatBot(private val apiKey: String) {
     @Throws(IOException::class)
     fun generateResponse(request: ChatRequest): ChatResponse {
         request.stream = false // use streamResponse for stream=true
-
-        val json = gson.toJson(request)
-        val body: RequestBody = json.toRequestBody(mediaType)
-        val httpRequest: Request = Request.Builder()
-            .url("https://api.openai.com/v1/chat/completions")
-            .addHeader("Content-Type", "application/json")
-            .addHeader("Authorization", "Bearer $apiKey")
-            .post(body).build()
+        val httpRequest = buildRequest(request)
 
         // Save the JsonObject to check for errors
         var rootObject: JsonObject? = null
@@ -80,9 +82,6 @@ class ChatBot(private val apiKey: String) {
                 return ChatResponse(rootObject!!)
             }
         } catch (ex: Throwable) {
-            System.err.println("Some error occurred whilst using the Chat Completion API")
-            System.err.println("Request:\n\n$json")
-            System.err.println("\nRoot Object:\n\n$rootObject")
             throw ex
         }
     }
@@ -135,15 +134,7 @@ class ChatBot(private val apiKey: String) {
         onFailure: Consumer<IOException> = Consumer { it.printStackTrace() }
     ) {
         request.stream = true // use requestResponse for stream=false
-
-        val json = gson.toJson(request)
-        val body: RequestBody = json.toRequestBody(mediaType)
-        val httpRequest: Request = Request.Builder()
-            .url("https://api.openai.com/v1/chat/completions")
-            .addHeader("Content-Type", "application/json")
-            .addHeader("Authorization", "Bearer $apiKey")
-            .post(body)
-            .build()
+        val httpRequest = buildRequest(request)
 
         client.newCall(httpRequest).enqueue(object : Callback {
             var cache: ChatResponseChunk? = null
