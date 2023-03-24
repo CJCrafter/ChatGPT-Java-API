@@ -7,21 +7,23 @@ import java.time.ZonedDateTime
 import java.util.*
 
 /**
- * The [ChatResponse] contains all the data returned by the OpenAI Chat API.
- * For most use cases, [ChatResponse.get] (passing 0 to the index argument) is
- * all you need.
+ * The [ChatResponseChunk] contains all the data returned by the OpenAI Chat API.
+ * For most use cases, [ChatResponseChunk.get] (passing 0 to the index argument)
+ * is all you need.
+ *
+ * This class is similar to [ChatResponse], except with [ChatResponseChunk] you
+ * determine the number of generated tokens.
  *
  * @property id      The unique id for your request.
  * @property created The Unix timestamp (measured in seconds since 00:00:00 UTC on January 1, 1970) when the API response was created.
  * @property choices The list of generated messages.
- * @property usage   The number of tokens used in this request/response.
  * @constructor Create Chat response (for internal usage).
+ * @see ChatResponse
  */
-data class ChatResponse(
+data class ChatResponseChunk(
     val id: String,
     val created: Long,
-    val choices: List<ChatChoice>,
-    val usage: ChatUsage
+    val choices: List<ChatChoiceChunk>,
 ) {
 
     /**
@@ -30,9 +32,14 @@ data class ChatResponse(
     constructor(json: JsonObject) : this(
         json["id"].asString,
         json["created"].asLong,
-        json["choices"].asJsonArray.map { ChatChoice(it.asJsonObject) },
-        ChatUsage(json["usage"].asJsonObject)
+        json["choices"].asJsonArray.map { ChatChoiceChunk(it.asJsonObject) },
     )
+
+    internal fun update(json: JsonObject) {
+        json["choices"].asJsonArray.forEachIndexed { index, jsonElement ->
+            choices[index].update(jsonElement.asJsonObject)
+        }
+    }
 
     /**
      * Returns the [Instant] time that the OpenAI Chat API sent this response.
@@ -62,14 +69,16 @@ data class ChatResponse(
         return ZonedDateTime.ofInstant(getTime(), timezone)
     }
 
+    // TODO add tokenizier so we can determine token count
+
     /**
      * Shorthand for accessing the generated messages (shorthand for
-     * [ChatResponse.choices]).
+     * [ChatResponseChunk.choices]).
      *
      * @param index The index of the message (`0` for most use cases).
-     * @return The generated [ChatChoice] at the index.
+     * @return The generated [ChatChoiceChunk] at the index.
      */
-    operator fun get(index: Int): ChatChoice {
+    operator fun get(index: Int): ChatChoiceChunk {
         return choices[index]
     }
 }

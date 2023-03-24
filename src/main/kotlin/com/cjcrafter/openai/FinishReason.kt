@@ -1,4 +1,4 @@
-package com.cjcrafter.openai.chat
+package com.cjcrafter.openai
 
 /**
  * [FinishReason] wraps the possible reasons that a generation model may stop
@@ -23,9 +23,9 @@ enum class FinishReason {
     LENGTH,
 
     /**
-     * [TEMPERATURE] is a rare occurrence, and only happens when the
-     * [ChatRequest.temperature] is low enough that it is impossible for the
-     * model to continue generating text.
+     * [CONTENT_FILTER] occurs due to a flag from OpenAI's content filters.
+     * This occurrence is rare, and usually only happens when you blatantly
+     * misuse/violate OpenAI's terms.
      */
-    TEMPERATURE
+    CONTENT_FILTER
 }

@@ -7,11 +7,13 @@ import com.google.gson.JsonObject
  * conversation, we need to map each message to who sent it. This data class
  * wraps a message with the user who sent the message.
  *
+ * Note that
+ *
  * @property role The user who sent this message.
  * @property content The string content of the message.
  * @see ChatUser
  */
-data class ChatMessage(val role: ChatUser, val content: String) {
+data class ChatMessage(var role: ChatUser, var content: String) {
 
     /**
      * JSON constructor for internal usage.
