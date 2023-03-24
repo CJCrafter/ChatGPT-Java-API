@@ -21,6 +21,7 @@ import com.google.gson.JsonObject
  * @constructor Create a new chat choice, for internal usage.
  * @see FinishReason
  * @see ChatChoice
+ * @since 1.2.0
  */
 data class ChatChoiceChunk(val index: Int, val message: ChatMessage, var delta: String, var finishReason: FinishReason?) {
 

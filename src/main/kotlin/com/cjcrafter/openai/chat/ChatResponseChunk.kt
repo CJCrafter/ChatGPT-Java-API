@@ -19,6 +19,7 @@ import java.util.*
  * @property choices The list of generated messages.
  * @constructor Create Chat response (for internal usage).
  * @see ChatResponse
+ * @since 1.2.0
  */
 data class ChatResponseChunk(
     val id: String,
