@@ -40,7 +40,7 @@
             </a>
     </div>
     <div>
-1.1.0    </div>
+1.2.0    </div>
     <div class="pull-right d-flex">
         <div class="filter-section" id="filter-section">
                 <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":dokkaHtml/main">jvm</button>
@@ -84,17 +84,47 @@
       </div>
       <div data-togglable="FUNCTION">
         <h2 class="">Functions</h2>
-        <div class="table"><a data-name="1107904288%2FFunctions%2F769193423" anchor-label="generateResponse" id="1107904288%2FFunctions%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+        <div class="table"><a data-name="-1798679517%2FFunctions%2F769193423" anchor-label="generateResponse" id="-1798679517%2FFunctions%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
           <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="generate-response.html"><span>generate</span><wbr></wbr><span><span>Response</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1107904288%2FFunctions%2F769193423"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1798679517%2FFunctions%2F769193423"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="generate-response.html"><span class="token function">generateResponse</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">request<span class="token operator">: </span><a href="../-chat-request/index.html">ChatRequest</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-chat-response/index.html">ChatResponse</a></div><div class="brief "><p class="paragraph">Blocks the current thread until OpenAI responds to https request. The returned value includes information including tokens, generated text, and stop reason. You can access the generated message through <a href="../-chat-response/choices.html">ChatResponse.choices</a>.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="generate-response.html"><span class="token function">generateResponse</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">request<span class="token operator">: </span><a href="../-chat-request/index.html">ChatRequest</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-chat-response/index.html">ChatResponse</a></div><div class="brief "><p class="paragraph">Blocks the current thread until OpenAI responds to https request. The returned value includes information including tokens, generated text, and stop reason. You can access the generated message through <a href="../-chat-response/choices.html">ChatResponse.choices</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1731193066%2FFunctions%2F769193423" anchor-label="streamResponse" id="-1731193066%2FFunctions%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="stream-response.html"><span>stream</span><wbr></wbr><span><span>Response</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1731193066%2FFunctions%2F769193423"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation builtin">JvmOverloads</span></a></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="stream-response.html"><span class="token function">streamResponse</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">request<span class="token operator">: </span><a href="../-chat-request/index.html">ChatRequest</a><span class="token punctuation">, </span></span><span class="parameter ">onResponse<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html">Consumer</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../-chat-response-chunk/index.html">ChatResponseChunk</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">onFailure<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html">Consumer</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html">IOException</a><span class="token operator">&gt;</span><span class="token operator"> = </span>Consumer { it.printStackTrace() }</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Uses ChatGPT to generate tokens in real time. As ChatGPT generates content, those tokens are sent in a stream in real time. This allows you to update the user without long delays between their input and OpenAI's response.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1043826160%2FFunctions%2F769193423" anchor-label="streamResponseKotlin" id="1043826160%2FFunctions%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="stream-response-kotlin.html"><span>stream</span><wbr></wbr><span>Response</span><wbr></wbr><span><span>Kotlin</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1043826160%2FFunctions%2F769193423"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="stream-response-kotlin.html"><span class="token function">streamResponseKotlin</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">request<span class="token operator">: </span><a href="../-chat-request/index.html">ChatRequest</a><span class="token punctuation">, </span></span><span class="parameter ">onResponse<span class="token operator">: </span><span class="token keyword"></span><a href="../-chat-response-chunk/index.html">ChatResponseChunk</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">This is a helper method that calls <a href="stream-response.html">streamResponse</a>, which lets you use the generated tokens in real time (As ChatGPT generates them).</p></div></div></div>
                 </div>
               </div>
             </div>
