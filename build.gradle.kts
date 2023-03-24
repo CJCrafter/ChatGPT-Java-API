@@ -128,7 +128,7 @@ publishing {
 
 // After publishing, the nexus plugin will automatically close and release
 tasks.named("publish") {
-    finalizedBy("closeAndReleaseRepository")
+    finalizedBy("closeAndReleaseRepository", "createGithubRelease")
 }
 
 tasks.register<GithubReleaseTask>("createGithubRelease").configure {
