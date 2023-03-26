@@ -31,11 +31,13 @@ import java.util.function.Consumer
  * to the API dashboard, where you can find your unique API key. Copy and store it securely.
  *
  * @property apiKey Your OpenAI API key. It starts with `"sk-"` (without the quotes).
+ * @property organization If you belong to multiple organizations, specify which one to use (else `null`).
  * @property client Controls proxies, timeouts, etc.
  * @constructor Create a ChatBot for responding to requests.
  */
 class ChatBot @JvmOverloads constructor(
     private val apiKey: String,
+    private val organization: String? = null,
     private val client: OkHttpClient = OkHttpClient()
 ) {
 
@@ -51,6 +53,7 @@ class ChatBot @JvmOverloads constructor(
             .url("https://api.openai.com/v1/chat/completions")
             .addHeader("Content-Type", "application/json")
             .addHeader("Authorization", "Bearer $apiKey")
+            .apply { if (organization != null) addHeader("OpenAI-Organization", organization) }
             .post(body).build()
     }
 
