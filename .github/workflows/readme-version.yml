@@ -1,0 +1,27 @@
+name: Update README Version
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Update version in README
+        run: |
+          VERSION=$(echo $GITHUB_REF | sed 's/refs\/tags\///g')
+          sed -E -i "s/\d+\.\d+\.\d+/$VERSION/g" README.md
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "collinjbarber@gmail.com"
+          git add README.md
+          git commit -m "Update version in README.md"
+          git push
