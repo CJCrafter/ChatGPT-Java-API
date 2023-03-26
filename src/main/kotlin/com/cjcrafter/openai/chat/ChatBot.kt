@@ -94,6 +94,21 @@ class ChatBot @JvmOverloads constructor(
      * not handled by the main thread. It is crucial to consider thread safety
      * within the context of your program.
      *
+     * Usage:
+     * ```
+     *     val messages = mutableListOf("Write a poem".toUserMessage())
+     *     val request = ChatRequest("gpt-3.5-turbo", messages)
+     *     val bot = ChatBot(/* your key */)
+
+     *     bot.streamResponseKotlin(request) {
+     *         print(choices[0].delta)
+     *
+     *         // when finishReason != null, this is the last message (done generating new tokens)
+     *         if (choices[0].finishReason != null)
+     *             messages.add(choices[0].message)
+     *     }
+     * ```
+     *
      * @param request    The input information for ChatGPT.
      * @param onResponse The method to call for each chunk.
      * @since 1.2.0
