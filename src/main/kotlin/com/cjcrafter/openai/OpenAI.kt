@@ -1,26 +1,22 @@
-package com.cjcrafter.openai.chat
+package com.cjcrafter.openai
 
-import com.google.gson.*
+import com.cjcrafter.openai.chat.ChatRequest
+import com.cjcrafter.openai.chat.ChatResponse
+import com.cjcrafter.openai.chat.ChatResponseChunk
+import com.cjcrafter.openai.chat.ChatUser
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
+import com.google.gson.JsonSerializer
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient.Builder
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
 import java.lang.IllegalArgumentException
-import java.util.concurrent.TimeUnit
 import java.util.function.Consumer
 
 /**
- * The ChatBot class wraps the OpenAI API and lets you send messages and
- * receive responses. For more information on how this works, check out
- * the [OpenAI Documentation](https://platform.openai.com/docs/api-reference/chat)).
- *
- * [com.cjcrafter.openai.chat] differs from [com.cjcrafter.openai.completions].
- * Chat has conversational memory, and is best suited to generate human-readable
- * text. Think of chat as a human that insists on giving elaborate responses.
- * If you are looking for more robotic or specific responses, consider using
- * completions instead.
- *
  * To get your API key:
  * 1. Log in to your account: Go to [https://www.openai.com/](openai.com) and
  * log in.
@@ -35,8 +31,7 @@ import java.util.function.Consumer
  * @property client Controls proxies, timeouts, etc.
  * @constructor Create a ChatBot for responding to requests.
  */
-@Deprecated(level = DeprecationLevel.ERROR, message = "Use com.cjcrafter.openai.OpenAI")
-class ChatBot @JvmOverloads constructor(
+class OpenAI @JvmOverloads constructor(
     private val apiKey: String,
     private val organization: String? = null,
     private val client: OkHttpClient = OkHttpClient()
@@ -47,7 +42,7 @@ class ChatBot @JvmOverloads constructor(
         .registerTypeAdapter(ChatUser::class.java, JsonSerializer<ChatUser> { src, _, context -> context!!.serialize(src!!.name.lowercase())!! })
         .create()
 
-    private fun buildRequest(request: ChatRequest): Request {
+    private fun buildRequest(request: Any): Request {
         val json = gson.toJson(request)
         val body: RequestBody = json.toRequestBody(mediaType)
         return Request.Builder()
