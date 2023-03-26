@@ -49,7 +49,7 @@ data class ChatRequest @JvmOverloads constructor(
     var temperature: Float? = null,
     @field:SerializedName("top_p") var topP: Float? = null,
     var n: Int? = null,
-    var stream: Boolean? = null,
+    @Deprecated("Use ChatBot#streamResponse") var stream: Boolean? = null,
     var stop: String? = null,
     @field:SerializedName("max_tokens") var maxTokens: Int? = null,
     @field:SerializedName("presence_penalty") var presencePenalty: Float? = null,
