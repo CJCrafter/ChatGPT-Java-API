@@ -2,7 +2,7 @@ $dokka.format:html-v1
 $dokka.linkExtension:html
 $dokka.location:com.cjcrafter.openai.chat////PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai.chat/index.html
 $dokka.location:com.cjcrafter.openai.chat/ChatBot///PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai.chat/-chat-bot/index.html
-$dokka.location:com.cjcrafter.openai.chat/ChatBot/ChatBot/#kotlin.String/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai.chat/-chat-bot/-chat-bot.html
+$dokka.location:com.cjcrafter.openai.chat/ChatBot/ChatBot/#kotlin.String#kotlin.String?#okhttp3.OkHttpClient/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai.chat/-chat-bot/-chat-bot.html
 $dokka.location:com.cjcrafter.openai.chat/ChatBot/generateResponse/#com.cjcrafter.openai.chat.ChatRequest/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai.chat/-chat-bot/generate-response.html
 $dokka.location:com.cjcrafter.openai.chat/ChatBot/streamResponse/#com.cjcrafter.openai.chat.ChatRequest#java.util.function.Consumer[com.cjcrafter.openai.chat.ChatResponseChunk]#java.util.function.Consumer[java.io.IOException]/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai.chat/-chat-bot/stream-response.html
 $dokka.location:com.cjcrafter.openai.chat/ChatBot/streamResponseKotlin/#com.cjcrafter.openai.chat.ChatRequest#kotlin.Function1[com.cjcrafter.openai.chat.ChatResponseChunk,kotlin.Unit]/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai.chat/-chat-bot/stream-response-kotlin.html
@@ -28,6 +28,22 @@ $dokka.location:com.cjcrafter.openai.chat/ChatMessage/ChatMessage/#com.cjcrafter
 $dokka.location:com.cjcrafter.openai.chat/ChatMessage/ChatMessage/#com.google.gson.JsonObject/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai.chat/-chat-message/-chat-message.html
 $dokka.location:com.cjcrafter.openai.chat/ChatMessage/content/#/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai.chat/-chat-message/content.html
 $dokka.location:com.cjcrafter.openai.chat/ChatMessage/role/#/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai.chat/-chat-message/role.html
+$dokka.location:com.cjcrafter.openai.chat/ChatRequest.Builder///PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai.chat/-chat-request/-builder/index.html
+$dokka.location:com.cjcrafter.openai.chat/ChatRequest.Builder/Builder/#/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai.chat/-chat-request/-builder/-builder.html
+$dokka.location:com.cjcrafter.openai.chat/ChatRequest.Builder/build/#/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai.chat/-chat-request/-builder/build.html
+$dokka.location:com.cjcrafter.openai.chat/ChatRequest.Builder/frequencyPenalty/#kotlin.Float?/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai.chat/-chat-request/-builder/frequency-penalty.html
+$dokka.location:com.cjcrafter.openai.chat/ChatRequest.Builder/logitBias/#kotlin.collections.Map[kotlin.String,kotlin.Float]?/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai.chat/-chat-request/-builder/logit-bias.html
+$dokka.location:com.cjcrafter.openai.chat/ChatRequest.Builder/maxTokens/#kotlin.Int?/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai.chat/-chat-request/-builder/max-tokens.html
+$dokka.location:com.cjcrafter.openai.chat/ChatRequest.Builder/messages/#kotlin.collections.MutableList[com.cjcrafter.openai.chat.ChatMessage]/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai.chat/-chat-request/-builder/messages.html
+$dokka.location:com.cjcrafter.openai.chat/ChatRequest.Builder/model/#kotlin.String/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai.chat/-chat-request/-builder/model.html
+$dokka.location:com.cjcrafter.openai.chat/ChatRequest.Builder/n/#kotlin.Int?/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai.chat/-chat-request/-builder/n.html
+$dokka.location:com.cjcrafter.openai.chat/ChatRequest.Builder/presencePenalty/#kotlin.Float?/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai.chat/-chat-request/-builder/presence-penalty.html
+$dokka.location:com.cjcrafter.openai.chat/ChatRequest.Builder/stop/#kotlin.String?/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai.chat/-chat-request/-builder/stop.html
+$dokka.location:com.cjcrafter.openai.chat/ChatRequest.Builder/temperature/#kotlin.Float?/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai.chat/-chat-request/-builder/temperature.html
+$dokka.location:com.cjcrafter.openai.chat/ChatRequest.Builder/topP/#kotlin.Float?/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai.chat/-chat-request/-builder/top-p.html
+$dokka.location:com.cjcrafter.openai.chat/ChatRequest.Builder/user/#kotlin.String?/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai.chat/-chat-request/-builder/user.html
+$dokka.location:com.cjcrafter.openai.chat/ChatRequest.Companion///PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai.chat/-chat-request/-companion/index.html
+$dokka.location:com.cjcrafter.openai.chat/ChatRequest.Companion/builder/#/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai.chat/-chat-request/-companion/builder.html
 $dokka.location:com.cjcrafter.openai.chat/ChatRequest///PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai.chat/-chat-request/index.html
 $dokka.location:com.cjcrafter.openai.chat/ChatRequest/ChatRequest/#kotlin.String#kotlin.collections.MutableList[com.cjcrafter.openai.chat.ChatMessage]#kotlin.Float?#kotlin.Float?#kotlin.Int?#kotlin.Boolean?#kotlin.String?#kotlin.Int?#kotlin.Float?#kotlin.Float?#kotlin.collections.Map[kotlin.String,kotlin.Float]?#kotlin.String?/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai.chat/-chat-request/-chat-request.html
 $dokka.location:com.cjcrafter.openai.chat/ChatRequest/frequencyPenalty/#/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai.chat/-chat-request/frequency-penalty.html
@@ -83,6 +99,11 @@ $dokka.location:com.cjcrafter.openai/FinishReason.STOP///PointingToDeclaration/{
 $dokka.location:com.cjcrafter.openai/FinishReason///PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai/-finish-reason/index.html
 $dokka.location:com.cjcrafter.openai/FinishReason/valueOf/#kotlin.String/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai/-finish-reason/value-of.html
 $dokka.location:com.cjcrafter.openai/FinishReason/values/#/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai/-finish-reason/values.html
+$dokka.location:com.cjcrafter.openai/OpenAI///PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai/-open-a-i/index.html
+$dokka.location:com.cjcrafter.openai/OpenAI/OpenAI/#kotlin.String#kotlin.String?#okhttp3.OkHttpClient/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai/-open-a-i/-open-a-i.html
+$dokka.location:com.cjcrafter.openai/OpenAI/generateResponse/#com.cjcrafter.openai.chat.ChatRequest/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai/-open-a-i/generate-response.html
+$dokka.location:com.cjcrafter.openai/OpenAI/streamResponse/#com.cjcrafter.openai.chat.ChatRequest#java.util.function.Consumer[com.cjcrafter.openai.chat.ChatResponseChunk]#java.util.function.Consumer[java.io.IOException]/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai/-open-a-i/stream-response.html
+$dokka.location:com.cjcrafter.openai/OpenAI/streamResponseKotlin/#com.cjcrafter.openai.chat.ChatRequest#kotlin.Function1[com.cjcrafter.openai.chat.ChatResponseChunk,kotlin.Unit]/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai/-open-a-i/stream-response-kotlin.html
 com.cjcrafter.openai
 com.cjcrafter.openai.chat
 com.cjcrafter.openai.exception
