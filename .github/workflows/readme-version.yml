@@ -30,7 +30,8 @@ jobs:
 
       - name: Commit and push changes
         run: |
-          git config --global user.name "GitHub Actions Bot"
-          git config --global user.email "collinjbarber@gmail.com"
-          git add README.md
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Update version in README.md" && git push)
+           git config --global user.name "GitHub Actions Bot"
+           git config --global user.email "collinjbarber@gmail.com"
+           git remote set-url origin https://${{ secrets.PAT }}@github.com/CJCrafter/ChatGPT-Java-API.git
+           git add README.md
+           git diff --quiet && git diff --staged --quiet || (git commit -m "Update version in README.md" && git push)
