@@ -67,6 +67,7 @@ class OpenAI @JvmOverloads constructor(
      */
     @Throws(OpenAIError::class)
     fun createChatCompletion(request: ChatRequest): ChatResponse {
+        @Suppress("DEPRECATION")
         request.stream = false // use streamResponse for stream=true
         val httpRequest = buildRequest(request)
 
@@ -80,7 +81,9 @@ class OpenAI @JvmOverloads constructor(
                 rootObject = JsonParser.parseString(response.body!!.string()).asJsonObject
                 if (rootObject!!.has("error"))
                     throw OpenAIError.fromJson(rootObject!!.get("error").asJsonObject)
-                return ChatResponse(rootObject!!)
+
+                return gson.fromJson(rootObject, ChatResponse::class.java)
+                //return ChatResponse(rootObject!!)
             }
         } catch (ex: IOException) {
             throw WrappedIOError(ex)
