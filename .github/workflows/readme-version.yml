@@ -25,7 +25,8 @@ jobs:
           VERSION=$(grep -oP 'version\s*=\s*"\K\d+\.\d+\.\d+' build.gradle.kts)
 
           # Update the README.md file
-          python -c "import re; content=open('README.md').read(); content=re.sub(r'\d+\.\d+\.\d+', f'{VERSION}', content); open('README.md', 'w').write(content)"
+          export VERSION
+          python -c "import re, os; version=os.environ['VERSION']; content=open('README.md').read(); content=re.sub(r'\d+\.\d+\.\d+', f'{version}', content); open('README.md', 'w').write(content)"
 
       - name: Commit and push changes
         run: |
