@@ -1,5 +1,6 @@
 import com.cjcrafter.openai.OpenAI;
 import com.cjcrafter.openai.chat.*;
+import com.cjcrafter.openai.exception.OpenAIError;
 import io.github.cdimascio.dotenv.Dotenv;
 
 import java.io.IOException;
@@ -9,7 +10,7 @@ import java.util.Scanner;
 
 public class JavaChatTest {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws OpenAIError {
         Scanner scan = new Scanner(System.in);
 
         // This is the prompt that the bot will refer back to for every message.

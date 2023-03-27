@@ -1,6 +1,7 @@
 package com.cjcrafter.openai;
 
 import com.cjcrafter.openai.chat.*;
+import com.cjcrafter.openai.exception.InvalidRequestError;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.junit.jupiter.api.Test;
 
@@ -18,9 +19,9 @@ public class ExceptionTests {
         String initialPrompt = "Just say hi";
         List<ChatMessage> messages = new ArrayList<>(List.of(new ChatMessage(ChatUser.SYSTEM, initialPrompt)));
         ChatRequest request = new ChatRequest("gpt-238974-invalid-model", messages);
-        ChatBot bot = new ChatBot(key);
+        OpenAI openai = new OpenAI(key);
 
-        assertThrows(Throwable.class, () -> bot.generateResponse(request));
+        assertThrows(InvalidRequestError.class, () -> openai.createChatCompletion(request));
     }
 
     @Test
@@ -30,8 +31,8 @@ public class ExceptionTests {
         String initialPrompt = "Just say hi";
         List<ChatMessage> messages = new ArrayList<>(List.of(new ChatMessage(ChatUser.SYSTEM, initialPrompt)));
         ChatRequest request = new ChatRequest("gpt-3.5-turbo", messages);
-        ChatBot bot = new ChatBot(key);
+        OpenAI openai = new OpenAI(key);
 
-        assertThrows(Throwable.class, () -> bot.generateResponse(request));
+        assertThrows(InvalidRequestError.class, () -> openai.createChatCompletion(request));
     }
 }

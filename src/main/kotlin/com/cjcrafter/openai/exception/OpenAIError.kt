@@ -13,10 +13,12 @@ abstract class OpenAIError : Exception {
         this.param = param
         this.code = code
     }
+
     constructor(param: JsonElement?, code: String?, message: String, cause: Throwable?) : super(message, cause) {
         this.param = param
         this.code = code
     }
+
     constructor(param: JsonElement?, code: String?, cause: Throwable?) : super(cause) {
         this.param = param
         this.code = code
@@ -27,9 +29,9 @@ abstract class OpenAIError : Exception {
         @JvmStatic
         fun fromJson(json: JsonObject) : OpenAIError {
             val message = json["message"].asString
-            val type = json["type"].asString
-            val param = json["param"]
-            val code = json["code"].asString
+            val type = if (json["type"].isJsonNull) null else json["type"].asString
+            val param = if (json["param"].isJsonNull) null else json["param"]
+            val code = if (json["code"].isJsonNull) null else json["code"].asString
 
             // TODO add more error types
             return when (json["type"].asString) {
