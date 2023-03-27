@@ -55,6 +55,7 @@ val sourcesJar by tasks.registering(Jar::class) {
 }
 
 nexusStaging {
+    serverUrl = "https://s01.oss.sonatype.org/service/local/"
     packageGroup = "com.cjcrafter"
     stagingProfileId = findProperty("OSSRH_ID").toString()
     username = findProperty("OSSRH_USERNAME").toString()
