@@ -79,7 +79,7 @@ class ChatBot @JvmOverloads constructor(
                 if (rootObject!!.has("error"))
                     throw OpenAIError.fromJson(rootObject!!["error"].asJsonObject)
 
-                return ChatResponse(rootObject!!)
+                return gson.fromJson(rootObject, ChatResponse::class.java)
             }
         } catch (ex: Throwable) {
             println(rootObject)
@@ -174,7 +174,7 @@ class ChatBot @JvmOverloads constructor(
 
                         val rootObject = JsonParser.parseString(jsonResponse).asJsonObject
                         if (cache == null)
-                            cache = ChatResponseChunk(rootObject)
+                            cache = gson.fromJson(rootObject, ChatResponseChunk::class.java)
                         else
                             cache!!.update(rootObject)
 

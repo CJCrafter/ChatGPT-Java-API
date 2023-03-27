@@ -1,5 +1,7 @@
 package com.cjcrafter.openai
 
+import com.cjcrafter.openai.gson.FinishReasonAdapter
+
 /**
  * [FinishReason] wraps the possible reasons that a generation model may stop
  * generating tokens. For most **PROPER** use cases (see [best practices](https://platform.openai.com/docs/guides/chat/introduction)),
@@ -27,5 +29,19 @@ enum class FinishReason {
      * This occurrence is rare, and usually only happens when you blatantly
      * misuse/violate OpenAI's terms.
      */
-    CONTENT_FILTER
+    CONTENT_FILTER;
+
+    companion object {
+
+        /**
+         * Returns the google gson adapter for serializing this enum to a json
+         * file. Whe
+         *
+         * @return
+         */
+        @JvmStatic
+        fun adapter() : FinishReasonAdapter {
+            return FinishReasonAdapter()
+        }
+    }
 }
