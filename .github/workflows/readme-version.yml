@@ -4,6 +4,7 @@ on:
   release:
     types:
       - published
+  workflow_dispatch:
 
 jobs:
   update-version:
@@ -13,15 +14,26 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
       - name: Update version in README
         run: |
-          VERSION=$(echo $GITHUB_REF | sed 's/refs\/tags\///g')
-          sed -E -i "s/\d+\.\d+\.\d+/$VERSION/g" README.md
+          # Install the required Python packages
+          python -m pip install --upgrade pip
+          pip install beautifulsoup4
+
+          # Extract the version from the build.gradle.kts file
+          VERSION=$(grep -oP 'version\s*=\s*"\K\d+\.\d+\.\d+' build.gradle.kts)
+
+          # Update the README.md file
+          python -c "import re; with open('README.md', 'r') as file: content = file.read(); content = re.sub(r'\d+\.\d+\.\d+', f'{VERSION}', content); with open('README.md', 'w') as file: file.write(content)"
 
       - name: Commit and push changes
         run: |
           git config --global user.name "GitHub Actions Bot"
-          git config --global user.email "collinjbarber@gmail.com"
+          git config --global user.email "<your-email-here>"
           git add README.md
-          git commit -m "Update version in README.md"
-          git push
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update version in README.md" && git push)
