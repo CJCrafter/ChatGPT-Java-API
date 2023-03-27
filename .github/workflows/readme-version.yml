@@ -1,0 +1,37 @@
+name: Update README Version
+
+on:
+  release:
+    types:
+      - published
+  workflow_dispatch:
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Update version in README
+        run: |
+          # Extract the version from the build.gradle.kts file
+          VERSION=$(grep -oP 'version\s*=\s*"\K\d+\.\d+\.\d+' build.gradle.kts)
+
+          # Update the README.md file
+          export VERSION
+          python -c "import re, os; version=os.environ['VERSION']; content=open('README.md').read(); content=re.sub(r'\d+\.\d+\.\d+', f'{version}', content); open('README.md', 'w').write(content)"
+
+      - name: Commit and push changes
+        run: |
+           git config --global user.name "GitHub Actions Bot"
+           git config --global user.email "collinjbarber@gmail.com"
+           git remote set-url origin https://${{ secrets.PAT }}@github.com/CJCrafter/ChatGPT-Java-API.git
+           git add README.md
+           git diff --quiet && git diff --staged --quiet || (git commit -m "Update version in README.md" && git push)

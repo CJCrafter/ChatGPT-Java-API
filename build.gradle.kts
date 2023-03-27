@@ -1,7 +1,7 @@
 import com.github.breadmoirai.githubreleaseplugin.GithubReleaseTask
 
 group = "com.cjcrafter"
-version = "1.2.0"
+version = "1.2.1"
 
 plugins {
     `java-library`
@@ -60,6 +60,7 @@ val sourcesJar by tasks.registering(Jar::class) {
 }
 
 nexusStaging {
+    serverUrl = "https://s01.oss.sonatype.org/service/local/"
     packageGroup = "com.cjcrafter"
     stagingProfileId = findProperty("OSSRH_ID").toString()
     username = findProperty("OSSRH_USERNAME").toString()
