@@ -1,13 +1,11 @@
 package com.cjcrafter.openai.chat
 
+import com.cjcrafter.openai.exception.OpenAIError
 import com.google.gson.*
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient.Builder
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
-import java.lang.IllegalArgumentException
-import java.util.concurrent.TimeUnit
 import java.util.function.Consumer
 
 /**
@@ -66,8 +64,6 @@ class ChatBot @JvmOverloads constructor(
      *
      * @param request The input information for ChatGPT.
      * @return The returned response.
-     * @throws IOException              If an IO Exception occurs.
-     * @throws IllegalArgumentException If the input arguments are invalid.
      */
     @Throws(IOException::class)
     fun generateResponse(request: ChatRequest): ChatResponse {
@@ -79,13 +75,14 @@ class ChatBot @JvmOverloads constructor(
         try {
             client.newCall(httpRequest).execute().use { response ->
 
-                // Servers respond to API calls with json blocks. Since raw JSON isn't
-                // very developer friendly, we wrap for easy data access.
                 rootObject = JsonParser.parseString(response.body!!.string()).asJsonObject
-                require(!rootObject!!.has("error")) { rootObject!!.get("error").asJsonObject["message"].asString }
+                if (rootObject!!.has("error"))
+                    throw OpenAIError.fromJson(rootObject!!["error"].asJsonObject)
+
                 return ChatResponse(rootObject!!)
             }
         } catch (ex: Throwable) {
+            println(rootObject)
             throw ex
         }
     }

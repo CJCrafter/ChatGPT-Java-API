@@ -22,6 +22,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
 
     testImplementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
 }
 
 java {
@@ -41,6 +42,10 @@ tasks {
     processResources {
         filteringCharset = Charsets.UTF_8.name() // We want UTF-8 for everything
     }
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 // Create javadocJar and sourcesJar tasks

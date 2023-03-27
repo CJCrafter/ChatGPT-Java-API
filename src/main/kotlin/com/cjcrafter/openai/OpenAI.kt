@@ -4,6 +4,8 @@ import com.cjcrafter.openai.chat.ChatRequest
 import com.cjcrafter.openai.chat.ChatResponse
 import com.cjcrafter.openai.chat.ChatResponseChunk
 import com.cjcrafter.openai.chat.ChatUser
+import com.cjcrafter.openai.exception.OpenAIError
+import com.cjcrafter.openai.exception.WrappedIOError
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
@@ -61,10 +63,9 @@ class OpenAI @JvmOverloads constructor(
      *
      * @param request The input information for ChatGPT.
      * @return The returned response.
-     * @throws IOException              If an IO Exception occurs.
-     * @throws IllegalArgumentException If the input arguments are invalid.
+     * @throws OpenAIError Invalid request/timeout/io/etc.
      */
-    @Throws(IOException::class)
+    @Throws(OpenAIError::class)
     fun createChatCompletion(request: ChatRequest): ChatResponse {
         request.stream = false // use streamResponse for stream=true
         val httpRequest = buildRequest(request)
@@ -77,11 +78,12 @@ class OpenAI @JvmOverloads constructor(
                 // Servers respond to API calls with json blocks. Since raw JSON isn't
                 // very developer friendly, we wrap for easy data access.
                 rootObject = JsonParser.parseString(response.body!!.string()).asJsonObject
-                require(!rootObject!!.has("error")) { rootObject!!.get("error").asJsonObject["message"].asString }
+                if (rootObject!!.has("error"))
+                    throw OpenAIError.fromJson(rootObject!!.get("error").asJsonObject)
                 return ChatResponse(rootObject!!)
             }
-        } catch (ex: Throwable) {
-            throw ex
+        } catch (ex: IOException) {
+            throw WrappedIOError(ex)
         }
     }
 
