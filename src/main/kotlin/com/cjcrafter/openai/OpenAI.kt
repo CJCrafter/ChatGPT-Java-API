@@ -65,12 +65,12 @@ class OpenAI @JvmOverloads constructor(
      * @throws IllegalArgumentException If the input arguments are invalid.
      */
     @Throws(IOException::class)
-    fun generateResponse(request: ChatRequest): ChatResponse {
+    fun createChatCompletion(request: ChatRequest): ChatResponse {
         request.stream = false // use streamResponse for stream=true
         val httpRequest = buildRequest(request)
 
         // Save the JsonObject to check for errors
-        var rootObject: JsonObject? = null
+        var rootObject: JsonObject?
         try {
             client.newCall(httpRequest).execute().use { response ->
 
@@ -86,7 +86,7 @@ class OpenAI @JvmOverloads constructor(
     }
 
     /**
-     * This is a helper method that calls [streamResponse], which lets you use
+     * This is a helper method that calls [streamChatCompletion], which lets you use
      * the generated tokens in real time (As ChatGPT generates them).
      *
      * This method does not block the thread. Method calls to [onResponse] are
@@ -112,8 +112,8 @@ class OpenAI @JvmOverloads constructor(
      * @param onResponse The method to call for each chunk.
      * @since 1.2.0
      */
-    fun streamResponseKotlin(request: ChatRequest, onResponse: ChatResponseChunk.() -> Unit) {
-        streamResponse(request, { it.onResponse() })
+    fun streamChatCompletionKotlin(request: ChatRequest, onResponse: ChatResponseChunk.() -> Unit) {
+        streamChatCompletion(request, { it.onResponse() })
     }
 
     /**
@@ -122,7 +122,7 @@ class OpenAI @JvmOverloads constructor(
      * to update the user without long delays between their input and OpenAI's
      * response.
      *
-     * For *"simpler"* calls, you can use [generateResponse] which will block
+     * For *"simpler"* calls, you can use [createChatCompletion] which will block
      * the thread until the entire response is generated.
      *
      * Instead of using the [ChatResponse], this method uses [ChatResponseChunk].
@@ -137,16 +137,17 @@ class OpenAI @JvmOverloads constructor(
      * @param onResponse The method to call for each chunk.
      * @param onFailure  The method to call if the HTTP fails. This method will
      *                   not be called if OpenAI returns an error.
-     * @see generateResponse
-     * @see streamResponseKotlin
+     * @see createChatCompletion
+     * @see streamChatCompletionKotlin
      * @since 1.2.0
      */
     @JvmOverloads
-    fun streamResponse(
+    fun streamChatCompletion(
         request: ChatRequest,
         onResponse: Consumer<ChatResponseChunk>, // use Consumer instead of Kotlin for better Java syntax
         onFailure: Consumer<IOException> = Consumer { it.printStackTrace() }
     ) {
+        @Suppress("DEPRECATION")
         request.stream = true // use requestResponse for stream=false
         val httpRequest = buildRequest(request)
 

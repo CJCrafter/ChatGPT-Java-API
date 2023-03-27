@@ -1,4 +1,4 @@
-import com.cjcrafter.openai.chat.ChatBot
+import com.cjcrafter.openai.OpenAI
 import com.cjcrafter.openai.chat.ChatMessage.Companion.toSystemMessage
 import com.cjcrafter.openai.chat.ChatMessage.Companion.toUserMessage
 import com.cjcrafter.openai.chat.ChatRequest
@@ -13,7 +13,7 @@ fun main(args: Array<String>) {
     val initialPrompt = "You are a customer support chat-bot. Write brief summaries of the user's questions so that agents can easily find the answer in a database."
     val messages = mutableListOf(initialPrompt.toSystemMessage())
     val request = ChatRequest("gpt-3.5-turbo", messages)
-    val bot = ChatBot(key)
+    val openai = OpenAI(key)
 
     while (true) {
         println("Enter text below:\n")
@@ -21,7 +21,7 @@ fun main(args: Array<String>) {
 
         // Generate a response, and print it to the user.
         messages.add(input.toUserMessage())
-        val response = bot.generateResponse(request)
+        val response = openai.createChatCompletion(request)
         println("\n${response[0].message.content}\n")
 
         // Save the generated message to the bot's conversational memory
