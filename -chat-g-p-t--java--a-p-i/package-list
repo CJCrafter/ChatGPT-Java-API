@@ -101,9 +101,9 @@ $dokka.location:com.cjcrafter.openai/FinishReason/valueOf/#kotlin.String/Pointin
 $dokka.location:com.cjcrafter.openai/FinishReason/values/#/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai/-finish-reason/values.html
 $dokka.location:com.cjcrafter.openai/OpenAI///PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai/-open-a-i/index.html
 $dokka.location:com.cjcrafter.openai/OpenAI/OpenAI/#kotlin.String#kotlin.String?#okhttp3.OkHttpClient/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai/-open-a-i/-open-a-i.html
-$dokka.location:com.cjcrafter.openai/OpenAI/generateResponse/#com.cjcrafter.openai.chat.ChatRequest/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai/-open-a-i/generate-response.html
-$dokka.location:com.cjcrafter.openai/OpenAI/streamResponse/#com.cjcrafter.openai.chat.ChatRequest#java.util.function.Consumer[com.cjcrafter.openai.chat.ChatResponseChunk]#java.util.function.Consumer[java.io.IOException]/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai/-open-a-i/stream-response.html
-$dokka.location:com.cjcrafter.openai/OpenAI/streamResponseKotlin/#com.cjcrafter.openai.chat.ChatRequest#kotlin.Function1[com.cjcrafter.openai.chat.ChatResponseChunk,kotlin.Unit]/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai/-open-a-i/stream-response-kotlin.html
+$dokka.location:com.cjcrafter.openai/OpenAI/createChatCompletion/#com.cjcrafter.openai.chat.ChatRequest/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai/-open-a-i/create-chat-completion.html
+$dokka.location:com.cjcrafter.openai/OpenAI/streamChatCompletion/#com.cjcrafter.openai.chat.ChatRequest#java.util.function.Consumer[com.cjcrafter.openai.chat.ChatResponseChunk]#java.util.function.Consumer[java.io.IOException]/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai/-open-a-i/stream-chat-completion.html
+$dokka.location:com.cjcrafter.openai/OpenAI/streamChatCompletionKotlin/#com.cjcrafter.openai.chat.ChatRequest#kotlin.Function1[com.cjcrafter.openai.chat.ChatResponseChunk,kotlin.Unit]/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai/-open-a-i/stream-chat-completion-kotlin.html
 com.cjcrafter.openai
 com.cjcrafter.openai.chat
 com.cjcrafter.openai.exception
