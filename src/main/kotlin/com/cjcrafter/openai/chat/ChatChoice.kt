@@ -2,6 +2,7 @@ package com.cjcrafter.openai.chat
 
 import com.cjcrafter.openai.FinishReason
 import com.google.gson.JsonObject
+import com.google.gson.annotations.SerializedName
 
 /**
  * The OpenAI API returns a list of [ChatChoice]. Each chat choice has a
@@ -20,14 +21,8 @@ import com.google.gson.JsonObject
  * @constructor Create a new chat choice, for internal usage.
  * @see FinishReason
  */
-data class ChatChoice(val index: Int, val message: ChatMessage, val finishReason: FinishReason) {
-
-    /**
-     * JSON constructor for internal usage.
-     */
-    constructor(json: JsonObject) : this(
-        json["index"].asInt,
-        ChatMessage(json["message"].asJsonObject),
-        FinishReason.valueOf(json["finish_reason"].asString.uppercase())
-    )
-}
+data class ChatChoice(
+    val index: Int,
+    val message: ChatMessage,
+    @field:SerializedName("finish_reason") val finishReason: FinishReason
+)

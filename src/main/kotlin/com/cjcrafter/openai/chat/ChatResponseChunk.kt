@@ -27,15 +27,6 @@ data class ChatResponseChunk(
     val choices: List<ChatChoiceChunk>,
 ) {
 
-    /**
-     * JSON constructor for internal usage.
-     */
-    constructor(json: JsonObject) : this(
-        json["id"].asString,
-        json["created"].asLong,
-        json["choices"].asJsonArray.map { ChatChoiceChunk(it.asJsonObject) },
-    )
-
     internal fun update(json: JsonObject) {
         json["choices"].asJsonArray.forEachIndexed { index, jsonElement ->
             choices[index].update(jsonElement.asJsonObject)

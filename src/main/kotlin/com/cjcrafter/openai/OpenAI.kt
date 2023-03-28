@@ -1,21 +1,19 @@
 package com.cjcrafter.openai
 
-import com.cjcrafter.openai.chat.ChatRequest
-import com.cjcrafter.openai.chat.ChatResponse
-import com.cjcrafter.openai.chat.ChatResponseChunk
-import com.cjcrafter.openai.chat.ChatUser
+import com.cjcrafter.openai.gson.ChatChoiceChunkAdapter
+import com.cjcrafter.openai.chat.*
 import com.cjcrafter.openai.exception.OpenAIError
 import com.cjcrafter.openai.exception.WrappedIOError
+import com.cjcrafter.openai.gson.ChatUserAdapter
+import com.cjcrafter.openai.gson.FinishReasonAdapter
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import com.google.gson.JsonSerializer
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
-import java.lang.IllegalArgumentException
 import java.util.function.Consumer
 
 /**
@@ -39,10 +37,8 @@ class OpenAI @JvmOverloads constructor(
     private val client: OkHttpClient = OkHttpClient()
 ) {
 
-    private val mediaType: MediaType = "application/json; charset=utf-8".toMediaType()
-    private val gson: Gson = GsonBuilder()
-        .registerTypeAdapter(ChatUser::class.java, JsonSerializer<ChatUser> { src, _, context -> context!!.serialize(src!!.name.lowercase())!! })
-        .create()
+    private val mediaType = "application/json; charset=utf-8".toMediaType()
+    private val gson = createGson()
 
     private fun buildRequest(request: Any): Request {
         val json = gson.toJson(request)
@@ -67,6 +63,7 @@ class OpenAI @JvmOverloads constructor(
      */
     @Throws(OpenAIError::class)
     fun createChatCompletion(request: ChatRequest): ChatResponse {
+        @Suppress("DEPRECATION")
         request.stream = false // use streamResponse for stream=true
         val httpRequest = buildRequest(request)
 
@@ -80,7 +77,9 @@ class OpenAI @JvmOverloads constructor(
                 rootObject = JsonParser.parseString(response.body!!.string()).asJsonObject
                 if (rootObject!!.has("error"))
                     throw OpenAIError.fromJson(rootObject!!.get("error").asJsonObject)
-                return ChatResponse(rootObject!!)
+
+                return gson.fromJson(rootObject, ChatResponse::class.java)
+                //return ChatResponse(rootObject!!)
             }
         } catch (ex: IOException) {
             throw WrappedIOError(ex)
@@ -175,7 +174,7 @@ class OpenAI @JvmOverloads constructor(
 
                         val rootObject = JsonParser.parseString(jsonResponse).asJsonObject
                         if (cache == null)
-                            cache = ChatResponseChunk(rootObject)
+                            cache = gson.fromJson(rootObject, ChatResponseChunk::class.java)
                         else
                             cache!!.update(rootObject)
 
@@ -184,5 +183,17 @@ class OpenAI @JvmOverloads constructor(
                 }
             }
         })
+    }
+
+    companion object {
+
+        @JvmStatic
+        fun createGson(): Gson {
+            return GsonBuilder()
+                .registerTypeAdapter(ChatUser::class.java, ChatUserAdapter())
+                .registerTypeAdapter(FinishReason::class.java, FinishReasonAdapter())
+                .registerTypeAdapter(ChatChoiceChunk::class.java, ChatChoiceChunkAdapter())
+                .create()
+        }
     }
 }

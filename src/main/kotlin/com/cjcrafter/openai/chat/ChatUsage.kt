@@ -1,6 +1,6 @@
 package com.cjcrafter.openai.chat
 
-import com.google.gson.JsonObject
+import com.google.gson.annotations.SerializedName
 
 /**
  * Holds how many tokens that were used by your API request. Use these
@@ -15,14 +15,8 @@ import com.google.gson.JsonObject
  * @param totalTokens      How many tokens in total.
  * @see <a href="https://platform.openai.com/docs/guides/chat/managing-tokens">Managing Tokens Guide</a>
  */
-data class ChatUsage(val promptTokens: Int, val completionTokens: Int, val totalTokens: Int) {
-
-    /**
-     * JSON constructor for internal usage.
-     */
-    constructor(json: JsonObject) : this(
-        json["prompt_tokens"].asInt,
-        json["completion_tokens"].asInt,
-        json["total_tokens"].asInt
-    )
-}
+data class ChatUsage(
+    @field:SerializedName("prompt_tokens") val promptTokens: Int,
+    @field:SerializedName("completion_tokens") val completionTokens: Int,
+    @field:SerializedName("total_tokens") val totalTokens: Int
+)

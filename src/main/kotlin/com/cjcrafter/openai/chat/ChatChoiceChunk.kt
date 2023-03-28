@@ -2,6 +2,7 @@ package com.cjcrafter.openai.chat
 
 import com.cjcrafter.openai.FinishReason
 import com.google.gson.JsonObject
+import com.google.gson.annotations.SerializedName
 
 /**
  *
@@ -23,21 +24,12 @@ import com.google.gson.JsonObject
  * @see ChatChoice
  * @since 1.2.0
  */
-data class ChatChoiceChunk(val index: Int, val message: ChatMessage, var delta: String, var finishReason: FinishReason?) {
-
-    /**
-     * JSON constructor for internal usage.
-     */
-    constructor(json: JsonObject) : this(
-
-        // The first message from ChatGPT looks like this:
-        // data: {"id":"chatcmpl-6xUB4Vi8jEG8u4hMBTMeO8KXgA87z","object":"chat.completion.chunk","created":1679635374,"model":"gpt-3.5-turbo-0301","choices":[{"delta":{"role":"assistant"},"index":0,"finish_reason":null}]}
-        // So the only data we have so far is that ChatGPT will be responding.
-        json["index"].asInt,
-        ChatMessage(ChatUser.ASSISTANT, ""),
-        "",
-        null
-    )
+data class ChatChoiceChunk(
+    val index: Int,
+    val message: ChatMessage,
+    var delta: String,
+    @field:SerializedName("finish_reason") var finishReason: FinishReason?
+) {
 
     internal fun update(json: JsonObject)  {
         val deltaJson = json["delta"].asJsonObject

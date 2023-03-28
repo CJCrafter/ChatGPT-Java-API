@@ -25,16 +25,6 @@ data class ChatResponse(
 ) {
 
     /**
-     * JSON constructor for internal usage.
-     */
-    constructor(json: JsonObject) : this(
-        json["id"].asString,
-        json["created"].asLong,
-        json["choices"].asJsonArray.map { ChatChoice(it.asJsonObject) },
-        ChatUsage(json["usage"].asJsonObject)
-    )
-
-    /**
      * Returns the [Instant] time that the OpenAI Chat API sent this response.
      * The time is measured as a unix timestamp (measured in seconds since
      * 00:00:00 UTC on January 1, 1970).

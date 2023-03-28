@@ -1,5 +1,7 @@
 package com.cjcrafter.openai.chat
 
+import com.cjcrafter.openai.gson.ChatUserAdapter
+
 /**
  * ChatGPT's biggest innovation is its conversational memory. To remember the
  * conversation, we need to map each message to who sent it. This enum stores
@@ -31,5 +33,18 @@ enum class ChatUser {
     /**
      * [ASSISTANT] is the AI that generates responses.
      */
-    ASSISTANT
+    ASSISTANT;
+
+    companion object {
+
+        /**
+         * Adapter
+         *
+         * @return
+         */
+        @JvmStatic
+        fun adapter() : ChatUserAdapter {
+            return ChatUserAdapter()
+        }
+    }
 }
