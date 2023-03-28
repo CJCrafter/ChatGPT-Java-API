@@ -1,3 +1,5 @@
+package com.cjcrafter.openai.gson
+
 import com.cjcrafter.openai.FinishReason
 import com.cjcrafter.openai.chat.ChatChoiceChunk
 import com.cjcrafter.openai.chat.ChatMessage

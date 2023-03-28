@@ -1,6 +1,6 @@
 package com.cjcrafter.openai
 
-import ChatChoiceChunkAdapter
+import com.cjcrafter.openai.gson.ChatChoiceChunkAdapter
 import com.cjcrafter.openai.chat.*
 import com.cjcrafter.openai.exception.OpenAIError
 import com.cjcrafter.openai.exception.WrappedIOError
@@ -10,12 +10,10 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import com.google.gson.JsonSerializer
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
-import java.lang.IllegalArgumentException
 import java.util.function.Consumer
 
 /**
