@@ -5,7 +5,7 @@ import com.google.gson.JsonObject
 import com.google.gson.annotations.SerializedName
 
 /**
- * The OpenAI API returns a list of [ChatChoice]. Each chat choice has a
+ * The OpenAI API returns a list of `ChatChoice`. Each choice has a
  * generated message ([ChatChoice.message]) and a finish reason
  * ([ChatChoice.finishReason]). For most use cases, you only need the generated
  * message.

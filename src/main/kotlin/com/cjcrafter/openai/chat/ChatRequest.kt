@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
  * [ChatRequest] holds the configurable options that can be sent to the OpenAI
  * Chat API. For most use cases, you only need to set [model] and [messages].
  * For more detailed descriptions for each option, refer to the
- * [Chat Wiki](https://platform.openai.com/docs/api-reference/chat)
+ * [Chat Wiki](https://platform.openai.com/docs/api-reference/chat).
  *
  * [messages] stores **ALL** previous messages from the conversation. It is
  * **YOUR RESPONSIBILITY** to store and update this list for your conversations
@@ -49,7 +49,7 @@ data class ChatRequest @JvmOverloads constructor(
     var temperature: Float? = null,
     @field:SerializedName("top_p") var topP: Float? = null,
     var n: Int? = null,
-    @Deprecated("Use ChatBot#streamResponse") var stream: Boolean? = null,
+    @Deprecated("Use OpenAI#streamChatCompletion") var stream: Boolean? = null,
     var stop: String? = null,
     @field:SerializedName("max_tokens") var maxTokens: Int? = null,
     @field:SerializedName("presence_penalty") var presencePenalty: Float? = null,
@@ -58,20 +58,8 @@ data class ChatRequest @JvmOverloads constructor(
     var user: String? = null
 ) {
 
-    companion object {
-
-        /**
-         * A static method that provides a new [Builder] instance for the
-         * [ChatRequest] class.
-         *
-         * @return a new [Builder] instance for creating a [ChatRequest] object.
-         */
-        @JvmStatic
-        fun builder(): Builder = Builder()
-    }
-
     /**
-     * [Builder] is a helper class to build a [ChatRequest] instance with a fluent API.
+     * [Builder] is a helper class to build a [ChatRequest] instance with a stable API.
      * It provides methods for setting the properties of the [ChatRequest] object.
      * The [build] method returns a new [ChatRequest] instance with the specified properties.
      *
@@ -80,7 +68,6 @@ data class ChatRequest @JvmOverloads constructor(
      * val chatRequest = ChatRequest.builder()
      *     .model("gpt-3.5-turbo")
      *     .messages(mutableListOf("Be as helpful as possible".toSystemMessage()))
-     *     .temperature(0.7f)
      *     .build()
      * ```
      *
@@ -221,5 +208,17 @@ data class ChatRequest @JvmOverloads constructor(
                 user = user
             )
         }
+    }
+
+    companion object {
+
+        /**
+         * A static method that provides a new [Builder] instance for the
+         * [ChatRequest] class.
+         *
+         * @return a new [Builder] instance for creating a [ChatRequest] object.
+         */
+        @JvmStatic
+        fun builder(): Builder = Builder()
     }
 }
