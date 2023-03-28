@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
-    <title>OpenAIException</title>
+    <title>WrappedIOError</title>
     <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
     <script>var pathToRoot = "../../../";</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
@@ -40,7 +40,7 @@
             </a>
     </div>
     <div>
-1.2.2    </div>
+1.2.3    </div>
     <div class="pull-right d-flex">
         <div class="filter-section" id="filter-section">
                 <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":dokkaHtml/main">jvm</button>
@@ -54,28 +54,28 @@
         <div id="sideMenu"></div>
     </div>
     <div id="main">
-<div class="main-content" data-page-type="classlike" id="content" pageIds="ChatGPT-Java-API::com.cjcrafter.openai.exception/OpenAIException///PointingToDeclaration//769193423">
-  <div class="breadcrumbs"><a href="../../../index.html">ChatGPT-Java-API</a><span class="delimiter">/</span><a href="../index.html">com.cjcrafter.openai.exception</a><span class="delimiter">/</span><span class="current">OpenAIException</span></div>
+<div class="main-content" data-page-type="classlike" id="content" pageIds="ChatGPT-Java-API::com.cjcrafter.openai.exception/WrappedIOError///PointingToDeclaration//769193423">
+  <div class="breadcrumbs"><a href="../../../index.html">ChatGPT-Java-API</a><span class="delimiter">/</span><a href="../index.html">com.cjcrafter.openai.exception</a><span class="delimiter">/</span><span class="current">WrappedIOError</span></div>
   <div class="cover ">
-    <h1 class="cover"><span>Open</span><wbr></wbr><span><span>AIException</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="index.html">OpenAIException</a> : <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Exception.html">Exception</a></div></div></div>
+    <h1 class="cover"><span>Wrapped</span><wbr></wbr><span><span>IOError</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">WrappedIOError</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>exception<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html">IOException</a></span></span><span class="token punctuation">)</span> : <a href="../-open-a-i-error/index.html">OpenAIError</a></div></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,FUNCTION,PROPERTY">Members</button></div>
     <div class="tabs-section-body">
       <div data-togglable="CONSTRUCTOR">
         <h2 class="">Constructors</h2>
-        <div class="table"><a data-name="1304523097%2FConstructors%2F769193423" anchor-label="OpenAIException" id="1304523097%2FConstructors%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+        <div class="table"><a data-name="1917235904%2FConstructors%2F769193423" anchor-label="WrappedIOError" id="1917235904%2FConstructors%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
           <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
-                  <div><a href="-open-a-i-exception.html"><span>Open</span><wbr></wbr><span><span>AIException</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1304523097%2FConstructors%2F769193423"></span>
+                  <div><a href="-wrapped-i-o-error.html"><span>Wrapped</span><wbr></wbr><span><span>IOError</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1917235904%2FConstructors%2F769193423"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">exception<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html">IOException</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
@@ -223,6 +223,36 @@
               </div>
             </div>
           </div>
+<a data-name="-1106809808%2FProperties%2F769193423" anchor-label="code" id="-1106809808%2FProperties%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-open-a-i-error/code.html"><span><span>code</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1106809808%2FProperties%2F769193423"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="../-open-a-i-error/code.html">code</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-827723495%2FProperties%2F769193423" anchor-label="exception" id="-827723495%2FProperties%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="exception.html"><span><span>exception</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-827723495%2FProperties%2F769193423"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="exception.html">exception</a><span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html">IOException</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
 <a data-name="1824300659%2FProperties%2F769193423" anchor-label="message" id="1824300659%2FProperties%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
           <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
             <div class="main-subrow keyValue ">
@@ -234,6 +264,21 @@
               <div>
                 <div class="title">
                   <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">val </span><a href="index.html#1824300659%2FProperties%2F769193423">message</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1639557648%2FProperties%2F769193423" anchor-label="param" id="1639557648%2FProperties%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-open-a-i-error/param.html"><span><span>param</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1639557648%2FProperties%2F769193423"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="../-open-a-i-error/param.html">param</a><span class="token operator">: </span><span data-unresolved-link="com.google.gson/JsonElement///PointingToDeclaration/">JsonElement</span><span class="token operator">?</span></div></div></div>
                 </div>
               </div>
             </div>
