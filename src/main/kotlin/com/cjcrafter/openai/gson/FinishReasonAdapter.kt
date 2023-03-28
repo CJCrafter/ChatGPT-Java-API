@@ -12,7 +12,7 @@ class FinishReasonAdapter : TypeAdapter<FinishReason?>() {
         if (value == null) {
             writer.nullValue()
         } else {
-            writer.value(value.name)
+            writer.value(value.name.lowercase())
         }
     }
 

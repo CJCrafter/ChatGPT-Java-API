@@ -24,7 +24,7 @@ class ChatChoiceChunkAdapter : TypeAdapter<ChatChoiceChunk?>() {
             if (value.finishReason == null) {
                 writer.nullValue()
             } else {
-                writer.value(value.finishReason!!.name)
+                writer.value(value.finishReason!!.name.lowercase())
             }
             writer.endObject()
         }

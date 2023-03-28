@@ -1,38 +1,29 @@
-package com.cjcrafter.openai;
+package com.cjcrafter.openai
 
-import com.cjcrafter.openai.chat.*;
-import com.cjcrafter.openai.exception.InvalidRequestError;
-import io.github.cdimascio.dotenv.Dotenv;
-import org.junit.jupiter.api.Test;
+import com.cjcrafter.openai.chat.ChatMessage.Companion.toSystemMessage
+import com.cjcrafter.openai.chat.ChatRequest
+import com.cjcrafter.openai.exception.InvalidRequestError
+import io.github.cdimascio.dotenv.Dotenv
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-public class ExceptionTests {
+class ExceptionTests {
 
     @Test
-    void test_invalidModel() {
-        String key = Dotenv.load().get("OPENAI_TOKEN");
-
-        String initialPrompt = "Just say hi";
-        List<ChatMessage> messages = new ArrayList<>(List.of(new ChatMessage(ChatUser.SYSTEM, initialPrompt)));
-        ChatRequest request = new ChatRequest("gpt-238974-invalid-model", messages);
-        OpenAI openai = new OpenAI(key);
-
-        assertThrows(InvalidRequestError.class, () -> openai.createChatCompletion(request));
+    fun test_invalidModel() {
+        val key = Dotenv.load()["OPENAI_TOKEN"]
+        val messages = mutableListOf("Just say hi".toSystemMessage())
+        val request = ChatRequest("gpt-238974-invalid-model", messages)
+        val openai = OpenAI(key)
+        Assertions.assertThrows(InvalidRequestError::class.java) { openai.createChatCompletion(request) }
     }
 
     @Test
-    void test_invalidToken() {
-        String key = "sk-Thisisaninvalidtoken";
-
-        String initialPrompt = "Just say hi";
-        List<ChatMessage> messages = new ArrayList<>(List.of(new ChatMessage(ChatUser.SYSTEM, initialPrompt)));
-        ChatRequest request = new ChatRequest("gpt-3.5-turbo", messages);
-        OpenAI openai = new OpenAI(key);
-
-        assertThrows(InvalidRequestError.class, () -> openai.createChatCompletion(request));
+    fun test_invalidToken() {
+        val key = "sk-Thisisaninvalidtoken"
+        val messages = mutableListOf("Just say hi".toSystemMessage())
+        val request = ChatRequest("gpt-3.5-turbo", messages)
+        val openai = OpenAI(key)
+        Assertions.assertThrows(InvalidRequestError::class.java) { openai.createChatCompletion(request) }
     }
 }

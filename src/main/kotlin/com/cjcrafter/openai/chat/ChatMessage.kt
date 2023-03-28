@@ -34,7 +34,7 @@ data class ChatMessage(var role: ChatUser, var content: String) {
          */
         @JvmStatic
         fun String.toAssistantMessage(): ChatMessage {
-            return ChatMessage(ChatUser.SYSTEM, this)
+            return ChatMessage(ChatUser.ASSISTANT, this)
         }
     }
 }
