@@ -5,16 +5,10 @@ works by wrapping HTTPS requests with java variables, making the generated resul
 Feel free to use, modify, and distribute this code as needed.
 
 # Installation
-For Gradle projects, add this to your `build.gradle` file in the dependencies block:
-```groovy
-dependencies {
-    implementation 'com.cjcrafter:openai:1.0.0'
-}
-```
-Or, if you are using Kotlin DSL (`build.gradle.kts`), add this to your dependencies block:
+For Kotlin DSL (`build.gradle.kts`), add this to your dependencies block:
 ```kotlin
 dependencies {
-    implementation("com.cjcrafter:openai:1.0.0")
+    implementation("com.cjcrafter:openai:1.2.3")
 }
 ```
 For Maven projects, add this to your `pom.xml` file in the `<dependencies>` block:
@@ -22,10 +16,10 @@ For Maven projects, add this to your `pom.xml` file in the `<dependencies>` bloc
 <dependency>
     <groupId>com.cjcrafter</groupId>
     <artifactId>openai</artifactId>
-    <version>1.0.0</version>
+    <version>1.2.3</version>
 </dependency>
 ```
-See the [maven repository](https://central.sonatype.com/artifact/com.cjcrafter/openai/1.0.0) for gradle/ant/etc.
+See the [maven repository](https://central.sonatype.com/artifact/com.cjcrafter/openai/1.2.3) for gradle/ant/etc.
 
 
 # Working Example
