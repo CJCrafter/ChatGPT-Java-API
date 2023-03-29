@@ -1,7 +1,7 @@
 import com.github.breadmoirai.githubreleaseplugin.GithubReleaseTask
 
 group = "com.cjcrafter"
-version = "1.2.3"
+version = "1.2.4"
 
 plugins {
     `java-library`
@@ -23,12 +23,6 @@ dependencies {
 
     testImplementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
-}
-
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
-    }
 }
 
 tasks {
