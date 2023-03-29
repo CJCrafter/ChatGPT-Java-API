@@ -8,7 +8,7 @@ Feel free to use, modify, and distribute this code as needed.
 For Kotlin DSL (`build.gradle.kts`), add this to your dependencies block:
 ```kotlin
 dependencies {
-    implementation("com.cjcrafter:openai:1.2.4")
+    implementation("com.cjcrafter:openai:1.2.5")
 }
 ```
 For Maven projects, add this to your `pom.xml` file in the `<dependencies>` block:
@@ -16,10 +16,10 @@ For Maven projects, add this to your `pom.xml` file in the `<dependencies>` bloc
 <dependency>
     <groupId>com.cjcrafter</groupId>
     <artifactId>openai</artifactId>
-    <version>1.2.4</version>
+    <version>1.2.5</version>
 </dependency>
 ```
-See the [maven repository](https://central.sonatype.com/artifact/com.cjcrafter/openai/1.2.4) for gradle/ant/etc.
+See the [maven repository](https://central.sonatype.com/artifact/com.cjcrafter/openai/1.2.5) for gradle/ant/etc.
 
 
 # Working Example
