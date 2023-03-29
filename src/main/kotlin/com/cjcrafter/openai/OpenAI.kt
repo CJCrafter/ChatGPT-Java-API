@@ -2,6 +2,8 @@ package com.cjcrafter.openai
 
 import com.cjcrafter.openai.gson.ChatChoiceChunkAdapter
 import com.cjcrafter.openai.chat.*
+import com.cjcrafter.openai.completions.CompletionRequest
+import com.cjcrafter.openai.completions.CompletionResponse
 import com.cjcrafter.openai.exception.OpenAIError
 import com.cjcrafter.openai.exception.WrappedIOError
 import com.cjcrafter.openai.gson.ChatUserAdapter
@@ -40,15 +42,40 @@ class OpenAI @JvmOverloads constructor(
     private val mediaType = "application/json; charset=utf-8".toMediaType()
     private val gson = createGson()
 
-    private fun buildRequest(request: Any): Request {
+    private fun buildRequest(request: Any, endpoint: String): Request {
         val json = gson.toJson(request)
         val body: RequestBody = json.toRequestBody(mediaType)
         return Request.Builder()
-            .url("https://api.openai.com/v1/chat/completions")
+            .url("https://api.openai.com/v1/$endpoint")
             .addHeader("Content-Type", "application/json")
             .addHeader("Authorization", "Bearer $apiKey")
             .apply { if (organization != null) addHeader("OpenAI-Organization", organization) }
             .post(body).build()
+    }
+
+    @Throws(OpenAIError::class)
+    fun createCompletion(request: CompletionRequest): CompletionResponse {
+        @Suppress("DEPRECATION")
+        request.stream = false // use streamResponse for stream=true
+        val httpRequest = buildRequest(request, "completions")
+
+        // Save the JsonObject to check for errors
+        var rootObject: JsonObject?
+        try {
+            client.newCall(httpRequest).execute().use { response ->
+
+                // Servers respond to API calls with json blocks. Since raw JSON isn't
+                // very developer friendly, we wrap for easy data access.
+                rootObject = JsonParser.parseString(response.body!!.string()).asJsonObject
+                if (rootObject!!.has("error"))
+                    throw OpenAIError.fromJson(rootObject!!.get("error").asJsonObject)
+
+                return gson.fromJson(rootObject, CompletionResponse::class.java)
+                //return ChatResponse(rootObject!!)
+            }
+        } catch (ex: IOException) {
+            throw WrappedIOError(ex)
+        }
     }
 
     /**
@@ -65,7 +92,7 @@ class OpenAI @JvmOverloads constructor(
     fun createChatCompletion(request: ChatRequest): ChatResponse {
         @Suppress("DEPRECATION")
         request.stream = false // use streamResponse for stream=true
-        val httpRequest = buildRequest(request)
+        val httpRequest = buildRequest(request, "chat/completions")
 
         // Save the JsonObject to check for errors
         var rootObject: JsonObject?
@@ -150,7 +177,7 @@ class OpenAI @JvmOverloads constructor(
     ) {
         @Suppress("DEPRECATION")
         request.stream = true // use requestResponse for stream=false
-        val httpRequest = buildRequest(request)
+        val httpRequest = buildRequest(request, "chat/completions")
 
         client.newCall(httpRequest).enqueue(object : Callback {
             var cache: ChatResponseChunk? = null

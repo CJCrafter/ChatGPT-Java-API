@@ -34,22 +34,22 @@ import com.google.gson.annotations.SerializedName
  * @constructor Create a CompletionRequest instance. Recommend using [builder] instead.
  */
 data class CompletionRequest @JvmOverloads constructor(
-    val model: String,
-    val prompt: Any,
-    val suffix: String? = null,
-    @field:SerializedName("max_tokens") val maxTokens: Int? = null,
-    val temperature: Number? = null,
-    @field:SerializedName("top_p") val topP: Number? = null,
-    val n: Int? = null,
-    @Deprecated("Use OpenAI#streamCompletion") val stream: Boolean? = null,
-    val logprobs: Int? = null,
-    val echo: Boolean? = null,
-    val stop: Any? = null,
-    @field:SerializedName("presence_penalty") val presencePenalty: Number? = null,
-    @field:SerializedName("frequency_penalty") val frequencyPenalty: Number? = null,
-    @field:SerializedName("best_of") val bestOf: Int? = null,
-    @field:SerializedName("logit_bias") val logitBias: Map<String, Int>? = null,
-    val user: String? = null
+    var model: String,
+    var prompt: Any,
+    var suffix: String? = null,
+    @field:SerializedName("max_tokens") var maxTokens: Int? = null,
+    var temperature: Number? = null,
+    @field:SerializedName("top_p") var topP: Number? = null,
+    var n: Int? = null,
+    @Deprecated("Use OpenAI#streamCompletion") var stream: Boolean? = null,
+    var logprobs: Int? = null,
+    var echo: Boolean? = null,
+    var stop: Any? = null,
+    @field:SerializedName("presence_penalty") var presencePenalty: Number? = null,
+    @field:SerializedName("frequency_penalty") var frequencyPenalty: Number? = null,
+    @field:SerializedName("best_of") var bestOf: Int? = null,
+    @field:SerializedName("logit_bias") var logitBias: Map<String, Int>? = null,
+    var user: String? = null
 ) {
 
     /**
