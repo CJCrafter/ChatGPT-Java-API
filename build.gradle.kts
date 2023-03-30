@@ -1,7 +1,7 @@
 import com.github.breadmoirai.githubreleaseplugin.GithubReleaseTask
 
 group = "com.cjcrafter"
-version = "1.2.5"
+version = "1.2.7"
 
 plugins {
     `java-library`
@@ -25,7 +25,13 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(8))
+    }
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().all {
     kotlinOptions {
         jvmTarget = "1.8"
     }
