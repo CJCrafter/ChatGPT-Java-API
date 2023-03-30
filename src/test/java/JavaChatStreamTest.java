@@ -2,9 +2,7 @@ import com.cjcrafter.openai.OpenAI;
 import com.cjcrafter.openai.chat.*;
 import io.github.cdimascio.dotenv.Dotenv;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class JavaChatStreamTest {
 
@@ -13,7 +11,7 @@ public class JavaChatStreamTest {
 
         // Prepare the ChatRequest
         ChatMessage prompt = ChatMessage.toSystemMessage("Be as unhelpful as possible");
-        List<ChatMessage> messages = new ArrayList<>(List.of(prompt));
+        List<ChatMessage> messages = new ArrayList<>(Collections.singletonList(prompt));
         ChatRequest request = ChatRequest.builder()
                 .model("gpt-3.5-turbo")
                 .messages(messages).build();

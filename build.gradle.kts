@@ -1,7 +1,7 @@
 import com.github.breadmoirai.githubreleaseplugin.GithubReleaseTask
 
 group = "com.cjcrafter"
-version = "1.2.3"
+version = "1.2.7"
 
 plugins {
     `java-library`
@@ -25,22 +25,15 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
 }
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(8))
     }
 }
 
-tasks {
-    compileJava {
-        options.encoding = Charsets.UTF_8.name() // We want UTF-8 for everything
-        options.release.set(8)
-    }
-    javadoc {
-        options.encoding = Charsets.UTF_8.name() // We want UTF-8 for everything
-    }
-    processResources {
-        filteringCharset = Charsets.UTF_8.name() // We want UTF-8 for everything
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().all {
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 }
 

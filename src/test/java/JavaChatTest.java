@@ -5,6 +5,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -19,7 +20,7 @@ public class JavaChatTest {
         // Use a mutable (modifiable) list! Always! You should be reusing the
         // ChatRequest variable, so in order for a conversation to continue
         // you need to be able to modify the list.
-        List<ChatMessage> messages = new ArrayList<>(List.of(prompt));
+        List<ChatMessage> messages = new ArrayList<>(Collections.singletonList(prompt));
 
         // ChatRequest is the request we send to OpenAI API. You can modify the
         // model, temperature, maxTokens, etc. This should be saved, so you can
