@@ -19,6 +19,10 @@ import java.io.IOException
 import java.util.function.Consumer
 
 /**
+ * The `OpenAI` class contains all the API calls to OpenAI's endpoint. Whether
+ * you are working with images, chat, or completions, you need to have an
+ * `OpenAI` instance to make the API requests.
+ *
  * To get your API key:
  * 1. Log in to your account: Go to [https://www.openai.com/](openai.com) and
  * log in.
@@ -38,7 +42,6 @@ class OpenAI @JvmOverloads constructor(
     private val organization: String? = null,
     private val client: OkHttpClient = OkHttpClient()
 ) {
-
     private val mediaType = "application/json; charset=utf-8".toMediaType()
     private val gson = createGson()
 
@@ -56,7 +59,7 @@ class OpenAI @JvmOverloads constructor(
     @Throws(OpenAIError::class)
     fun createCompletion(request: CompletionRequest): CompletionResponse {
         @Suppress("DEPRECATION")
-        request.stream = false // use streamResponse for stream=true
+        request.stream = false // use streamCompletion for stream=true
         val httpRequest = buildRequest(request, "completions")
 
         // Save the JsonObject to check for errors
@@ -71,9 +74,9 @@ class OpenAI @JvmOverloads constructor(
                     throw OpenAIError.fromJson(rootObject!!.get("error").asJsonObject)
 
                 return gson.fromJson(rootObject, CompletionResponse::class.java)
-                //return ChatResponse(rootObject!!)
             }
         } catch (ex: IOException) {
+            // Wrap the IOException, so we don't need to catch multiple exceptions
             throw WrappedIOError(ex)
         }
     }
@@ -106,9 +109,9 @@ class OpenAI @JvmOverloads constructor(
                     throw OpenAIError.fromJson(rootObject!!.get("error").asJsonObject)
 
                 return gson.fromJson(rootObject, ChatResponse::class.java)
-                //return ChatResponse(rootObject!!)
             }
         } catch (ex: IOException) {
+            // Wrap the IOException, so we don't need to catch multiple exceptions
             throw WrappedIOError(ex)
         }
     }
@@ -214,13 +217,38 @@ class OpenAI @JvmOverloads constructor(
 
     companion object {
 
+        /**
+         * Returns a `Gson` object that can be used to read/write .json files.
+         * This can be used to save requests/responses to a file, so you can
+         * keep a history of all API calls you've made.
+         *
+         * This is especially important for [ChatRequest], since users will
+         * expect you to save their conversations to be continued at later
+         * times.
+         *
+         * If you want to add your own type adapters, use [createGsonBuilder]
+         * instead.
+         *
+         * @return Google gson serializer for json files.
+         */
         @JvmStatic
         fun createGson(): Gson {
-            return GsonBuilder()
-                .registerTypeAdapter(ChatUser::class.java, ChatUserAdapter())
-                .registerTypeAdapter(FinishReason::class.java, FinishReasonAdapter())
-                .registerTypeAdapter(ChatChoiceChunk::class.java, ChatChoiceChunkAdapter())
-                .create()
+            return createGsonBuilder().create()
+        }
+
+        /**
+         * Returns a `GsonBuilder` with all [com.google.gson.TypeAdapter] used
+         * by `com.cjcrafter.openai`. Unless you want to register your own
+         * adapters, I recommend using [createGson] instead of this method.
+         *
+         * @return Google gson builder for serializing json files.
+         */
+        @JvmStatic
+        fun createGsonBuilder(): GsonBuilder {
+             return GsonBuilder()
+                 .registerTypeAdapter(ChatUser::class.java, ChatUserAdapter())
+                 .registerTypeAdapter(FinishReason::class.java, FinishReasonAdapter())
+                 .registerTypeAdapter(ChatChoiceChunk::class.java, ChatChoiceChunkAdapter())
         }
     }
 }
