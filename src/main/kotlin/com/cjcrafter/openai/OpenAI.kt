@@ -4,6 +4,7 @@ import com.cjcrafter.openai.gson.ChatChoiceChunkAdapter
 import com.cjcrafter.openai.chat.*
 import com.cjcrafter.openai.completions.CompletionRequest
 import com.cjcrafter.openai.completions.CompletionResponse
+import com.cjcrafter.openai.completions.CompletionResponseChunk
 import com.cjcrafter.openai.exception.OpenAIError
 import com.cjcrafter.openai.exception.WrappedIOError
 import com.cjcrafter.openai.gson.ChatUserAdapter
@@ -16,6 +17,7 @@ import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
+import java.lang.IllegalStateException
 import java.util.function.Consumer
 
 /**
@@ -56,22 +58,27 @@ class OpenAI @JvmOverloads constructor(
             .post(body).build()
     }
 
+    /**
+     * Create completion
+     *
+     * @param request
+     * @return
+     * @since 1.3.0
+     */
     @Throws(OpenAIError::class)
     fun createCompletion(request: CompletionRequest): CompletionResponse {
         @Suppress("DEPRECATION")
         request.stream = false // use streamCompletion for stream=true
         val httpRequest = buildRequest(request, "completions")
 
-        // Save the JsonObject to check for errors
-        var rootObject: JsonObject?
         try {
             client.newCall(httpRequest).execute().use { response ->
 
                 // Servers respond to API calls with json blocks. Since raw JSON isn't
                 // very developer friendly, we wrap for easy data access.
-                rootObject = JsonParser.parseString(response.body!!.string()).asJsonObject
-                if (rootObject!!.has("error"))
-                    throw OpenAIError.fromJson(rootObject!!.get("error").asJsonObject)
+                val rootObject = JsonParser.parseString(response.body!!.string()).asJsonObject
+                if (rootObject.has("error"))
+                    throw OpenAIError.fromJson(rootObject.get("error").asJsonObject)
 
                 return gson.fromJson(rootObject, CompletionResponse::class.java)
             }
@@ -79,6 +86,78 @@ class OpenAI @JvmOverloads constructor(
             // Wrap the IOException, so we don't need to catch multiple exceptions
             throw WrappedIOError(ex)
         }
+    }
+
+    /**
+     * Helper method to call [streamCompletion].
+     *
+     * @param request    The input information for ChatGPT.
+     * @param onResponse The method to call for each chunk.
+     * @since 1.3.0
+     */
+    fun streamCompletionKotlin(request: CompletionRequest, onResponse: CompletionResponseChunk.() -> Unit) {
+        streamCompletion(request, { it.onResponse() })
+    }
+
+    /**
+     * This method does not block the thread. Method calls to [onResponse] are
+     * not handled by the main thread. It is crucial to consider thread safety
+     * within the context of your program.
+     *
+     * @param request    The input information for ChatGPT.
+     * @param onResponse The method to call for each chunk.
+     * @param onFailure  The method to call if the HTTP fails. This method will
+     *                   not be called if OpenAI returns an error.
+     * @see createCompletion
+     * @see streamCompletionKotlin
+     * @since 1.3.0
+     */
+    @JvmOverloads
+    fun streamCompletion(
+        request: CompletionRequest,
+        onResponse: Consumer<CompletionResponseChunk>, // use Consumer instead of Kotlin for better Java syntax
+        onFailure: Consumer<OpenAIError> = Consumer { it.printStackTrace() }
+    ) {
+        @Suppress("DEPRECATION")
+        request.stream = true // use requestResponse for stream=false
+        val httpRequest = buildRequest(request, "completions")
+
+        client.newCall(httpRequest).enqueue(object : Callback {
+
+            override fun onFailure(call: Call, e: IOException) {
+                onFailure.accept(WrappedIOError(e))
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                response.body?.source()?.use { source ->
+                    while (!source.exhausted()) {
+
+                        // Parse the JSON string as a map. Every string starts
+                        // with "data: ", so we need to remove that.
+                        var jsonResponse = source.readUtf8Line() ?: continue
+                        if (jsonResponse.isEmpty())
+                            continue
+
+                        // TODO comment
+                        if (!jsonResponse.startsWith("data: ")) {
+                            System.err.println(jsonResponse)
+                            continue
+                        }
+
+                        jsonResponse = jsonResponse.substring("data: ".length)
+                        if (jsonResponse == "[DONE]")
+                            continue
+
+                        val rootObject = JsonParser.parseString(jsonResponse).asJsonObject
+                        if (rootObject.has("error"))
+                            throw OpenAIError.fromJson(rootObject.get("error").asJsonObject)
+
+                        val cache = gson.fromJson(rootObject, CompletionResponseChunk::class.java)
+                        onResponse.accept(cache)
+                    }
+                }
+            }
+        })
     }
 
     /**
@@ -97,16 +176,14 @@ class OpenAI @JvmOverloads constructor(
         request.stream = false // use streamResponse for stream=true
         val httpRequest = buildRequest(request, "chat/completions")
 
-        // Save the JsonObject to check for errors
-        var rootObject: JsonObject?
         try {
             client.newCall(httpRequest).execute().use { response ->
 
                 // Servers respond to API calls with json blocks. Since raw JSON isn't
                 // very developer friendly, we wrap for easy data access.
-                rootObject = JsonParser.parseString(response.body!!.string()).asJsonObject
-                if (rootObject!!.has("error"))
-                    throw OpenAIError.fromJson(rootObject!!.get("error").asJsonObject)
+                val rootObject = JsonParser.parseString(response.body!!.string()).asJsonObject
+                if (rootObject.has("error"))
+                    throw OpenAIError.fromJson(rootObject.get("error").asJsonObject)
 
                 return gson.fromJson(rootObject, ChatResponse::class.java)
             }
@@ -176,7 +253,7 @@ class OpenAI @JvmOverloads constructor(
     fun streamChatCompletion(
         request: ChatRequest,
         onResponse: Consumer<ChatResponseChunk>, // use Consumer instead of Kotlin for better Java syntax
-        onFailure: Consumer<IOException> = Consumer { it.printStackTrace() }
+        onFailure: Consumer<WrappedIOError> = Consumer { it.printStackTrace() }
     ) {
         @Suppress("DEPRECATION")
         request.stream = true // use requestResponse for stream=false
@@ -186,7 +263,7 @@ class OpenAI @JvmOverloads constructor(
             var cache: ChatResponseChunk? = null
 
             override fun onFailure(call: Call, e: IOException) {
-                onFailure.accept(e)
+                onFailure.accept(WrappedIOError(e))
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -203,6 +280,9 @@ class OpenAI @JvmOverloads constructor(
                             continue
 
                         val rootObject = JsonParser.parseString(jsonResponse).asJsonObject
+                        if (rootObject.has("error"))
+                            throw OpenAIError.fromJson(rootObject.get("error").asJsonObject)
+
                         if (cache == null)
                             cache = gson.fromJson(rootObject, ChatResponseChunk::class.java)
                         else
