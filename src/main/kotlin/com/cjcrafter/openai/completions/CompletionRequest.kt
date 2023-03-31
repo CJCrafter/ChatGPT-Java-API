@@ -35,7 +35,7 @@ import com.google.gson.annotations.SerializedName
  */
 data class CompletionRequest @JvmOverloads constructor(
     var model: String,
-    var prompt: Any,
+    var prompt: Any? = null,
     var suffix: String? = null,
     @field:SerializedName("max_tokens") var maxTokens: Int? = null,
     var temperature: Number? = null,
@@ -217,11 +217,10 @@ data class CompletionRequest @JvmOverloads constructor(
          */
         fun build(): CompletionRequest {
             require(model != null) { "Set CompletionRequest.Builder#model(String) before building" }
-            require(prompt != null) { "Set CompletionRequest.Builder#prompt(String) before building" }
 
             return CompletionRequest(
                 model = model!!,
-                prompt = prompt!!,
+                prompt = prompt,
                 suffix = suffix,
                 maxTokens = maxTokens,
                 temperature = temperature,
