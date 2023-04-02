@@ -18,6 +18,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
 import java.lang.IllegalStateException
+import java.util.ArrayList
 import java.util.function.Consumer
 
 /**
@@ -59,243 +60,255 @@ class OpenAI @JvmOverloads constructor(
     }
 
     /**
-     * Create completion
      *
-     * @param request
-     * @return
+     * @param request The input information for the Completions API.
+     * @return The value returned by the Completions API.
      * @since 1.3.0
      */
     @Throws(OpenAIError::class)
     fun createCompletion(request: CompletionRequest): CompletionResponse {
         @Suppress("DEPRECATION")
         request.stream = false // use streamCompletion for stream=true
-        val httpRequest = buildRequest(request, "completions")
+        val httpRequest = buildRequest(request, COMPLETIONS_ENDPOINT)
 
         try {
-            client.newCall(httpRequest).execute().use { response ->
+            val httpResponse = client.newCall(httpRequest).execute();
+            lateinit var response: CompletionResponse
+            MyCallback(true, { throw it }) {
+                response = gson.fromJson(it, CompletionResponse::class.java)
+            }.onResponse(httpResponse)
 
-                // Servers respond to API calls with json blocks. Since raw JSON isn't
-                // very developer friendly, we wrap for easy data access.
-                val rootObject = JsonParser.parseString(response.body!!.string()).asJsonObject
-                if (rootObject.has("error"))
-                    throw OpenAIError.fromJson(rootObject.get("error").asJsonObject)
-
-                return gson.fromJson(rootObject, CompletionResponse::class.java)
-            }
+            return response
         } catch (ex: IOException) {
-            // Wrap the IOException, so we don't need to catch multiple exceptions
             throw WrappedIOError(ex)
         }
     }
 
     /**
-     * Helper method to call [streamCompletion].
+     * Create completion async
      *
-     * @param request    The input information for ChatGPT.
-     * @param onResponse The method to call for each chunk.
+     * @param request
+     * @param onResponse
+     * @param onFailure
      * @since 1.3.0
      */
-    fun streamCompletionKotlin(request: CompletionRequest, onResponse: CompletionResponseChunk.() -> Unit) {
-        streamCompletion(request, { it.onResponse() })
+    @JvmOverloads
+    fun createCompletionAsync(
+        request: CompletionRequest,
+        onResponse: Consumer<CompletionResponse>,
+        onFailure: Consumer<OpenAIError> = Consumer { it.printStackTrace() }
+    ) {
+        @Suppress("DEPRECATION")
+        request.stream = false // use streamCompletionAsync for stream=true
+        val httpRequest = buildRequest(request, COMPLETIONS_ENDPOINT)
+
+        client.newCall(httpRequest).enqueue(MyCallback(false, onFailure) {
+            val response = gson.fromJson(it, CompletionResponse::class.java)
+            onResponse.accept(response)
+        })
     }
 
     /**
-     * This method does not block the thread. Method calls to [onResponse] are
-     * not handled by the main thread. It is crucial to consider thread safety
-     * within the context of your program.
+     * Calls OpenAI's Completions API using a *stream* of data. Streams allow
+     * developers to access tokens in real time as they are generated. This is
+     * used to create the "scrolling text" or "living typing" effect. Using
+     * `streamCompletion` gives users information immediately, as opposed to
+     * `createCompletion` where you have to wait for the entire message to
+     * generate.
      *
-     * @param request    The input information for ChatGPT.
-     * @param onResponse The method to call for each chunk.
-     * @param onFailure  The method to call if the HTTP fails. This method will
-     *                   not be called if OpenAI returns an error.
-     * @see createCompletion
-     * @see streamCompletionKotlin
+     * This method blocks the current thread until the stream is complete. For
+     * non-blocking options, use [streamCompletionAsync]. It is important to
+     * consider which thread you are currently running on. Running this method
+     * on [javax.swing]'s thread, for example, will cause your UI to freeze
+     * temporarily.
+     *
+     * @param request The data to send to the API endpoint.
+     * @param onResponse The code to execute for every chunk of text.
+     * @param onFailure The code to execute when a failure occurs.
      * @since 1.3.0
      */
     @JvmOverloads
     fun streamCompletion(
         request: CompletionRequest,
-        onResponse: Consumer<CompletionResponseChunk>, // use Consumer instead of Kotlin for better Java syntax
+        onResponse: Consumer<CompletionResponseChunk>,
         onFailure: Consumer<OpenAIError> = Consumer { it.printStackTrace() }
     ) {
         @Suppress("DEPRECATION")
-        request.stream = true // use requestResponse for stream=false
-        val httpRequest = buildRequest(request, "completions")
+        request.stream = true // use createCompletion for stream=false
+        val httpRequest = buildRequest(request, COMPLETIONS_ENDPOINT)
 
-        client.newCall(httpRequest).enqueue(object : Callback {
+        try {
+            val httpResponse = client.newCall(httpRequest).execute()
+            MyCallback(true, onFailure) {
+                val response = gson.fromJson(it, CompletionResponseChunk::class.java)
+                onResponse.accept(response)
+            }.onResponse(httpResponse)
+        } catch (ex: IOException) {
+            onFailure.accept(WrappedIOError(ex))
+        }
+    }
 
-            override fun onFailure(call: Call, e: IOException) {
-                onFailure.accept(WrappedIOError(e))
-            }
+    /**
+     * Calls OpenAI's Completions API using a *stream* of data. Streams allow
+     * developers to access tokens in real time as they are generated. This is
+     * used to create the "scrolling text" or "living typing" effect. Using
+     * `streamCompletion` gives users information immediately, as opposed to
+     * `createCompletion` where you have to wait for the entire message to
+     * generate.
+     *
+     * This method will not block the current thread. The code block [onResponse]
+     * will be run later on a different thread. Due to the different thread, it
+     * is important to consider thread safety in the context of your program. To
+     * avoid thread safety issues, use [streamCompletion] to block the main thread.
+     *
+     * @param request The data to send to the API endpoint.
+     * @param onResponse The code to execute for every chunk of text.
+     * @param onFailure The code to execute when a failure occurs.
+     * @since 1.3.0
+     */
+    @JvmOverloads
+    fun streamCompletionAsync(
+        request: CompletionRequest,
+        onResponse: Consumer<CompletionResponseChunk>,
+        onFailure: Consumer<OpenAIError> = Consumer { it.printStackTrace() }
+    ) {
+        @Suppress("DEPRECATION")
+        request.stream = true // use createCompletionAsync for stream=false
+        val httpRequest = buildRequest(request, COMPLETIONS_ENDPOINT)
 
-            override fun onResponse(call: Call, response: Response) {
-                response.body?.source()?.use { source ->
-                    while (!source.exhausted()) {
-
-                        // Parse the JSON string as a map. Every string starts
-                        // with "data: ", so we need to remove that.
-                        var jsonResponse = source.readUtf8Line() ?: continue
-                        if (jsonResponse.isEmpty())
-                            continue
-
-                        // TODO comment
-                        if (!jsonResponse.startsWith("data: ")) {
-                            System.err.println(jsonResponse)
-                            continue
-                        }
-
-                        jsonResponse = jsonResponse.substring("data: ".length)
-                        if (jsonResponse == "[DONE]")
-                            continue
-
-                        val rootObject = JsonParser.parseString(jsonResponse).asJsonObject
-                        if (rootObject.has("error"))
-                            throw OpenAIError.fromJson(rootObject.get("error").asJsonObject)
-
-                        val cache = gson.fromJson(rootObject, CompletionResponseChunk::class.java)
-                        onResponse.accept(cache)
-                    }
-                }
-            }
+        client.newCall(httpRequest).enqueue(MyCallback(true, onFailure) {
+            val response = gson.fromJson(it, CompletionResponseChunk::class.java)
+            onResponse.accept(response)
         })
     }
 
     /**
-     * Blocks the current thread until OpenAI responds to https request. The
-     * returned value includes information including tokens, generated text,
-     * and stop reason. You can access the generated message through
-     * [ChatResponse.choices].
      *
-     * @param request The input information for ChatGPT.
-     * @return The returned response.
-     * @throws OpenAIError Invalid request/timeout/io/etc.
+     * @param request The input information for the Completions API.
+     * @return The value returned by the Completions API.
+     * @since 1.3.0
      */
     @Throws(OpenAIError::class)
     fun createChatCompletion(request: ChatRequest): ChatResponse {
         @Suppress("DEPRECATION")
-        request.stream = false // use streamResponse for stream=true
-        val httpRequest = buildRequest(request, "chat/completions")
+        request.stream = false // use streamChatCompletion for stream=true
+        val httpRequest = buildRequest(request, CHAT_ENDPOINT)
 
         try {
-            client.newCall(httpRequest).execute().use { response ->
+            val httpResponse = client.newCall(httpRequest).execute();
+            lateinit var response: ChatResponse
+            MyCallback(true, { throw it }) {
+                response = gson.fromJson(it, ChatResponse::class.java)
+            }.onResponse(httpResponse)
 
-                // Servers respond to API calls with json blocks. Since raw JSON isn't
-                // very developer friendly, we wrap for easy data access.
-                val rootObject = JsonParser.parseString(response.body!!.string()).asJsonObject
-                if (rootObject.has("error"))
-                    throw OpenAIError.fromJson(rootObject.get("error").asJsonObject)
-
-                return gson.fromJson(rootObject, ChatResponse::class.java)
-            }
+            return response
         } catch (ex: IOException) {
-            // Wrap the IOException, so we don't need to catch multiple exceptions
             throw WrappedIOError(ex)
         }
     }
 
     /**
-     * This is a helper method that calls [streamChatCompletion], which lets you use
-     * the generated tokens in real time (As ChatGPT generates them).
+     * Create completion async
      *
-     * This method does not block the thread. Method calls to [onResponse] are
-     * not handled by the main thread. It is crucial to consider thread safety
-     * within the context of your program.
-     *
-     * Usage:
-     * ```
-     *     val messages = mutableListOf("Write a poem".toUserMessage())
-     *     val request = ChatRequest("gpt-3.5-turbo", messages)
-     *     val bot = ChatBot(/* your key */)
-
-     *     bot.streamResponseKotlin(request) {
-     *         print(choices[0].delta)
-     *
-     *         // when finishReason != null, this is the last message (done generating new tokens)
-     *         if (choices[0].finishReason != null)
-     *             messages.add(choices[0].message)
-     *     }
-     * ```
-     *
-     * @param request    The input information for ChatGPT.
-     * @param onResponse The method to call for each chunk.
-     * @since 1.2.0
+     * @param request
+     * @param onResponse
+     * @param onFailure
+     * @since 1.3.0
      */
-    fun streamChatCompletionKotlin(request: ChatRequest, onResponse: ChatResponseChunk.() -> Unit) {
-        streamChatCompletion(request, { it.onResponse() })
+    @JvmOverloads
+    fun createChatCompletionAsync(
+        request: ChatRequest,
+        onResponse: Consumer<ChatResponse>,
+        onFailure: Consumer<OpenAIError> = Consumer { it.printStackTrace() }
+    ) {
+        @Suppress("DEPRECATION")
+        request.stream = false // use streamChatCompletionAsync for stream=true
+        val httpRequest = buildRequest(request, CHAT_ENDPOINT)
+
+        client.newCall(httpRequest).enqueue(MyCallback(false, onFailure) {
+            val response = gson.fromJson(it, ChatResponse::class.java)
+            onResponse.accept(response)
+        })
     }
 
     /**
-     * Uses ChatGPT to generate tokens in real time. As ChatGPT generates
-     * content, those tokens are sent in a stream in real time. This allows you
-     * to update the user without long delays between their input and OpenAI's
-     * response.
+     * Calls OpenAI's Completions API using a *stream* of data. Streams allow
+     * developers to access tokens in real time as they are generated. This is
+     * used to create the "scrolling text" or "living typing" effect. Using
+     * `streamCompletion` gives users information immediately, as opposed to
+     * `createCompletion` where you have to wait for the entire message to
+     * generate.
      *
-     * For *"simpler"* calls, you can use [createChatCompletion] which will block
-     * the thread until the entire response is generated.
+     * This method blocks the current thread until the stream is complete. For
+     * non-blocking options, use [streamCompletionAsync]. It is important to
+     * consider which thread you are currently running on. Running this method
+     * on [javax.swing]'s thread, for example, will cause your UI to freeze
+     * temporarily.
      *
-     * Instead of using the [ChatResponse], this method uses [ChatResponseChunk].
-     * This means that it is not possible to retrieve the number of tokens from
-     * this method,
-     *
-     * This method does not block the thread. Method calls to [onResponse] are
-     * not handled by the main thread. It is crucial to consider thread safety
-     * within the context of your program.
-     *
-     * @param request    The input information for ChatGPT.
-     * @param onResponse The method to call for each chunk.
-     * @param onFailure  The method to call if the HTTP fails. This method will
-     *                   not be called if OpenAI returns an error.
-     * @see createChatCompletion
-     * @see streamChatCompletionKotlin
-     * @since 1.2.0
+     * @param request The data to send to the API endpoint.
+     * @param onResponse The code to execute for every chunk of text.
+     * @param onFailure The code to execute when a failure occurs.
+     * @since 1.3.0
      */
     @JvmOverloads
     fun streamChatCompletion(
         request: ChatRequest,
-        onResponse: Consumer<ChatResponseChunk>, // use Consumer instead of Kotlin for better Java syntax
-        onFailure: Consumer<WrappedIOError> = Consumer { it.printStackTrace() }
+        onResponse: Consumer<ChatResponseChunk>,
+        onFailure: Consumer<OpenAIError> = Consumer { it.printStackTrace() }
     ) {
         @Suppress("DEPRECATION")
         request.stream = true // use requestResponse for stream=false
-        val httpRequest = buildRequest(request, "chat/completions")
+        val httpRequest = buildRequest(request, CHAT_ENDPOINT)
 
-        client.newCall(httpRequest).enqueue(object : Callback {
-            var cache: ChatResponseChunk? = null
+        try {
+            val httpResponse = client.newCall(httpRequest).execute()
+            MyCallback(true, onFailure) {
+                val response = gson.fromJson(it, ChatResponseChunk::class.java)
+                onResponse.accept(response)
+            }.onResponse(httpResponse)
+        } catch (ex: IOException) {
+            onFailure.accept(WrappedIOError(ex))
+        }
+    }
 
-            override fun onFailure(call: Call, e: IOException) {
-                onFailure.accept(WrappedIOError(e))
-            }
+    /**
+     * Calls OpenAI's Completions API using a *stream* of data. Streams allow
+     * developers to access tokens in real time as they are generated. This is
+     * used to create the "scrolling text" or "living typing" effect. Using
+     * `streamCompletion` gives users information immediately, as opposed to
+     * `createCompletion` where you have to wait for the entire message to
+     * generate.
+     *
+     * This method will not block the current thread. The code block [onResponse]
+     * will be run later on a different thread. Due to the different thread, it
+     * is important to consider thread safety in the context of your program. To
+     * avoid thread safety issues, use [streamCompletion] to block the main thread.
+     *
+     * @param request The data to send to the API endpoint.
+     * @param onResponse The code to execute for every chunk of text.
+     * @param onFailure The code to execute when a failure occurs.
+     * @since 1.3.0
+     */
+    @JvmOverloads
+    fun streamChatCompletionAsync(
+        request: CompletionRequest,
+        onResponse: Consumer<ChatResponseChunk>,
+        onFailure: Consumer<OpenAIError> = Consumer { it.printStackTrace() }
+    ) {
+        @Suppress("DEPRECATION")
+        request.stream = true // use requestResponse for stream=false
+        val httpRequest = buildRequest(request, CHAT_ENDPOINT)
 
-            override fun onResponse(call: Call, response: Response) {
-                response.body?.source()?.use { source ->
-                    while (!source.exhausted()) {
-
-                        // Parse the JSON string as a map. Every string starts
-                        // with "data: ", so we need to remove that.
-                        var jsonResponse = source.readUtf8Line() ?: continue
-                        if (jsonResponse.isEmpty())
-                            continue
-                        jsonResponse = jsonResponse.substring("data: ".length)
-                        if (jsonResponse == "[DONE]")
-                            continue
-
-                        val rootObject = JsonParser.parseString(jsonResponse).asJsonObject
-                        if (rootObject.has("error"))
-                            throw OpenAIError.fromJson(rootObject.get("error").asJsonObject)
-
-                        if (cache == null)
-                            cache = gson.fromJson(rootObject, ChatResponseChunk::class.java)
-                        else
-                            cache!!.update(rootObject)
-
-                        onResponse.accept(cache!!)
-                    }
-                }
-            }
+        client.newCall(httpRequest).enqueue(MyCallback(true, onFailure) {
+            val response = gson.fromJson(it, ChatResponseChunk::class.java)
+            onResponse.accept(response)
         })
     }
 
     companion object {
+
+        const val COMPLETIONS_ENDPOINT = "completions"
+        const val CHAT_ENDPOINT = "chat/completions"
 
         /**
          * Returns a `Gson` object that can be used to read/write .json files.
@@ -325,10 +338,10 @@ class OpenAI @JvmOverloads constructor(
          */
         @JvmStatic
         fun createGsonBuilder(): GsonBuilder {
-             return GsonBuilder()
-                 .registerTypeAdapter(ChatUser::class.java, ChatUserAdapter())
-                 .registerTypeAdapter(FinishReason::class.java, FinishReasonAdapter())
-                 .registerTypeAdapter(ChatChoiceChunk::class.java, ChatChoiceChunkAdapter())
+            return GsonBuilder()
+                .registerTypeAdapter(ChatUser::class.java, ChatUserAdapter())
+                .registerTypeAdapter(FinishReason::class.java, FinishReasonAdapter())
+                .registerTypeAdapter(ChatChoiceChunk::class.java, ChatChoiceChunkAdapter())
         }
     }
 }
