@@ -1,10 +1,20 @@
-# ChatGPT-Java-API
-This is an easy-to-use "drag and drop" API that allows you to use OpenAI's new ChatGPT API. This API
-works by wrapping HTTPS requests with java variables, making the generated results much easier to control.
+<div align="center">
 
-Feel free to use, modify, and distribute this code as needed.
+# ChatGPT Java API
+  [![](https://img.shields.io/github/v/release/CJCrafter/ChatGPT-Java-API)](https://github.com/CJCrafter/ChatGPT-Java-API/releases/latest)
+  [![](https://img.shields.io/badge/-docs%20-blueviolet)](https://openai.cjcrafter.com/)
+  [![](https://img.shields.io/badge/-examples%20-orange)](https://github.com/CJCrafter/ChatGPT-Java-API/wiki)
+  [![](https://img.shields.io/github/discussions/CJCrafter/ChatGPT-Java-API)](https://github.com/CJCrafter/ChatGPT-Java-API/discussions)
+  [![License](https://img.shields.io/github/license/WeaponMechanics/ArmorMechanics)](https://github.com/WeaponMechanics/ArmorMechanics/blob/master/LICENSE)
 
-# Installation
+A community maintained easy-to-use Java/Kotlin OpenAI API for ChatGPT, Text Completions, and more!
+</div>
+
+## Features
+* [Completions](https://platform.openai.com/docs/api-reference/completions)
+* [Chat Completions](https://platform.openai.com/docs/api-reference/chat)
+
+## Installation
 For Kotlin DSL (`build.gradle.kts`), add this to your dependencies block:
 ```kotlin
 dependencies {
@@ -22,8 +32,10 @@ For Maven projects, add this to your `pom.xml` file in the `<dependencies>` bloc
 See the [maven repository](https://central.sonatype.com/artifact/com.cjcrafter/openai/1.2.7) for gradle/ant/etc.
 
 
-# Working Example
-Check the wiki for more examples.
+## Working Example
+This is a basic working example. To see more features in action (async calls, streaming)
+see the [java examples](https://github.com/CJCrafter/ChatGPT-Java-API/wiki/Java)
+and [kotlin examples](https://github.com/CJCrafter/ChatGPT-Java-API/wiki/Kotlin)
 ```java
 public class JavaChatTest {
 
@@ -31,7 +43,7 @@ public class JavaChatTest {
         Scanner scan = new Scanner(System.in);
 
         // This is the prompt that the bot will refer back to for every message.
-        ChatMessage prompt = ChatMessage.toSystemMessage("You are a customer support chat-bot. Write brief summaries of the user's questions so that agents can easily find the answer in a database.");
+        ChatMessage prompt = ChatMessage.toSystemMessage("You are ChatGPT, a helpful chat bot.");
 
         // Use a mutable (modifiable) list! Always! You should be reusing the
         // ChatRequest variable, so in order for a conversation to continue
@@ -46,6 +58,7 @@ public class JavaChatTest {
                 .messages(messages).build();
 
         // Loads the API key from the .env file in the root directory.
+        // You should never put your API keys in code, keep your key safe!
         String key = Dotenv.load().get("OPENAI_TOKEN");
         OpenAI openai = new OpenAI(key);
 
@@ -74,9 +87,8 @@ public class JavaChatTest {
 
 ```
 
-# Support
-If I have saved you time, please consider [sponsoring me](https://github.com/sponsors/CJCrafter). 
-If you cannot financially support me, consider leaving a star on the repository and sharing it. Thanks!
+## Support
+If I have saved you time, please consider [sponsoring me](https://github.com/sponsors/CJCrafter).
 
-# License
+## License
 ChatGPT-Java-API is licensed under the [MIT License](https://github.com/CJCrafter/ChatGPT-Java-API/blob/master/LICENSE).
