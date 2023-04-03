@@ -35,6 +35,22 @@ import java.util.function.Consumer
  * 4. Obtain your API key: After subscribing to a plan, you will be redirected
  * to the API dashboard, where you can find your unique API key. Copy and store it securely.
  *
+ * All API methods in this class have a non-blocking option which will enqueues
+ * the HTTPS request on a different thread. These method names have `Async
+ * appended to the end of their names.
+ *
+ * Completions API:
+ * * [createCompletion]
+ * * [streamCompletion]
+ * * [createCompletionAsync]
+ * * [streamCompletionAsync]
+ *
+ * Chat API:
+ * * [createChatCompletion]
+ * * [streamChatCompletion]
+ * * [createChatCompletionAsync]
+ * * [streamChatCompletionAsync]
+ *
  * @property apiKey Your OpenAI API key. It starts with `"sk-"` (without the quotes).
  * @property organization If you belong to multiple organizations, specify which one to use (else `null`).
  * @property client Controls proxies, timeouts, etc.
@@ -60,9 +76,20 @@ class OpenAI @JvmOverloads constructor(
     }
 
     /**
+     * Predicts which text comes after the prompt, thus "completing" the text.
      *
-     * @param request The input information for the Completions API.
-     * @return The value returned by the Completions API.
+     * Calls OpenAI's Completions API and waits until the entire completion is
+     * generated. When [CompletionRequest.maxTokens] is a big number, it will
+     * take a long time to generate all the tokens, so it is recommended to use
+     * [streamCompletionAsync] instead to allow users to see partial completions.
+     *
+     * This method blocks the current thread until the stream is complete. For
+     * non-blocking options, use [streamCompletionAsync]. It is important to
+     * consider which thread you are currently running on. Running this method
+     * on [javax.swing]'s thread, for example, will cause your UI to freeze
+     * temporarily.
+     *
+     * @param request The data to send to the API endpoint.
      * @since 1.3.0
      */
     @Throws(OpenAIError::class)
@@ -85,11 +112,21 @@ class OpenAI @JvmOverloads constructor(
     }
 
     /**
-     * Create completion async
+     * Predicts which text comes after the prompt, thus "completing" the text.
      *
-     * @param request
-     * @param onResponse
-     * @param onFailure
+     * Calls OpenAI's Completions API and waits until the entire completion is
+     * generated. When [CompletionRequest.maxTokens] is a big number, it will
+     * take a long time to generate all the tokens, so it is recommended to use
+     * [streamCompletionAsync] instead to allow users to see partial completions.
+     *
+     * This method will not block the current thread. The code block [onResponse]
+     * will be run later on a different thread. Due to the different thread, it
+     * is important to consider thread safety in the context of your program. To
+     * avoid thread safety issues, use [streamCompletion] to block the main thread.
+     *
+     * @param request The data to send to the API endpoint.
+     * @param onResponse The code to execute for every chunk of text.
+     * @param onFailure The code to execute when a failure occurs.
      * @since 1.3.0
      */
     @JvmOverloads
@@ -109,6 +146,8 @@ class OpenAI @JvmOverloads constructor(
     }
 
     /**
+     * Predicts which text comes after the prompt, thus "completing" the text.
+     *
      * Calls OpenAI's Completions API using a *stream* of data. Streams allow
      * developers to access tokens in real time as they are generated. This is
      * used to create the "scrolling text" or "living typing" effect. Using
@@ -149,11 +188,13 @@ class OpenAI @JvmOverloads constructor(
     }
 
     /**
+     * Predicts which text comes after the prompt, thus "completing" the text.
+     *
      * Calls OpenAI's Completions API using a *stream* of data. Streams allow
      * developers to access tokens in real time as they are generated. This is
      * used to create the "scrolling text" or "living typing" effect. Using
-     * `streamCompletion` gives users information immediately, as opposed to
-     * `createCompletion` where you have to wait for the entire message to
+     * `streamCompletionAsync` gives users information immediately, as opposed to
+     * `createCompletionAsync` where you have to wait for the entire message to
      * generate.
      *
      * This method will not block the current thread. The code block [onResponse]
@@ -183,9 +224,22 @@ class OpenAI @JvmOverloads constructor(
     }
 
     /**
+     * Responds to the input in a conversational manner. Chat can "remember"
+     * older parts of the conversation by looking at the different messages in
+     * the list.
      *
-     * @param request The input information for the Completions API.
-     * @return The value returned by the Completions API.
+     * Calls OpenAI's Completions API and waits until the entire message is
+     * generated. Since generating an entire CHAT message can be time-consuming,
+     * it is preferred to use [streamChatCompletionAsync] instead.
+     *
+     * This method blocks the current thread until the stream is complete. For
+     * non-blocking options, use [createChatCompletionAsync]. It is important to
+     * consider which thread you are currently running on. Running this method
+     * on [javax.swing]'s thread, for example, will cause your UI to freeze
+     * temporarily.
+     *
+     * @param request The data to send to the API endpoint.
+     * @return The generated response.
      * @since 1.3.0
      */
     @Throws(OpenAIError::class)
@@ -195,7 +249,7 @@ class OpenAI @JvmOverloads constructor(
         val httpRequest = buildRequest(request, CHAT_ENDPOINT)
 
         try {
-            val httpResponse = client.newCall(httpRequest).execute();
+            val httpResponse = client.newCall(httpRequest).execute()
             lateinit var response: ChatResponse
             MyCallback(true, { throw it }) {
                 response = gson.fromJson(it, ChatResponse::class.java)
@@ -208,11 +262,22 @@ class OpenAI @JvmOverloads constructor(
     }
 
     /**
-     * Create completion async
+     * Responds to the input in a conversational manner. Chat can "remember"
+     * older parts of the conversation by looking at the different messages in
+     * the list.
      *
-     * @param request
-     * @param onResponse
-     * @param onFailure
+     * Calls OpenAI's Completions API and waits until the entire message is
+     * generated. Since generating an entire CHAT message can be time-consuming,
+     * it is preferred to use [streamChatCompletionAsync] instead.
+     *
+     * This method will not block the current thread. The code block [onResponse]
+     * will be run later on a different thread. Due to the different thread, it
+     * is important to consider thread safety in the context of your program. To
+     * avoid thread safety issues, use [streamChatCompletion] to block the main thread.
+     *
+     * @param request The data to send to the API endpoint.
+     * @param onResponse The code to execute for every chunk of text.
+     * @param onFailure The code to execute when a failure occurs.
      * @since 1.3.0
      */
     @JvmOverloads
@@ -232,6 +297,10 @@ class OpenAI @JvmOverloads constructor(
     }
 
     /**
+     * Responds to the input in a conversational manner. Chat can "remember"
+     * older parts of the conversation by looking at the different messages in
+     * the list.
+     *
      * Calls OpenAI's Completions API using a *stream* of data. Streams allow
      * developers to access tokens in real time as they are generated. This is
      * used to create the "scrolling text" or "living typing" effect. Using
@@ -277,17 +346,21 @@ class OpenAI @JvmOverloads constructor(
     }
 
     /**
+     * Responds to the input in a conversational manner. Chat can "remember"
+     * older parts of the conversation by looking at the different messages in
+     * the list.
+     *
      * Calls OpenAI's Completions API using a *stream* of data. Streams allow
      * developers to access tokens in real time as they are generated. This is
-     * used to create the "scrolling text" or "living typing" effect. Using
-     * `streamCompletion` gives users information immediately, as opposed to
-     * `createCompletion` where you have to wait for the entire message to
+     * used to create the "scrolling text" or "live typing" effect. Using
+     * `streamChatCompletionAsync` gives users information immediately, as opposed to
+     * [createChatCompletionAsync] where you have to wait for the entire message to
      * generate.
      *
      * This method will not block the current thread. The code block [onResponse]
      * will be run later on a different thread. Due to the different thread, it
      * is important to consider thread safety in the context of your program. To
-     * avoid thread safety issues, use [streamCompletion] to block the main thread.
+     * avoid thread safety issues, use [streamChatCompletion] to block the main thread.
      *
      * @param request The data to send to the API endpoint.
      * @param onResponse The code to execute for every chunk of text.

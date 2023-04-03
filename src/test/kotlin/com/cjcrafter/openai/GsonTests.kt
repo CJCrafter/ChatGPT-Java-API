@@ -3,6 +3,7 @@ package com.cjcrafter.openai
 import com.cjcrafter.openai.chat.*
 import com.cjcrafter.openai.chat.ChatMessage.Companion.toAssistantMessage
 import com.cjcrafter.openai.chat.ChatMessage.Companion.toSystemMessage
+import com.cjcrafter.openai.completions.CompletionRequest
 import com.google.gson.Gson
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
@@ -51,6 +52,11 @@ class GsonTests {
                     "{\"id\":\"chatcmpl-123\",\"created\":1677652288,\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"Hello there, how may I assist you today?\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":9,\"completion_tokens\":12,\"total_tokens\":21}}",
                     ChatResponse("chatcmpl-123", 1677652288L, mutableListOf(ChatChoice(0, "Hello there, how may I assist you today?".toAssistantMessage(), FinishReason.STOP)), ChatUsage(9, 12, 21)),
                     ChatResponse::class.java
+                ),
+                Arguments.of(
+                    "{\"model\":\"davinci\",\"prompt\":[\"Hello\",\"Goodbye\"]}",
+                    CompletionRequest(model="davinci", prompt=listOf("Hello", "Goodbye")),
+                    CompletionRequest::class.java
                 )
             )
         }
