@@ -1,13 +1,13 @@
 <div align="center">
 
 # ChatGPT Java API
-  [![](https://img.shields.io/github/v/release/CJCrafter/ChatGPT-Java-API)](https://github.com/CJCrafter/ChatGPT-Java-API/releases/latest)
-  [![](https://img.shields.io/badge/-docs%20-blueviolet)](https://openai.cjcrafter.com/)
-  [![](https://img.shields.io/badge/-examples%20-orange)](https://github.com/CJCrafter/ChatGPT-Java-API/wiki)
+  [![Maven Central](https://img.shields.io/maven-central/v/com.cjcrafter/openai?color=blue&label=Download)](https://central.sonatype.com/namespace/com.cjcrafter)
+  [![](https://img.shields.io/badge/-docs%20-blueviolet?logo=Kotlin&colorA=gray)](https://openai.cjcrafter.com/)
+  [![](https://img.shields.io/badge/-examples%20-orange?logo=Read+The+Docs&colorA=gray)](https://github.com/CJCrafter/ChatGPT-Java-API/wiki)
   [![](https://img.shields.io/github/discussions/CJCrafter/ChatGPT-Java-API)](https://github.com/CJCrafter/ChatGPT-Java-API/discussions)
   [![License](https://img.shields.io/github/license/WeaponMechanics/ArmorMechanics)](https://github.com/WeaponMechanics/ArmorMechanics/blob/master/LICENSE)
 
-A community maintained easy-to-use Java/Kotlin OpenAI API for ChatGPT, Text Completions, and more!
+A community-maintained easy-to-use Java/Kotlin OpenAI API for ChatGPT, Text Completions, and more!
 </div>
 
 ## Features
@@ -84,11 +84,13 @@ public class JavaChatTest {
         }
     }
 }
-
 ```
+> **Note**: OpenAI recommends using environment variables for your API token 
+([Read more](https://help.openai.com/en/articles/5112595-best-practices-for-api-key-safety)).
 
 ## Support
 If I have saved you time, please consider [sponsoring me](https://github.com/sponsors/CJCrafter).
 
 ## License
-ChatGPT-Java-API is licensed under the [MIT License](https://github.com/CJCrafter/ChatGPT-Java-API/blob/master/LICENSE).
+ChatGPT-Java-API is an open-sourced software licensed under the [MIT License](https://github.com/CJCrafter/ChatGPT-Java-API/blob/master/LICENSE).
+**This is an unofficial library, and is not affiliated with OpenAI**.
