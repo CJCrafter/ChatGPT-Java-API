@@ -37,6 +37,13 @@ data class ChatChoiceChunk(
         message.content += delta
         finishReason = if (json["finish_reason"].isJsonNull) null else FinishReason.valueOf(json["finish_reason"].asString.uppercase())
     }
+
+    /**
+     * Returns `true` if this message chunk is complete. Once complete, no more
+     * tokens will be generated, and [ChatChoiceChunk.message] will contain the
+     * complete message.
+     */
+    fun isFinished() = finishReason != null
 }
 
 /*

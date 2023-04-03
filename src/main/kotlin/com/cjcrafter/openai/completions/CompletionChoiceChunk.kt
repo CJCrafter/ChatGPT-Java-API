@@ -1,6 +1,7 @@
 package com.cjcrafter.openai.completions
 
 import com.cjcrafter.openai.FinishReason
+import com.cjcrafter.openai.chat.ChatChoiceChunk
 import com.google.gson.annotations.SerializedName
 
 /**
@@ -25,4 +26,10 @@ data class CompletionChoiceChunk(
     val index: Int,
     val logprobs: List<Float>?,
     @field:SerializedName("finish_reason") val finishReason: FinishReason?
-)
+) {
+    /**
+     * Returns `true` if this message chunk is complete. Once complete, no more
+     * tokens will be generated.
+     */
+    fun isFinished() = finishReason != null
+}
