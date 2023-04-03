@@ -6,8 +6,6 @@ import com.cjcrafter.openai.chat.ChatRequest
 import com.cjcrafter.openai.chat.ChatResponse
 import com.cjcrafter.openai.chat.ChatResponseChunk
 import com.cjcrafter.openai.completions.CompletionRequest
-import com.cjcrafter.openai.completions.CompletionResponse
-import com.cjcrafter.openai.completions.CompletionResponseChunk
 import com.cjcrafter.openai.exception.OpenAIError
 import io.github.cdimascio.dotenv.Dotenv
 import io.github.cdimascio.dotenv.dotenv
@@ -32,9 +30,8 @@ object KotlinTest {
         val scanner = Scanner(System.`in`)
 
         // Print out the menu of options
-        println("""$GREEN
-            Please select one of the options below by typing a number.
-            
+        println("""
+            ${GREEN}Please select one of the options below by typing a number.
                 1. Completion (create, sync)
                 2. Completion (stream, sync)
                 3. Completion (create, async)
@@ -76,17 +73,20 @@ object KotlinTest {
         val openai = OpenAI(key)
         println(RESET + "Generating Response" + PURPLE)
         if (stream) {
-            if (async)
+            if (async) {
                 openai.streamCompletionAsync(request, { print(it[0].text) })
-            else
+                println("$CYAN  !!! Code has finished executing. Wait for async code to complete.$PURPLE")
+            } else {
                 openai.streamCompletion(request, { print(it[0].text) })
+            }
         } else {
-            if (async)
+            if (async) {
                 openai.createCompletionAsync(request, { println(it[0].text) })
-            else
+                println("$CYAN  !!! Code has finished executing. Wait for async code to complete.$PURPLE")
+            } else {
                 println(openai.createCompletion(request)[0].text)
+            }
         }
-        println("$CYAN  !!! Code has finished executing. Wait for async code to complete.$RESET")
     }
 
     @Throws(OpenAIError::class)
@@ -126,6 +126,7 @@ object KotlinTest {
                         print(response[0].delta)
                         if (response[0].isFinished()) messages.add(response[0].message)
                     })
+                    println("$CYAN  !!! Code has finished executing. Wait for async code to complete.$PURPLE")
                 } else {
                     openai.streamChatCompletion(request, { response: ChatResponseChunk ->
                         print(response[0].delta)
@@ -138,13 +139,13 @@ object KotlinTest {
                         println(response[0].message.content)
                         messages.add(response[0].message)
                     })
+                    println("$CYAN  !!! Code has finished executing. Wait for async code to complete.$PURPLE")
                 } else {
                     val response = openai.createChatCompletion(request)
                     println(response[0].message.content)
                     messages.add(response[0].message)
                 }
             }
-            println("$CYAN  !!! Code has finished executing. Wait for async code to complete.")
         }
     }
 }
