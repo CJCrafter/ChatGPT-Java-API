@@ -1,31 +1,30 @@
-package com.cjcrafter.openai.chat
+package com.cjcrafter.openai.completions
 
-import com.google.gson.JsonObject
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.*
 
 /**
- * The `ChatResponse` contains all the data returned by the OpenAI Chat API.
- * For most use cases, [ChatResponse.get] (passing 0 to the index argument) is
- * all you need.
+ * The `CompletionResponse` contains all the data returned by the OpenAI Completions
+ * API. For most use cases, [CompletionResponse.get] (passing 0 to the index argument)
+ * is all you need.
  *
  * @property id      The unique id for your request.
- * @property created The Unix timestamp (measured in seconds since 00:00:00 UTC on January 1, 1970) when the API response was created.
- * @property choices The list of generated messages.
- * @property usage   The number of tokens used in this request/response.
- * @constructor Create Chat response (for internal usage).
+ * @property created The Unix timestamp (measured in seconds since 00:00:00 UTC on Junuary 1, 1970) when the API response was created.
+ * @property model   The model used to generate the completion.
+ * @property choices The generated completion(s).
+ * @constructor Create Completion response (for internal usage)
  */
-data class ChatResponse(
+data class CompletionResponseChunk(
     val id: String,
     val created: Long,
-    val choices: List<ChatChoice>,
-    val usage: ChatUsage
+    val model: String,
+    val choices: List<CompletionChoiceChunk>,
 ) {
 
     /**
-     * Returns the [Instant] time that the OpenAI Chat API sent this response.
+     * Returns the [Instant] time that the OpenAI Completion API sent this response.
      * The time is measured as a unix timestamp (measured in seconds since
      * 00:00:00 UTC on January 1, 1970).
      *
@@ -40,7 +39,7 @@ data class ChatResponse(
     }
 
     /**
-     * Returns the time-zoned instant that the OpenAI Chat API sent this
+     * Returns the time-zoned instant that the OpenAI Completion API sent this
      * response. By default, this method uses the system's timezone.
      *
      * @param timezone The user's timezone.
@@ -54,12 +53,12 @@ data class ChatResponse(
 
     /**
      * Shorthand for accessing the generated messages (shorthand for
-     * [ChatResponse.choices]).
+     * [CompletionResponseChunk.choices]).
      *
-     * @param index The index of the message (`0` for most use cases).
-     * @return The generated [ChatChoice] at the index.
+     * @param index The index of the message.
+     * @return The generated [CompletionChoiceChunk] at the index.
      */
-    operator fun get(index: Int): ChatChoice {
+    operator fun get(index: Int): CompletionChoiceChunk {
         return choices[index]
     }
 }
