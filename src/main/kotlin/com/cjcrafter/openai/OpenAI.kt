@@ -11,14 +11,10 @@ import com.cjcrafter.openai.gson.ChatUserAdapter
 import com.cjcrafter.openai.gson.FinishReasonAdapter
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
-import java.lang.IllegalStateException
-import java.util.ArrayList
 import java.util.function.Consumer
 
 /**
@@ -101,7 +97,7 @@ class OpenAI @JvmOverloads constructor(
         try {
             val httpResponse = client.newCall(httpRequest).execute();
             lateinit var response: CompletionResponse
-            MyCallback(true, { throw it }) {
+            OpenAICallback(true, { throw it }) {
                 response = gson.fromJson(it, CompletionResponse::class.java)
             }.onResponse(httpResponse)
 
@@ -139,7 +135,7 @@ class OpenAI @JvmOverloads constructor(
         request.stream = false // use streamCompletionAsync for stream=true
         val httpRequest = buildRequest(request, COMPLETIONS_ENDPOINT)
 
-        client.newCall(httpRequest).enqueue(MyCallback(false, onFailure) {
+        client.newCall(httpRequest).enqueue(OpenAICallback(false, onFailure) {
             val response = gson.fromJson(it, CompletionResponse::class.java)
             onResponse.accept(response)
         })
@@ -178,7 +174,7 @@ class OpenAI @JvmOverloads constructor(
 
         try {
             val httpResponse = client.newCall(httpRequest).execute()
-            MyCallback(true, onFailure) {
+            OpenAICallback(true, onFailure) {
                 val response = gson.fromJson(it, CompletionResponseChunk::class.java)
                 onResponse.accept(response)
             }.onResponse(httpResponse)
@@ -217,7 +213,7 @@ class OpenAI @JvmOverloads constructor(
         request.stream = true // use createCompletionAsync for stream=false
         val httpRequest = buildRequest(request, COMPLETIONS_ENDPOINT)
 
-        client.newCall(httpRequest).enqueue(MyCallback(true, onFailure) {
+        client.newCall(httpRequest).enqueue(OpenAICallback(true, onFailure) {
             val response = gson.fromJson(it, CompletionResponseChunk::class.java)
             onResponse.accept(response)
         })
@@ -251,7 +247,7 @@ class OpenAI @JvmOverloads constructor(
         try {
             val httpResponse = client.newCall(httpRequest).execute()
             lateinit var response: ChatResponse
-            MyCallback(true, { throw it }) {
+            OpenAICallback(true, { throw it }) {
                 response = gson.fromJson(it, ChatResponse::class.java)
             }.onResponse(httpResponse)
 
@@ -290,7 +286,7 @@ class OpenAI @JvmOverloads constructor(
         request.stream = false // use streamChatCompletionAsync for stream=true
         val httpRequest = buildRequest(request, CHAT_ENDPOINT)
 
-        client.newCall(httpRequest).enqueue(MyCallback(false, onFailure) {
+        client.newCall(httpRequest).enqueue(OpenAICallback(false, onFailure) {
             val response = gson.fromJson(it, ChatResponse::class.java)
             onResponse.accept(response)
         })
@@ -332,7 +328,7 @@ class OpenAI @JvmOverloads constructor(
         try {
             val httpResponse = client.newCall(httpRequest).execute()
             var response: ChatResponseChunk? = null
-            MyCallback(true, onFailure) {
+            OpenAICallback(true, onFailure) {
                 if (response == null)
                     response = gson.fromJson(it, ChatResponseChunk::class.java)
                 else
@@ -378,7 +374,7 @@ class OpenAI @JvmOverloads constructor(
         val httpRequest = buildRequest(request, CHAT_ENDPOINT)
 
         var response: ChatResponseChunk? = null
-        client.newCall(httpRequest).enqueue(MyCallback(true, onFailure) {
+        client.newCall(httpRequest).enqueue(OpenAICallback(true, onFailure) {
             if (response == null)
                 response = gson.fromJson(it, ChatResponseChunk::class.java)
             else

@@ -11,7 +11,7 @@ import okhttp3.Response
 import java.io.IOException
 import java.util.function.Consumer
 
-internal class MyCallback(
+internal class OpenAICallback(
     private val isStream: Boolean,
     private val onFailure: Consumer<OpenAIError>,
     private val onResponse: Consumer<JsonObject>
