@@ -3,6 +3,7 @@ package com.cjcrafter.openai
 import com.cjcrafter.openai.exception.OpenAIError
 import com.cjcrafter.openai.exception.WrappedIOError
 import com.google.gson.JsonObject
+import com.google.gson.JsonParseException
 import com.google.gson.JsonParser
 import okhttp3.Call
 import okhttp3.Callback
@@ -45,20 +46,29 @@ internal class MyCallback(
 
     private fun handleStream(response: Response) {
         response.body?.source()?.use { source ->
+
             while (!source.exhausted()) {
-                var jsonResponse = source.readUtf8()
+                var jsonResponse = source.readUtf8Line()
 
-                // OpenAI returns a json string, but they prepend the content with
-                // "data: " (which is not valid json). In order to parse this into
-                // a JsonObject, we have to strip away this extra string.
-                jsonResponse = jsonResponse.substring("data: ".length)
-
-                // After OpenAI's final message (which already contains a non-null
-                // finish reason), they redundantly send "data: [DONE]". Ignore it.
-                if (jsonResponse == "[DONE]")
+                // Or data is separated by empty lines, ignore them. The final
+                // line is always "data: [DONE]", ignore it.
+                if (jsonResponse.isNullOrEmpty() || jsonResponse == "data: [DONE]")
                     continue
 
-                val rootObject = JsonParser.parseString(jsonResponse).asJsonObject
+                // The CHAT API returns a json string, but they prepend the content
+                // with "data: " (which is not valid json). In order to parse this
+                // into a JsonObject, we have to strip away this extra string.
+                if (jsonResponse.startsWith("data: "))
+                    jsonResponse = jsonResponse.substring("data: ".length)
+
+                lateinit var rootObject: JsonObject
+                try {
+                    rootObject = JsonParser.parseString(jsonResponse).asJsonObject
+                } catch (ex: JsonParseException) {
+                    println(jsonResponse)
+                    ex.printStackTrace()
+                    continue
+                }
 
                 // Sometimes OpenAI will respond with an error code for malformed
                 // requests, timeouts, rate limits, etc. We need to let the dev

@@ -262,9 +262,14 @@ class OpenAI @JvmOverloads constructor(
 
         try {
             val httpResponse = client.newCall(httpRequest).execute()
+            var response: ChatResponseChunk? = null
             MyCallback(true, onFailure) {
-                val response = gson.fromJson(it, ChatResponseChunk::class.java)
-                onResponse.accept(response)
+                if (response == null)
+                    response = gson.fromJson(it, ChatResponseChunk::class.java)
+                else
+                    response!!.update(it)
+
+                onResponse.accept(response!!)
             }.onResponse(httpResponse)
         } catch (ex: IOException) {
             onFailure.accept(WrappedIOError(ex))
@@ -291,7 +296,7 @@ class OpenAI @JvmOverloads constructor(
      */
     @JvmOverloads
     fun streamChatCompletionAsync(
-        request: CompletionRequest,
+        request: ChatRequest,
         onResponse: Consumer<ChatResponseChunk>,
         onFailure: Consumer<OpenAIError> = Consumer { it.printStackTrace() }
     ) {
@@ -299,9 +304,14 @@ class OpenAI @JvmOverloads constructor(
         request.stream = true // use requestResponse for stream=false
         val httpRequest = buildRequest(request, CHAT_ENDPOINT)
 
+        var response: ChatResponseChunk? = null
         client.newCall(httpRequest).enqueue(MyCallback(true, onFailure) {
-            val response = gson.fromJson(it, ChatResponseChunk::class.java)
-            onResponse.accept(response)
+            if (response == null)
+                response = gson.fromJson(it, ChatResponseChunk::class.java)
+            else
+                response!!.update(it)
+
+            onResponse.accept(response!!)
         })
     }
 
