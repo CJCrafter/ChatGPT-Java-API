@@ -87,8 +87,9 @@ public class JavaTest {
         // Loads the API key from the .env file in the root directory.
         String key = Dotenv.load().get("OPENAI_TOKEN");
         OpenAI openai = new OpenAI(key);
-
         System.out.println(RESET + "Generating Response" + PURPLE);
+
+        // Generate a print the message
         if (stream) {
             if (async)
                 openai.streamCompletionAsync(request, response -> System.out.print(response.get(0).getText()));

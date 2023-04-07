@@ -21,8 +21,7 @@ const val PURPLE = "\u001b[0;35m"
 const val CYAN = "\u001b[0;36m"
 const val WHITE = "\u001b[0;37m"
 
-@Throws(OpenAIError::class)
-fun main(args: Array<String>) {
+fun main() {
     val scanner = Scanner(System.`in`)
 
     // Print out the menu of options
@@ -69,6 +68,8 @@ fun doCompletion(stream: Boolean, async: Boolean) {
     val key = dotenv()["OPENAI_TOKEN"]
     val openai = OpenAI(key)
     println(RESET + "Generating Response" + PURPLE)
+
+    // Generate a print the completion
     if (stream) {
         if (async) {
             openai.streamCompletionAsync(request, { print(it[0].text) })
@@ -91,7 +92,7 @@ fun doChat(stream: Boolean, async: Boolean) {
     val scan = Scanner(System.`in`)
 
     // This is the prompt that the bot will refer back to for every message.
-    val prompt = "You are a customer support chat-bot. Write brief summaries of the user's questions so that agents can easily find the answer in a database.".toSystemMessage()
+    val prompt = "Be helpful ChatBot".toSystemMessage()
 
     // Use a mutable (modifiable) list! Always! You should be reusing the
     // ChatRequest variable, so in order for a conversation to continue
