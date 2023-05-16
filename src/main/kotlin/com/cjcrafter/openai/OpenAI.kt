@@ -52,15 +52,15 @@ import java.util.function.Consumer
  * @property client Controls proxies, timeouts, etc.
  * @constructor Create a ChatBot for responding to requests.
  */
-class OpenAI @JvmOverloads constructor(
-    private val apiKey: String,
-    private val organization: String? = null,
+open class OpenAI @JvmOverloads constructor(
+    protected val apiKey: String,
+    protected val organization: String? = null,
     private val client: OkHttpClient = OkHttpClient()
 ) {
-    private val mediaType = "application/json; charset=utf-8".toMediaType()
-    private val gson = createGson()
+    protected val mediaType = "application/json; charset=utf-8".toMediaType()
+    protected val gson = createGson()
 
-    private fun buildRequest(request: Any, endpoint: String): Request {
+    protected open fun buildRequest(request: Any, endpoint: String): Request {
         val json = gson.toJson(request)
         val body: RequestBody = json.toRequestBody(mediaType)
         return Request.Builder()
@@ -95,7 +95,7 @@ class OpenAI @JvmOverloads constructor(
         val httpRequest = buildRequest(request, COMPLETIONS_ENDPOINT)
 
         try {
-            val httpResponse = client.newCall(httpRequest).execute();
+            val httpResponse = client.newCall(httpRequest).execute()
             lateinit var response: CompletionResponse
             OpenAICallback(true, { throw it }) {
                 response = gson.fromJson(it, CompletionResponse::class.java)
