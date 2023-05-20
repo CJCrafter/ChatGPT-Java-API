@@ -64,7 +64,7 @@ class OpenAI @JvmOverloads constructor(
         val json = gson.toJson(request)
         val body: RequestBody = json.toRequestBody(mediaType)
         return Request.Builder()
-            .url("https://api.openai.com/v1/$endpoint")
+            .url("https://api.openai.com/$endpoint")
             .addHeader("Content-Type", "application/json")
             .addHeader("Authorization", "Bearer $apiKey")
             .apply { if (organization != null) addHeader("OpenAI-Organization", organization) }
@@ -386,8 +386,11 @@ class OpenAI @JvmOverloads constructor(
 
     companion object {
 
-        const val COMPLETIONS_ENDPOINT = "completions"
-        const val CHAT_ENDPOINT = "chat/completions"
+        const val COMPLETIONS_ENDPOINT = "v1/completions"
+        const val CHAT_ENDPOINT = "v1/chat/completions"
+        const val IMAGE_CREATE_ENDPOINT = "v1/images/generations"
+        const val IMAGE_EDIT_ENDPOINT = "v1/images/edits"
+        const val IMAGE_VARIATION_ENDPOINT = "v1/images/variations"
 
         /**
          * Returns a `Gson` object that can be used to read/write .json files.
