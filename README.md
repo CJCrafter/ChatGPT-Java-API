@@ -86,7 +86,6 @@ public class JavaChatTest {
     }
 }
 ```
-To use the Azure OpenAI API, use the `AzureOpenAI` class instead of `OpenAI`.
 > **Note**: OpenAI recommends using environment variables for your API token 
 ([Read more](https://help.openai.com/en/articles/5112595-best-practices-for-api-key-safety)).
 
