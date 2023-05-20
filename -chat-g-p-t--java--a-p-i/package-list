@@ -196,6 +196,8 @@ $dokka.location:com.cjcrafter.openai.gson/FinishReasonAdapter/FinishReasonAdapte
 $dokka.location:com.cjcrafter.openai.gson/FinishReasonAdapter/read/#com.google.gson.stream.JsonReader/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai.gson/-finish-reason-adapter/read.html
 $dokka.location:com.cjcrafter.openai.gson/FinishReasonAdapter/write/#com.google.gson.stream.JsonWriter#com.cjcrafter.openai.FinishReason?/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai.gson/-finish-reason-adapter/write.html
 $dokka.location:com.cjcrafter.openai////PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai/index.html
+$dokka.location:com.cjcrafter.openai/AzureOpenAI///PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai/-azure-open-a-i/index.html
+$dokka.location:com.cjcrafter.openai/AzureOpenAI/AzureOpenAI/#kotlin.String#kotlin.String?#okhttp3.OkHttpClient#kotlin.String#kotlin.String#kotlin.String/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai/-azure-open-a-i/-azure-open-a-i.html
 $dokka.location:com.cjcrafter.openai/FinishReason.CONTENT_FILTER///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}-chat-g-p-t--java--a-p-i/com.cjcrafter.openai/-finish-reason/-c-o-n-t-e-n-t_-f-i-l-t-e-r/index.html
 $dokka.location:com.cjcrafter.openai/FinishReason.Companion///PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai/-finish-reason/-companion/index.html
 $dokka.location:com.cjcrafter.openai/FinishReason.Companion/adapter/#/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai/-finish-reason/-companion/adapter.html
@@ -207,6 +209,9 @@ $dokka.location:com.cjcrafter.openai/FinishReason/values/#/PointingToDeclaration
 $dokka.location:com.cjcrafter.openai/OpenAI.Companion///PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai/-open-a-i/-companion/index.html
 $dokka.location:com.cjcrafter.openai/OpenAI.Companion/CHAT_ENDPOINT/#/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai/-open-a-i/-companion/-c-h-a-t_-e-n-d-p-o-i-n-t.html
 $dokka.location:com.cjcrafter.openai/OpenAI.Companion/COMPLETIONS_ENDPOINT/#/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai/-open-a-i/-companion/-c-o-m-p-l-e-t-i-o-n-s_-e-n-d-p-o-i-n-t.html
+$dokka.location:com.cjcrafter.openai/OpenAI.Companion/IMAGE_CREATE_ENDPOINT/#/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai/-open-a-i/-companion/-i-m-a-g-e_-c-r-e-a-t-e_-e-n-d-p-o-i-n-t.html
+$dokka.location:com.cjcrafter.openai/OpenAI.Companion/IMAGE_EDIT_ENDPOINT/#/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai/-open-a-i/-companion/-i-m-a-g-e_-e-d-i-t_-e-n-d-p-o-i-n-t.html
+$dokka.location:com.cjcrafter.openai/OpenAI.Companion/IMAGE_VARIATION_ENDPOINT/#/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai/-open-a-i/-companion/-i-m-a-g-e_-v-a-r-i-a-t-i-o-n_-e-n-d-p-o-i-n-t.html
 $dokka.location:com.cjcrafter.openai/OpenAI.Companion/createGson/#/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai/-open-a-i/-companion/create-gson.html
 $dokka.location:com.cjcrafter.openai/OpenAI.Companion/createGsonBuilder/#/PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai/-open-a-i/-companion/create-gson-builder.html
 $dokka.location:com.cjcrafter.openai/OpenAI///PointingToDeclaration/-chat-g-p-t--java--a-p-i/com.cjcrafter.openai/-open-a-i/index.html
