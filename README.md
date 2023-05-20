@@ -13,6 +13,7 @@ A community-maintained easy-to-use Java/Kotlin OpenAI API for ChatGPT, Text Comp
 ## Features
 * [Completions](https://platform.openai.com/docs/api-reference/completions)
 * [Chat Completions](https://platform.openai.com/docs/api-reference/chat)
+* [Azure OpenAI](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference) support via `AzureOpenAI` class
 
 ## Installation
 For Kotlin DSL (`build.gradle.kts`), add this to your dependencies block:
@@ -85,6 +86,7 @@ public class JavaChatTest {
     }
 }
 ```
+To use the Azure OpenAI API, use the `AzureOpenAI` class instead of `OpenAI`.
 > **Note**: OpenAI recommends using environment variables for your API token 
 ([Read more](https://help.openai.com/en/articles/5112595-best-practices-for-api-key-safety)).
 
