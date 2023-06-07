@@ -26,13 +26,15 @@ class AzureOpenAI @JvmOverloads constructor(
 ) : OpenAI(apiKey, organization, client) {
 
     override fun buildRequest(request: Any, endpoint: String): Request {
+        val removedV1Endpoint = endpoint.removePrefix("v1/") // temporary fix for Azure, as it doesn't support v1/ in the url
         val json = gson.toJson(request)
         val body: RequestBody = json.toRequestBody(mediaType)
         return Request.Builder()
-            .url("$azureBaseUrl/openai/deployments/$modelName/$endpoint?api-version=$apiVersion")
+            .url("$azureBaseUrl/openai/deployments/$modelName/$removedV1Endpoint?api-version=$apiVersion")
             .addHeader("Content-Type", "application/json")
             .addHeader("api-key", apiKey)
             .apply { if (organization != null) addHeader("OpenAI-Organization", organization) }
             .post(body).build()
     }
+
 }

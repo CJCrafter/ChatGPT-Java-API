@@ -96,7 +96,9 @@ fun doChatAzure(stream: Boolean, async: Boolean) {
 
     // Loads the API key from the .env file in the root directory.
     val key = dotenv()["OPENAI_TOKEN"]
-    val openai = AzureOpenAI(key)
+    val modelName = dotenv()["OPENAI_MODEL"]
+    val azureBaseUrl = dotenv()["OPENAI_AZURE_BASE_URL"]
+    val openai = AzureOpenAI(key, modelName = modelName, azureBaseUrl = azureBaseUrl)
 
     // The conversation lasts until the user quits the program
     while (true) {
