@@ -48,7 +48,7 @@ internal class OpenAICallback(
         response.body?.source()?.use { source ->
 
             while (!source.exhausted()) {
-                var jsonResponse = source.readUtf8Line()
+                var jsonResponse = source.readUtf8()
 
                 // Or data is separated by empty lines, ignore them. The final
                 // line is always "data: [DONE]", ignore it.
