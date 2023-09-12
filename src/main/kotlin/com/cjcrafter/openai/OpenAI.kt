@@ -97,7 +97,7 @@ open class OpenAI @JvmOverloads constructor(
         try {
             val httpResponse = client.newCall(httpRequest).execute()
             lateinit var response: CompletionResponse
-            OpenAICallback(true, { throw it }) {
+            OpenAICallback(false, { throw it }) {
                 response = gson.fromJson(it, CompletionResponse::class.java)
             }.onResponse(httpResponse)
 
@@ -247,7 +247,7 @@ open class OpenAI @JvmOverloads constructor(
         try {
             val httpResponse = client.newCall(httpRequest).execute()
             lateinit var response: ChatResponse
-            OpenAICallback(true, { throw it }) {
+            OpenAICallback(false, { throw it }) {
                 response = gson.fromJson(it, ChatResponse::class.java)
             }.onResponse(httpResponse)
 
