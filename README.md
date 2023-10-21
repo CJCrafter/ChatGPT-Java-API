@@ -5,7 +5,7 @@
   [![](https://img.shields.io/badge/-docs%20-blueviolet?logo=Kotlin&colorA=gray)](https://openai.cjcrafter.com/)
   [![](https://img.shields.io/badge/-examples%20-orange?logo=Read+The+Docs&colorA=gray)](https://github.com/CJCrafter/ChatGPT-Java-API/wiki)
   [![](https://img.shields.io/github/discussions/CJCrafter/ChatGPT-Java-API)](https://github.com/CJCrafter/ChatGPT-Java-API/discussions)
-  [![License](https://img.shields.io/github/license/WeaponMechanics/ArmorMechanics)](https://github.com/WeaponMechanics/ArmorMechanics/blob/master/LICENSE)
+  [![License](https://img.shields.io/github/license/CJCrafter/ChatGPT-Java-API)](https://github.com/CJCrafter/ChatGPT-Java-API/blob/master/LICENSE)
 
 A community-maintained easy-to-use Java/Kotlin OpenAI API for ChatGPT, Text Completions, and more!
 </div>
