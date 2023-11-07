@@ -1,4 +1,4 @@
-import com.cjcrafter.openai.OpenAI
+import com.cjcrafter.openai.OpenAIImpl
 import com.cjcrafter.openai.chat.ChatMessage
 import com.cjcrafter.openai.chat.ChatMessage.Companion.toSystemMessage
 import com.cjcrafter.openai.chat.ChatMessage.Companion.toUserMessage
@@ -27,32 +27,23 @@ fun main() {
     // Print out the menu of options
     println("""
             ${GREEN}Please select one of the options below by typing a number.
-                1. Completion (create, sync)
-                2. Completion (stream, sync)
-                3. Completion (create, async)
-                4. Completion (stream, async)
-                5. Chat (create, sync)
-                6. Chat (stream, sync)
-                7. Chat (create, async)
-                8. Chat (stream, async)  
+                1. Completion (create)
+                2. Completion (stream)
+                3. Chat (create)
+                4. Chat (stream)
         """.trimIndent()
     )
 
     when (scanner.nextLine().trim()) {
-        "1" -> doCompletion(stream = false, async = false)
-        "2" -> doCompletion(stream = true, async = false)
-        "3" -> doCompletion(stream = false, async = true)
-        "4" -> doCompletion(stream = true, async = true)
-        "5" -> doChat(stream = false, async = false)
-        "6" -> doChat(stream = true, async = false)
-        "7" -> doChat(stream = false, async = true)
-        "8" -> doChat(stream = true, async = true)
+        "1" -> doCompletion(stream = false)
+        "2" -> doCompletion(stream = true)
+        "3" -> doChat(stream = false)
+        "4" -> doChat(stream = true)
         else -> System.err.println("Invalid option")
     }
 }
 
-@Throws(OpenAIError::class)
-fun doCompletion(stream: Boolean, async: Boolean) {
+fun doCompletion(stream: Boolean) {
     val scan = Scanner(System.`in`)
     println(YELLOW + "Enter completion: ")
     val input = scan.nextLine()
@@ -66,29 +57,20 @@ fun doCompletion(stream: Boolean, async: Boolean) {
 
     // Loads the API key from the .env file in the root directory.
     val key = dotenv()["OPENAI_TOKEN"]
-    val openai = OpenAI(key)
+    val openai = OpenAIImpl(key)
     println(RESET + "Generating Response" + PURPLE)
 
     // Generate a print the completion
     if (stream) {
-        if (async) {
-            openai.streamCompletionAsync(request, { print(it[0].text) })
-            println("$CYAN  !!! Code has finished executing. Wait for async code to complete.$PURPLE")
-        } else {
-            openai.streamCompletion(request, { print(it[0].text) })
-        }
+        for (chunk in openai.streamCompletion(request))
+            print(chunk[0].text)
+
     } else {
-        if (async) {
-            openai.createCompletionAsync(request, { println(it[0].text) })
-            println("$CYAN  !!! Code has finished executing. Wait for async code to complete.$PURPLE")
-        } else {
-            println(openai.createCompletion(request)[0].text)
-        }
+        println(openai.createCompletion(request)[0].text)
     }
 }
 
-@Throws(OpenAIError::class)
-fun doChat(stream: Boolean, async: Boolean) {
+fun doChat(stream: Boolean) {
     val scan = Scanner(System.`in`)
 
     // This is the prompt that the bot will refer back to for every message.
@@ -105,8 +87,8 @@ fun doChat(stream: Boolean, async: Boolean) {
     val request = ChatRequest(model = "gpt-3.5-turbo", messages = messages)
 
     // Loads the API key from the .env file in the root directory.
-    val key = dotenv()["OPENAI_TOKEN"]
-    val openai = OpenAI(key)
+    val key = dotenv()["OPENAI_TOKEN"] + "lolnotakey"
+    val openai = OpenAIImpl(key)
 
     // The conversation lasts until the user quits the program
     while (true) {
@@ -119,30 +101,14 @@ fun doChat(stream: Boolean, async: Boolean) {
         messages.add(input.toUserMessage())
         println(RESET + "Generating Response" + PURPLE)
         if (stream) {
-            if (async) {
-                openai.streamChatCompletionAsync(request, { response: ChatResponseChunk ->
-                    print(response[0].delta)
-                    if (response[0].isFinished()) messages.add(response[0].message)
-                })
-                println("$CYAN  !!! Code has finished executing. Wait for async code to complete.$PURPLE")
-            } else {
-                openai.streamChatCompletion(request, { response: ChatResponseChunk ->
-                    print(response[0].delta)
-                    if (response[0].isFinished()) messages.add(response[0].message)
-                })
+            for (chunk in openai.streamChatCompletion(request)) {
+                print(chunk[0].delta)
+                if (chunk[0].isFinished()) messages.add(chunk[0].message)
             }
         } else {
-            if (async) {
-                openai.createChatCompletionAsync(request, { response: ChatResponse ->
-                    println(response[0].message.content)
-                    messages.add(response[0].message)
-                })
-                println("$CYAN  !!! Code has finished executing. Wait for async code to complete.$PURPLE")
-            } else {
-                val response = openai.createChatCompletion(request)
-                println(response[0].message.content)
-                messages.add(response[0].message)
-            }
+            val response = openai.createChatCompletion(request)
+            println(response[0].message.content)
+            messages.add(response[0].message)
         }
     }
 }

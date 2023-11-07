@@ -18,18 +18,26 @@ enum class FinishReason {
     STOP,
 
     /**
-     * [LENGTH] occurs when the bot is not able to finish the response within
-     * its token limit. When it reaches the token limit, it sends the
-     * incomplete message with finish reason [LENGTH]
+     * Occurs when ChatGPT is not able to finish the response within the token
+     * limit. When the model reaches the token limit, it returns the incomplete
+     * message with finish reason [LENGTH]. Some models have a higher token
+     * limit than others.
      */
     LENGTH,
 
     /**
-     * [CONTENT_FILTER] occurs due to a flag from OpenAI's content filters.
-     * This occurrence is rare, and usually only happens when you blatantly
-     * misuse/violate OpenAI's terms.
+     * Occurs due to a flag from OpenAI's content filters. This occurrence is
+     * rare, and tends to happen when you blatantly violate OpenAI's terms.
      */
-    CONTENT_FILTER;
+    CONTENT_FILTER,
+
+    /**
+     * Occurs when the model uses one of the available tools.
+     */
+    TOOL_CALLS,
+
+    @Deprecated("functions have been replaced by tools")
+    FUNCTION_CALL;
 
     companion object {
 

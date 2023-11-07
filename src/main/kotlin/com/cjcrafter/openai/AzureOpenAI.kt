@@ -23,7 +23,7 @@ class AzureOpenAI @JvmOverloads constructor(
     private val azureBaseUrl: String = "",
     private val apiVersion: String = "2023-03-15-preview",
     private val modelName: String = ""
-) : OpenAI(apiKey, organization, client) {
+) : OpenAIImpl(apiKey, organization, client) {
 
     override fun buildRequest(request: Any, endpoint: String): Request {
         val json = gson.toJson(request)

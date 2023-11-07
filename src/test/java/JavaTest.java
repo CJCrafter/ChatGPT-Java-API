@@ -1,8 +1,10 @@
-import com.cjcrafter.openai.OpenAI;
+import com.cjcrafter.openai.OpenAIImpl;
 import com.cjcrafter.openai.chat.ChatMessage;
 import com.cjcrafter.openai.chat.ChatRequest;
 import com.cjcrafter.openai.chat.ChatResponse;
+import com.cjcrafter.openai.chat.ChatResponseChunk;
 import com.cjcrafter.openai.completions.CompletionRequest;
+import com.cjcrafter.openai.completions.CompletionResponseChunk;
 import com.cjcrafter.openai.exception.OpenAIError;
 import io.github.cdimascio.dotenv.Dotenv;
 
@@ -32,39 +34,23 @@ public class JavaTest {
         System.out.println();
         System.out.println(GREEN + "    1. Completion (create, sync)");
         System.out.println(GREEN + "    2. Completion (stream, sync)");
-        System.out.println(GREEN + "    3. Completion (create, async)");
-        System.out.println(GREEN + "    4. Completion (stream, async)");
-        System.out.println(GREEN + "    5. Chat (create, sync)");
-        System.out.println(GREEN + "    6. Chat (stream, sync)");
-        System.out.println(GREEN + "    7. Chat (create, async)");
-        System.out.println(GREEN + "    8. Chat (stream, async)");
+        System.out.println(GREEN + "    3. Chat (create, sync)");
+        System.out.println(GREEN + "    4. Chat (stream, sync)");
         System.out.println();
 
         // Determine which method to call
         switch (scanner.nextLine()) {
             case "1":
-                doCompletion(false, false);
+                doCompletion(false);
                 break;
             case "2":
-                doCompletion(true, false);
+                doCompletion(true);
                 break;
             case "3":
-                doCompletion(false, true);
+                doChat(false);
                 break;
             case "4":
-                doCompletion(true, true);
-                break;
-            case "5":
-                doChat(false, false);
-                break;
-            case "6":
-                doChat(true, false);
-                break;
-            case "7":
-                doChat(false, true);
-                break;
-            case "8":
-                doChat(true, true);
+                doChat(true);
                 break;
             default:
                 System.err.println("Invalid option");
@@ -72,7 +58,7 @@ public class JavaTest {
         }
     }
 
-    public static void doCompletion(boolean stream, boolean async) throws OpenAIError {
+    public static void doCompletion(boolean stream) throws OpenAIError {
         Scanner scan = new Scanner(System.in);
         System.out.println(YELLOW + "Enter completion: ");
         String input = scan.nextLine();
@@ -86,26 +72,20 @@ public class JavaTest {
 
         // Loads the API key from the .env file in the root directory.
         String key = Dotenv.load().get("OPENAI_TOKEN");
-        OpenAI openai = new OpenAI(key);
+        OpenAIImpl openai = new OpenAIImpl(key);
         System.out.println(RESET + "Generating Response" + PURPLE);
 
         // Generate a print the message
         if (stream) {
-            if (async)
-                openai.streamCompletionAsync(request, response -> System.out.print(response.get(0).getText()));
-            else
-                openai.streamCompletion(request, response -> System.out.print(response.get(0).getText()));
+            for (CompletionResponseChunk chunk : openai.streamCompletion(request)) {
+                System.out.print(chunk.get(0).getText());
+            }
         } else {
-            if (async)
-                openai.createCompletionAsync(request, response -> System.out.println(response.get(0).getText()));
-            else
-                System.out.println(openai.createCompletion(request).get(0).getText());
+            System.out.println(openai.createCompletion(request).get(0).getText());
         }
-
-        System.out.println(CYAN + "  !!! Code has finished executing. Wait for async code to complete." + RESET);
     }
 
-    public static void doChat(boolean stream, boolean async) throws OpenAIError {
+    public static void doChat(boolean stream) throws OpenAIError {
         Scanner scan = new Scanner(System.in);
 
         // This is the prompt that the bot will refer back to for every message.
@@ -125,7 +105,7 @@ public class JavaTest {
 
         // Loads the API key from the .env file in the root directory.
         String key = Dotenv.load().get("OPENAI_TOKEN");
-        OpenAI openai = new OpenAI(key);
+        OpenAIImpl openai = new OpenAIImpl(key);
 
         // The conversation lasts until the user quits the program
         while (true) {
@@ -139,33 +119,16 @@ public class JavaTest {
 
             System.out.println(RESET + "Generating Response" + PURPLE);
             if (stream) {
-                if (async) {
-                    openai.streamChatCompletionAsync(request, response -> {
-                        System.out.print(response.get(0).getDelta());
-                        if (response.get(0).isFinished())
-                            messages.add(response.get(0).getMessage());
-                    });
-                } else {
-                    openai.streamChatCompletion(request, response -> {
-                        System.out.print(response.get(0).getDelta());
-                        if (response.get(0).isFinished())
-                            messages.add(response.get(0).getMessage());
-                    });
+                for (ChatResponseChunk chunk : openai.streamChatCompletion(request)) {
+                    System.out.print(chunk.get(0).getDelta());
+                    if (chunk.get(0).isFinished())
+                        messages.add(chunk.get(0).getMessage());
                 }
             } else {
-                if (async) {
-                    openai.createChatCompletionAsync(request, response -> {
-                        System.out.println(response.get(0).getMessage().getContent());
-                        messages.add(response.get(0).getMessage());
-                    });
-                } else {
-                    ChatResponse response = openai.createChatCompletion(request);
-                    System.out.println(response.get(0).getMessage().getContent());
-                    messages.add(response.get(0).getMessage());
-                }
+                ChatResponse response = openai.createChatCompletion(request);
+                System.out.println(response.get(0).getMessage().getContent());
+                messages.add(response.get(0).getMessage());
             }
-
-            System.out.println(CYAN + "  !!! Code has finished executing. Wait for async code to complete.");
         }
     }
 }
