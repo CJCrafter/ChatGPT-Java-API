@@ -11,9 +11,9 @@ package com.cjcrafter.openai.chat.tool
  * @property properties The map of method parameters.
  */
 data class FunctionParameters internal constructor(
-    val type: String = "object",
-    val properties: MutableMap<String, FunctionProperty> = mutableMapOf(),
-    val required: MutableSet<String> = mutableSetOf(),
+    var type: String = "object",
+    var properties: MutableMap<String, FunctionProperty> = mutableMapOf(),
+    var required: MutableSet<String> = mutableSetOf(),
 ) {
     /**
      * Require that the given parameter is used by ChatGPT.

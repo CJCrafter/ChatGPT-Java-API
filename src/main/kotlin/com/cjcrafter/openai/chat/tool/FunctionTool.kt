@@ -17,9 +17,9 @@ import com.cjcrafter.openai.util.RegexInternals
  * @property description A description of the function
  */
 data class FunctionTool internal constructor(
-    @FunctionTag val name: String,
-    val parameters: FunctionParameters,
-    val description: String? = null,
+    @FunctionTag var name: String,
+    var parameters: FunctionParameters,
+    var description: String? = null,
 ) : AbstractTool() {
 
     init {

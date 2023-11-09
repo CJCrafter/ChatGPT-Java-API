@@ -23,9 +23,7 @@ data class FunctionCall(
     var name: String,
     var arguments: String,
 ) {
-
-    @ApiStatus.Internal
-    fun update(delta: FunctionCallDelta) {
+    internal fun update(delta: FunctionCallDelta) {
         // The only field that updates is arguments
         arguments += delta.arguments
     }

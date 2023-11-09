@@ -10,6 +10,6 @@ package com.cjcrafter.openai.chat.tool
  * @property function The function. This is only used if [type] is [ToolType.FUNCTION].
  */
 data class Tool(
-    val type: ToolType,
-    val function: FunctionTool,
+    var type: ToolType,
+    var function: FunctionTool,
 )

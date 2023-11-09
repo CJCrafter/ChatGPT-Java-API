@@ -3,6 +3,9 @@ package com.cjcrafter.openai.chat.tool
 import com.cjcrafter.openai.jackson.ToolChoiceDeserializer
 import com.cjcrafter.openai.jackson.ToolChoiceSerializer
 
+/**
+ * Represents the configuration for tool choice. Defaults to [Auto].
+ */
 sealed class ToolChoice {
 
     /**

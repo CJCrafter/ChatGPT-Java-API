@@ -1,3 +1,4 @@
+import com.cjcrafter.openai.OpenAI;
 import com.cjcrafter.openai.OpenAIImpl;
 import com.cjcrafter.openai.chat.ChatMessage;
 import com.cjcrafter.openai.chat.ChatRequest;
@@ -71,7 +72,9 @@ public class JavaTest {
 
         // Loads the API key from the .env file in the root directory.
         String key = Dotenv.load().get("OPENAI_TOKEN");
-        OpenAIImpl openai = new OpenAIImpl(key);
+        OpenAI openai = OpenAI.builder()
+                .apiKey(key)
+                .build();
         System.out.println(RESET + "Generating Response" + PURPLE);
 
         // Generate a print the message
@@ -104,7 +107,9 @@ public class JavaTest {
 
         // Loads the API key from the .env file in the root directory.
         String key = Dotenv.load().get("OPENAI_TOKEN");
-        OpenAIImpl openai = new OpenAIImpl(key);
+        OpenAI openai = OpenAI.builder()
+                .apiKey(key)
+                .build();
 
         // The conversation lasts until the user quits the program
         while (true) {
