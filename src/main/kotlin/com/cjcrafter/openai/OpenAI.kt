@@ -5,8 +5,6 @@ import com.cjcrafter.openai.chat.tool.ToolChoice
 import com.cjcrafter.openai.completions.CompletionRequest
 import com.cjcrafter.openai.completions.CompletionResponse
 import com.cjcrafter.openai.completions.CompletionResponseChunk
-import com.cjcrafter.openai.jackson.ChatChoiceChunkDeserializer
-import com.cjcrafter.openai.jackson.ChatChoiceChunkSerializer
 import com.cjcrafter.openai.jackson.ToolChoiceDeserializer
 import com.cjcrafter.openai.jackson.ToolChoiceSerializer
 import com.fasterxml.jackson.annotation.JsonInclude
@@ -145,8 +143,6 @@ interface OpenAI {
 
             // Register modules with custom serializers/deserializers
             val module = SimpleModule().apply {
-                addSerializer(ChatChoiceChunk::class.java, ChatChoiceChunkSerializer())
-                addDeserializer(ChatChoiceChunk::class.java, ChatChoiceChunkDeserializer())
                 addSerializer(ToolChoice::class.java, ToolChoiceSerializer())
                 addDeserializer(ToolChoice::class.java, ToolChoiceDeserializer())
             }

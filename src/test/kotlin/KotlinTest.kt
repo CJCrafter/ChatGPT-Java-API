@@ -125,7 +125,7 @@ fun doChat(stream: Boolean) {
         do {
             if (stream) {
                 for (chunk in openai.streamChatCompletion(request)) {
-                    print(chunk[0].delta)
+                    chunk[0].delta?.content?.let { print(it) }
                     if (chunk[0].isFinished()) {
                         finishReason = chunk[0].finishReason
                         messages.add(chunk[0].message)

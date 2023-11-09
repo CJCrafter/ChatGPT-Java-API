@@ -1,11 +1,12 @@
 package com.cjcrafter.openai.chat
 
 import com.cjcrafter.openai.FinishReason
-import com.cjcrafter.openai.jackson.ChatChoiceChunkDeserializer
-import com.cjcrafter.openai.jackson.ChatChoiceChunkSerializer
+import com.cjcrafter.openai.OpenAI
+import com.cjcrafter.openai.chat.tool.ChatMessageDelta
+import com.cjcrafter.openai.chat.tool.ToolCall
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import java.lang.IllegalArgumentException
 
 /**
  *
@@ -29,24 +30,38 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
  */
 data class ChatChoiceChunk(
     val index: Int,
-    val message: ChatMessage,
-    var delta: String,
+    var delta: ChatMessageDelta? = null,
     @JsonProperty("finish_reason") var finishReason: FinishReason?
 ) {
+    val message: ChatMessage = ChatMessage(delta?.role!!, delta?.content, delta?.toolCalls?.map { it.toToolCall() })
 
-    internal fun update(json: String) {
-        val node: JsonNode = jacksonObjectMapper().readTree(json)
-        val deltaNode = node.get("delta")
-        delta = if (deltaNode?.has("content") == true && !deltaNode.get("content").isNull) {
-            deltaNode.get("content").asText()
-        } else {
-            ""
+    // Reads the json from the OpenAI API, and sets delta. message accumulates changes
+    internal fun update(json: JsonNode) {
+        val deltaNode = json.get("delta") ?: throw IllegalArgumentException("Passed a json without delta")
+        val delta = OpenAI.createObjectMapper().treeToValue(deltaNode, ChatMessageDelta::class.java)
+
+        // The "bread and butter" of streaming. You can start showing the user
+        // generated content usually *within a second*. However, for Tool Calls,
+        // this will always be null.
+        if (message.content == null)
+            message.content = delta?.content // Always null for tool calls
+        else if (delta.content != null)
+            message.content += delta.content
+
+        // Handle updating the tool call
+        if (message.toolCalls != null && delta.toolCalls != null) {
+            for (deltaToolCall in delta.toolCalls) {
+                val toolCall = message.toolCalls!![deltaToolCall.index]
+                toolCall.update(deltaToolCall)
+            }
         }
 
-        message.content += delta
-        finishReason = node.get("finish_reason")?.takeIf { !it.isNull }?.asText()?.let {
-            FinishReason.valueOf(it.uppercase())
-        }
+        // The reason the bot stopped generating tokens. This is null until done.
+        finishReason = json.get("finish_reason")?.let { if (it.isNull) null else FinishReason.valueOf(it.asText().uppercase()) }
+
+        // People can manually check changes instead of using this API's
+        // accumulative changes.
+        this.delta = delta
     }
 
     /**
@@ -55,30 +70,4 @@ data class ChatChoiceChunk(
      * complete message.
      */
     fun isFinished() = finishReason != null
-
-    companion object {
-        @JvmStatic
-        fun serializer() = ChatChoiceChunkSerializer()
-
-        @JvmStatic
-        fun deserializer() = ChatChoiceChunkDeserializer()
-    }
 }
-
-/*
-Below is a potential Steam response from OpenAI. You can see that the first
-message contains 0 generated content, and the last message (before "[DONE]")
-adds the finish_reason.
-
-data: {"id":"chatcmpl-6xUB4Vi8jEG8u4hMBTMeO8KXgA87z","object":"chat.completion.chunk","created":1679635374,"model":"gpt-3.5-turbo-0301","choices":[{"delta":{"role":"assistant"},"index":0,"finish_reason":null}]}
-
-data: {"id":"chatcmpl-6xUB4Vi8jEG8u4hMBTMeO8KXgA87z","object":"chat.completion.chunk","created":1679635374,"model":"gpt-3.5-turbo-0301","choices":[{"delta":{"content":"Hello"},"index":0,"finish_reason":null}]}
-
-data: {"id":"chatcmpl-6xUB4Vi8jEG8u4hMBTMeO8KXgA87z","object":"chat.completion.chunk","created":1679635374,"model":"gpt-3.5-turbo-0301","choices":[{"delta":{"content":" World"},"index":0,"finish_reason":null}]}
-
-data: {"id":"chatcmpl-6xUB4Vi8jEG8u4hMBTMeO8KXgA87z","object":"chat.completion.chunk","created":1679635374,"model":"gpt-3.5-turbo-0301","choices":[{"delta":{"content":"."},"index":0,"finish_reason":null}]}
-
-data: {"id":"chatcmpl-6xUB4Vi8jEG8u4hMBTMeO8KXgA87z","object":"chat.completion.chunk","created":1679635374,"model":"gpt-3.5-turbo-0301","choices":[{"delta":{},"index":0,"finish_reason":"stop"}]}
-
-data: [DONE]
- */

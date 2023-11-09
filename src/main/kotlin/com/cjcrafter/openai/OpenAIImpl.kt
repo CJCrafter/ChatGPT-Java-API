@@ -9,45 +9,11 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.jetbrains.annotations.ApiStatus
 import java.io.BufferedReader
 import java.io.IOException
 
-/**
- * The `OpenAI` class contains all the API calls to OpenAI's endpoint. Whether
- * you are working with images, chat, or completions, you need to have an
- * `OpenAI` instance to make the API requests.
- *
- * To get your API key:
- * 1. Log in to your account: Go to [https://www.openai.com/](openai.com) and
- * log in.
- * 2. Access the API dashboard: After logging in, click on the "API" tab.
- * 3. Choose a subscription plan: Select a suitable plan based on your needs
- * and complete the payment process.
- * 4. Obtain your API key: After subscribing to a plan, you will be redirected
- * to the API dashboard, where you can find your unique API key. Copy and store it securely.
- *
- * All API methods in this class have a non-blocking option which will enqueues
- * the HTTPS request on a different thread. These method names have `Async
- * appended to the end of their names.
- *
- * Completions API:
- * * [createCompletion]
- * * [streamCompletion]
- * * [createCompletionAsync]
- * * [streamCompletionAsync]
- *
- * Chat API:
- * * [createChatCompletion]
- * * [streamChatCompletion]
- * * [createChatCompletionAsync]
- * * [streamChatCompletionAsync]
- *
- * @property apiKey Your OpenAI API key. It starts with `"sk-"` (without the quotes).
- * @property organization If you belong to multiple organizations, specify which one to use (else `null`).
- * @property client Controls proxies, timeouts, etc.
- * @constructor Create a ChatBot for responding to requests.
- */
-open class OpenAIImpl @JvmOverloads constructor(
+open class OpenAIImpl @ApiStatus.Internal constructor(
     protected val apiKey: String,
     protected val organization: String? = null,
     private val client: OkHttpClient = OkHttpClient()
@@ -98,7 +64,9 @@ open class OpenAIImpl @JvmOverloads constructor(
         }
 
         val json = httpResponse.body?.byteStream()?.bufferedReader() ?: throw IOException("Response body is null")
-        return objectMapper.readValue(json, ChatResponse::class.java)
+        val str = json.readText()
+        println(str)
+        return objectMapper.readValue(str, ChatResponse::class.java)
     }
 
     override fun streamChatCompletion(request: ChatRequest): Iterable<ChatResponseChunk> {
@@ -143,10 +111,11 @@ open class OpenAIImpl @JvmOverloads constructor(
 
                     override fun next(): ChatResponseChunk {
                         val currentLine = nextLine ?: throw NoSuchElementException("No more lines")
-                        //println("         $currentLine")
+                        //println("    $currentLine")
                         chunk = chunk?.apply { update(objectMapper.readTree(currentLine) as ObjectNode) } ?: objectMapper.readValue(currentLine, ChatResponseChunk::class.java)
                         nextLine = readNextLine(reader) // Prepare the next line
                         return chunk!!
+                        //return ChatResponseChunk("1", 1, listOf())
                     }
                 }
             }

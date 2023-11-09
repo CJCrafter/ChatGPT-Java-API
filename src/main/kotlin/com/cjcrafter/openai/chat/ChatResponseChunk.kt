@@ -32,7 +32,7 @@ data class ChatResponseChunk(
     internal fun update(json: ObjectNode) {
         val choicesArray = json.get("choices") as? ArrayNode
         choicesArray?.forEachIndexed { index, jsonNode ->
-            choices[index].update(jsonNode.toString())
+            choices[index].update(jsonNode)
         }
     }
 

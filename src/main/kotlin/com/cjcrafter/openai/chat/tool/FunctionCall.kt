@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import org.jetbrains.annotations.ApiStatus
 
 /**
  * Represents a function call by ChatGPT. When ChatGPT calls a function, you
@@ -22,6 +23,12 @@ data class FunctionCall(
     var name: String,
     var arguments: String,
 ) {
+
+    @ApiStatus.Internal
+    fun update(delta: FunctionCallDelta) {
+        // The only field that updates is arguments
+        arguments += delta.arguments
+    }
 
     /**
      * Attempts to parse the arguments passed to the function.
