@@ -1,6 +1,5 @@
 package com.cjcrafter.openai.chat
 
-import com.google.gson.JsonObject
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime

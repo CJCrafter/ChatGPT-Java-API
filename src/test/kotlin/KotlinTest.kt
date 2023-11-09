@@ -1,13 +1,14 @@
+import com.cjcrafter.openai.FinishReason
 import com.cjcrafter.openai.OpenAIImpl
-import com.cjcrafter.openai.chat.ChatMessage
+import com.cjcrafter.openai.chat.*
 import com.cjcrafter.openai.chat.ChatMessage.Companion.toSystemMessage
 import com.cjcrafter.openai.chat.ChatMessage.Companion.toUserMessage
-import com.cjcrafter.openai.chat.ChatRequest
-import com.cjcrafter.openai.chat.ChatResponse
-import com.cjcrafter.openai.chat.ChatResponseChunk
+import com.cjcrafter.openai.chat.tool.FunctionTool
+import com.cjcrafter.openai.chat.tool.ToolType
 import com.cjcrafter.openai.completions.CompletionRequest
 import com.cjcrafter.openai.exception.OpenAIError
 import io.github.cdimascio.dotenv.dotenv
+import org.intellij.lang.annotations.Language
 import java.util.*
 
 // Colors for pretty formatting
@@ -84,10 +85,20 @@ fun doChat(stream: Boolean) {
     // ChatRequest is the request we send to OpenAI API. You can modify the
     // model, temperature, maxTokens, etc. This should be saved, so you can
     // reuse it for a conversation.
-    val request = ChatRequest(model = "gpt-3.5-turbo", messages = messages)
+    val request = ChatRequest.builder()
+        .model("gpt-3.5-turbo")
+        .messages(messages)
+        .addTool(FunctionTool.builder()
+            .name("measure_length")
+            .description("Measures the length of some object/thing")
+            .addEnumParameter("unit", mutableListOf("meters", "feet"), required = true)
+            .addStringParameter("thing", "Some object to measure, like a door or tree", required = true)
+            .build()
+        )
+        .build()
 
     // Loads the API key from the .env file in the root directory.
-    val key = dotenv()["OPENAI_TOKEN"] + "lolnotakey"
+    val key = dotenv()["OPENAI_TOKEN"]
     val openai = OpenAIImpl(key)
 
     // The conversation lasts until the user quits the program
@@ -100,15 +111,46 @@ fun doChat(stream: Boolean) {
         // Add the newest user message to the conversation
         messages.add(input.toUserMessage())
         println(RESET + "Generating Response" + PURPLE)
-        if (stream) {
-            for (chunk in openai.streamChatCompletion(request)) {
-                print(chunk[0].delta)
-                if (chunk[0].isFinished()) messages.add(chunk[0].message)
+
+        var finishReason: FinishReason? = null
+        do {
+            if (stream) {
+                for (chunk in openai.streamChatCompletion(request)) {
+                    print(chunk[0].delta)
+                    if (chunk[0].isFinished()) {
+                        finishReason = chunk[0].finishReason
+                        messages.add(chunk[0].message)
+                    }
+                }
+            } else {
+                val response = openai.createChatCompletion(request)[0]
+                println(response.message.content)
+                messages.add(response.message)
+                finishReason = response.finishReason
             }
-        } else {
-            val response = openai.createChatCompletion(request)
-            println(response[0].message.content)
-            messages.add(response[0].message)
-        }
+
+            if (finishReason == FinishReason.TOOL_CALLS) {
+                for (tool in messages.last().toolCalls!!) {
+                    if (tool.type != ToolType.FUNCTION)
+                        continue
+
+                    println("    $CYAN Called function ${tool.function.name} with arguments \n${tool.function.arguments.split("\n").joinToString("        \n")} $PURPLE")
+
+                    val args = tool.function.tryParseArguments()
+                    val length = get_length(args["thing"]!!.asString, args["unit"]!!.asString)
+                    messages.add(ChatMessage(
+                        role = ChatUser.TOOL,
+                        content = length,
+                        toolCallId = tool.id,
+                    ))
+                }
+            }
+        } while (finishReason == FinishReason.TOOL_CALLS)
     }
+}
+
+fun get_length(thing: String, unit: String): String {
+    @Language("JSON")
+    val json = """{"thing": "$thing", "unit": "$unit", "length": 3}"""
+    return json
 }

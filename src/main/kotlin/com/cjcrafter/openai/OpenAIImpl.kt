@@ -96,7 +96,15 @@ open class OpenAIImpl @JvmOverloads constructor(
         request.stream = false // use streamChatCompletion for stream=true
         val httpRequest = buildRequest(request, CHAT_ENDPOINT)
 
-        return ChatResponse("1", 1, listOf(), ChatUsage(1, 1, 1))
+        val httpResponse = client.newCall(httpRequest).execute()
+        if (!httpResponse.isSuccessful) {
+            val json = httpResponse.body?.byteStream()?.bufferedReader()?.readText()
+            httpResponse.close()
+            throw IOException("Unexpected code $httpResponse, recieved: $json")
+        }
+
+        val json = httpResponse.body?.byteStream()?.bufferedReader() ?: throw IOException("Response body is null")
+        return gson.fromJson(json, ChatResponse::class.java)
     }
 
     override fun streamChatCompletion(request: ChatRequest): Iterable<ChatResponseChunk> {

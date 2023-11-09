@@ -13,7 +13,10 @@ class ExceptionTests {
     fun test_invalidModel() {
         val key = Dotenv.load()["OPENAI_TOKEN"]
         val messages = mutableListOf("Just say hi".toSystemMessage())
-        val request = ChatRequest("gpt-238974-invalid-model", messages)
+        val request = ChatRequest.builder()
+            .model("gpt-238974-invalid-model")
+            .messages(messages)
+            .build()
         val openai = OpenAIImpl(key)
         Assertions.assertThrows(InvalidRequestError::class.java) { openai.createChatCompletion(request) }
     }
@@ -22,7 +25,10 @@ class ExceptionTests {
     fun test_invalidToken() {
         val key = "sk-Thisisaninvalidtoken"
         val messages = mutableListOf("Just say hi".toSystemMessage())
-        val request = ChatRequest("gpt-3.5-turbo", messages)
+        val request = ChatRequest.builder()
+            .model("gpt-3.5-turbo")
+            .messages(messages)
+            .build()
         val openai = OpenAIImpl(key)
         Assertions.assertThrows(InvalidRequestError::class.java) { openai.createChatCompletion(request) }
     }

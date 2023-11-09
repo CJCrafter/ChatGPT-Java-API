@@ -1,6 +1,7 @@
 package com.cjcrafter.openai.chat
 
 import com.cjcrafter.openai.FinishReason
+import com.cjcrafter.openai.gson.ChatChoiceChunkAdapter
 import com.google.gson.JsonObject
 import com.google.gson.annotations.SerializedName
 
@@ -44,6 +45,11 @@ data class ChatChoiceChunk(
      * complete message.
      */
     fun isFinished() = finishReason != null
+
+    companion object {
+        @JvmStatic
+        fun adapter() = ChatChoiceChunkAdapter()
+    }
 }
 
 /*

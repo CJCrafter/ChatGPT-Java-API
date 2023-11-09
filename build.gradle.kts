@@ -20,6 +20,7 @@ repositories {
 dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.9.2")
     implementation("com.google.code.gson:gson:2.10.1")
+    implementation("org.jetbrains:annotations:24.0.1")
 
     testImplementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")

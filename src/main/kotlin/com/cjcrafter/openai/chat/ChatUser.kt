@@ -1,6 +1,6 @@
 package com.cjcrafter.openai.chat
 
-import com.cjcrafter.openai.gson.ChatUserAdapter
+import com.google.gson.annotations.SerializedName
 
 /**
  * ChatGPT's biggest innovation is its conversational memory. To remember the
@@ -21,6 +21,7 @@ enum class ChatUser {
      *
      * @see <a href="https://github.com/f/awesome-chatgpt-prompts">System Message Examples/Ideas</a>
      */
+    @SerializedName("system")
     SYSTEM,
 
     /**
@@ -28,23 +29,19 @@ enum class ChatUser {
      * the user, you should lock the conversation until [ASSISTANT] replies to
      * the user's message.
      */
+    @SerializedName("user")
     USER,
 
     /**
      * [ASSISTANT] is the AI that generates responses.
      */
-    ASSISTANT;
+    @SerializedName("assistant")
+    ASSISTANT,
 
-    companion object {
+    @SerializedName("tool")
+    TOOL,
 
-        /**
-         * Adapter
-         *
-         * @return
-         */
-        @JvmStatic
-        fun adapter() : ChatUserAdapter {
-            return ChatUserAdapter()
-        }
-    }
+    @SerializedName("function")
+    @Deprecated("functions have been replaced by tools")
+    FUNCTION;
 }
