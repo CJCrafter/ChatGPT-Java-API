@@ -1,6 +1,7 @@
 package com.cjcrafter.openai.chat.tool
 
-import com.cjcrafter.openai.gson.ToolChoiceAdapter
+import com.cjcrafter.openai.jackson.ToolChoiceDeserializer
+import com.cjcrafter.openai.jackson.ToolChoiceSerializer
 
 sealed class ToolChoice {
 
@@ -24,6 +25,9 @@ sealed class ToolChoice {
 
     companion object {
         @JvmStatic
-        fun adapter() = ToolChoiceAdapter()
+        fun serializer() = ToolChoiceSerializer()
+
+        @JvmStatic
+        fun deserializer() = ToolChoiceDeserializer()
     }
 }

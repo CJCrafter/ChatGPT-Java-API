@@ -3,24 +3,24 @@ package com.cjcrafter.openai.chat
 import com.cjcrafter.openai.chat.tool.AbstractTool
 import com.cjcrafter.openai.chat.tool.Tool
 import com.cjcrafter.openai.chat.tool.ToolChoice
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
 
 data class ChatRequest @JvmOverloads internal constructor(
     var messages: MutableList<ChatMessage>,
     var model: String,
-    @field:SerializedName("frequency_penalty") var frequencyPenalty: Float? = null,
-    @field:SerializedName("logit_bias") var logitBias: MutableMap<String, Float>? = null,
-    @field:SerializedName("max_tokens") var maxTokens: Int? = null,
+    @JsonProperty("frequency_penalty") var frequencyPenalty: Float? = null,
+    @JsonProperty("logit_bias") var logitBias: MutableMap<String, Float>? = null,
+    @JsonProperty("max_tokens") var maxTokens: Int? = null,
     var n: Int? = null,
-    @field:SerializedName("presence_penalty") var presencePenalty: Float? = null,
-    @field:SerializedName("response_format") var responseFormat: ChatResponseFormat? = null,
+    @JsonProperty("presence_penalty") var presencePenalty: Float? = null,
+    @JsonProperty("response_format") var responseFormat: ChatResponseFormat? = null,
     var seed: Int? = null,
     var stop: String? = null,
     @Deprecated("Use OpenAI#streamChatCompletion") var stream: Boolean? = null,
     var temperature: Float? = null,
-    @field:SerializedName("top_p") var topP: Float? = null,
+    @JsonProperty("top_p") var topP: Float? = null,
     var tools: MutableList<Tool>? = null,
-    @field:SerializedName("tool_choice") var toolChoice: ToolChoice? = null,
+    @JsonProperty("tool_choice") var toolChoice: ToolChoice? = null,
     var user: String? = null,
 ) {
 

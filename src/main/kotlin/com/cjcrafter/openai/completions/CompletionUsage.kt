@@ -1,6 +1,6 @@
 package com.cjcrafter.openai.completions
 
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
 
 /**
  * Holds how many tokens that were used by your API request. Use these
@@ -15,7 +15,7 @@ import com.google.gson.annotations.SerializedName
  * @param totalTokens      How many tokens in total.
  */
 data class CompletionUsage(
-    @field:SerializedName("prompt_tokens") val promptTokens: Int,
-    @field:SerializedName("completion_tokens") val completionTokens: Int,
-    @field:SerializedName("total_tokens") val totalTokens: Int
+    @JsonProperty("prompt_tokens") val promptTokens: Int,
+    @JsonProperty("completion_tokens") val completionTokens: Int,
+    @JsonProperty("total_tokens") val totalTokens: Int
 )

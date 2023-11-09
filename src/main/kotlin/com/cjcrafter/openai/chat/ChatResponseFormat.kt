@@ -1,13 +1,13 @@
 package com.cjcrafter.openai.chat
 
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
 
 class ChatResponseFormat {
 
     enum class Type {
-        @SerializedName("json")
+        @JsonProperty("json")
         JSON,
-        @SerializedName("text")
+        @JsonProperty("text")
         TEXT
     }
 }

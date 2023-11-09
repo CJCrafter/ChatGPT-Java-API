@@ -1,6 +1,6 @@
 package com.cjcrafter.openai.chat.tool
 
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
 
 enum class ToolType {
 
@@ -9,6 +9,6 @@ enum class ToolType {
      *
      * @see FunctionTool
      */
-    @SerializedName("function")
+    @JsonProperty("function")
     FUNCTION;
 }

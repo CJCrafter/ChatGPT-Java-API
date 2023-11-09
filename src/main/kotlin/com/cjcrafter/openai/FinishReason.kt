@@ -1,6 +1,6 @@
 package com.cjcrafter.openai
 
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
 
 /**
  * [FinishReason] wraps the possible reasons that a generation model may stop
@@ -15,7 +15,7 @@ enum class FinishReason {
      * completely generates its entire message, and has nothing else to add.
      * Ideally, you always want your finish reason to be [STOP].
      */
-    @SerializedName("stop")
+    @JsonProperty("stop")
     STOP,
 
     /**
@@ -24,23 +24,23 @@ enum class FinishReason {
      * message with finish reason [LENGTH]. Some models have a higher token
      * limit than others.
      */
-    @SerializedName("length")
+    @JsonProperty("length")
     LENGTH,
 
     /**
      * Occurs due to a flag from OpenAI's content filters. This occurrence is
      * rare, and tends to happen when you blatantly violate OpenAI's terms.
      */
-    @SerializedName("content_filter")
+    @JsonProperty("content_filter")
     CONTENT_FILTER,
 
     /**
      * Occurs when the model uses one of the available tools.
      */
-    @SerializedName("tool_calls")
+    @JsonProperty("tool_calls")
     TOOL_CALLS,
 
     @Deprecated("functions have been replaced by tools")
-    @SerializedName("function_call")
+    @JsonProperty("function_call")
     FUNCTION_CALL;
 }

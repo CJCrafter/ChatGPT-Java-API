@@ -5,7 +5,6 @@ import com.cjcrafter.openai.chat.ChatResponse;
 import com.cjcrafter.openai.chat.ChatResponseChunk;
 import com.cjcrafter.openai.completions.CompletionRequest;
 import com.cjcrafter.openai.completions.CompletionResponseChunk;
-import com.cjcrafter.openai.exception.OpenAIError;
 import io.github.cdimascio.dotenv.Dotenv;
 
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ public class JavaTest {
     public static final String CYAN = "\033[0;36m";
     public static final String WHITE = "\033[0;37m";
 
-    public static void main(String[] args) throws OpenAIError {
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
         // Print out the menu of options
@@ -58,7 +57,7 @@ public class JavaTest {
         }
     }
 
-    public static void doCompletion(boolean stream) throws OpenAIError {
+    public static void doCompletion(boolean stream) {
         Scanner scan = new Scanner(System.in);
         System.out.println(YELLOW + "Enter completion: ");
         String input = scan.nextLine();
@@ -85,7 +84,7 @@ public class JavaTest {
         }
     }
 
-    public static void doChat(boolean stream) throws OpenAIError {
+    public static void doChat(boolean stream) {
         Scanner scan = new Scanner(System.in);
 
         // This is the prompt that the bot will refer back to for every message.

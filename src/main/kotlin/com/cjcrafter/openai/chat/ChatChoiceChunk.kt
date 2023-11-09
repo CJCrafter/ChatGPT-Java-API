@@ -1,9 +1,11 @@
 package com.cjcrafter.openai.chat
 
 import com.cjcrafter.openai.FinishReason
-import com.cjcrafter.openai.gson.ChatChoiceChunkAdapter
-import com.google.gson.JsonObject
-import com.google.gson.annotations.SerializedName
+import com.cjcrafter.openai.jackson.ChatChoiceChunkDeserializer
+import com.cjcrafter.openai.jackson.ChatChoiceChunkSerializer
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 
 /**
  *
@@ -29,14 +31,22 @@ data class ChatChoiceChunk(
     val index: Int,
     val message: ChatMessage,
     var delta: String,
-    @field:SerializedName("finish_reason") var finishReason: FinishReason?
+    @JsonProperty("finish_reason") var finishReason: FinishReason?
 ) {
 
-    internal fun update(json: JsonObject)  {
-        val deltaJson = json["delta"].asJsonObject
-        delta = if (deltaJson.has("content")) deltaJson["content"].asString else ""
+    internal fun update(json: String) {
+        val node: JsonNode = jacksonObjectMapper().readTree(json)
+        val deltaNode = node.get("delta")
+        delta = if (deltaNode?.has("content") == true && !deltaNode.get("content").isNull) {
+            deltaNode.get("content").asText()
+        } else {
+            ""
+        }
+
         message.content += delta
-        finishReason = if (json["finish_reason"].isJsonNull) null else FinishReason.valueOf(json["finish_reason"].asString.uppercase())
+        finishReason = node.get("finish_reason")?.takeIf { !it.isNull }?.asText()?.let {
+            FinishReason.valueOf(it.uppercase())
+        }
     }
 
     /**
@@ -48,7 +58,10 @@ data class ChatChoiceChunk(
 
     companion object {
         @JvmStatic
-        fun adapter() = ChatChoiceChunkAdapter()
+        fun serializer() = ChatChoiceChunkSerializer()
+
+        @JvmStatic
+        fun deserializer() = ChatChoiceChunkDeserializer()
     }
 }
 

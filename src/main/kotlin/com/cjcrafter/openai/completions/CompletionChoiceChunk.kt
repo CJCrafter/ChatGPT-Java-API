@@ -1,8 +1,7 @@
 package com.cjcrafter.openai.completions
 
 import com.cjcrafter.openai.FinishReason
-import com.cjcrafter.openai.chat.ChatChoiceChunk
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
 
 /**
  * The OpenAI API returns a list of `CompletionChoice`. Each choice has a
@@ -25,7 +24,7 @@ data class CompletionChoiceChunk(
     val text: String,
     val index: Int,
     val logprobs: List<Float>?,
-    @field:SerializedName("finish_reason") val finishReason: FinishReason?
+    @JsonProperty("finish_reason") val finishReason: FinishReason?
 ) {
     /**
      * Returns `true` if this message chunk is complete. Once complete, no more

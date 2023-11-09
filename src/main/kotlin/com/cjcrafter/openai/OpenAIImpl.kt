@@ -5,9 +5,7 @@ import com.cjcrafter.openai.completions.CompletionRequest
 import com.cjcrafter.openai.completions.CompletionResponse
 import com.cjcrafter.openai.completions.CompletionResponseChunk
 import com.cjcrafter.openai.completions.CompletionUsage
-import com.cjcrafter.openai.exception.WrappedIOError
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
+import com.fasterxml.jackson.databind.node.ObjectNode
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -55,10 +53,10 @@ open class OpenAIImpl @JvmOverloads constructor(
     private val client: OkHttpClient = OkHttpClient()
 ): OpenAI {
     protected val mediaType = "application/json; charset=utf-8".toMediaType()
-    protected val gson = OpenAI.createGson()
+    protected val objectMapper = OpenAI.createObjectMapper()
 
     protected open fun buildRequest(request: Any, endpoint: String): Request {
-        val json = gson.toJson(request)
+        val json = objectMapper.writeValueAsString(request)
         val body: RequestBody = json.toRequestBody(mediaType)
         return Request.Builder()
             .url("https://api.openai.com/$endpoint")
@@ -73,12 +71,8 @@ open class OpenAIImpl @JvmOverloads constructor(
         request.stream = false // use streamCompletion for stream=true
         val httpRequest = buildRequest(request, COMPLETIONS_ENDPOINT)
 
-        try {
-            val httpResponse = client.newCall(httpRequest).execute()
-            println(httpResponse)
-        } catch (ex: IOException) {
-            throw WrappedIOError(ex)
-        }
+        val httpResponse = client.newCall(httpRequest).execute()
+        println(httpResponse)
 
         return CompletionResponse("1", 1, "1", listOf(), CompletionUsage(1, 1, 1))
     }
@@ -104,7 +98,7 @@ open class OpenAIImpl @JvmOverloads constructor(
         }
 
         val json = httpResponse.body?.byteStream()?.bufferedReader() ?: throw IOException("Response body is null")
-        return gson.fromJson(json, ChatResponse::class.java)
+        return objectMapper.readValue(json, ChatResponse::class.java)
     }
 
     override fun streamChatCompletion(request: ChatRequest): Iterable<ChatResponseChunk> {
@@ -150,7 +144,7 @@ open class OpenAIImpl @JvmOverloads constructor(
                     override fun next(): ChatResponseChunk {
                         val currentLine = nextLine ?: throw NoSuchElementException("No more lines")
                         //println("         $currentLine")
-                        chunk = chunk?.apply { update(JsonParser.parseString(currentLine).asJsonObject) } ?: gson.fromJson(currentLine, ChatResponseChunk::class.java)
+                        chunk = chunk?.apply { update(objectMapper.readTree(currentLine) as ObjectNode) } ?: objectMapper.readValue(currentLine, ChatResponseChunk::class.java)
                         nextLine = readNextLine(reader) // Prepare the next line
                         return chunk!!
                     }
@@ -158,8 +152,6 @@ open class OpenAIImpl @JvmOverloads constructor(
             }
         }
     }
-
-
 
     companion object {
         const val COMPLETIONS_ENDPOINT = "v1/completions"

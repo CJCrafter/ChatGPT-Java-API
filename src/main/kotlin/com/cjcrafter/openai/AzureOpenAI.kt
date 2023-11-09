@@ -26,7 +26,7 @@ class AzureOpenAI @JvmOverloads constructor(
 ) : OpenAIImpl(apiKey, organization, client) {
 
     override fun buildRequest(request: Any, endpoint: String): Request {
-        val json = gson.toJson(request)
+        val json = objectMapper.writeValueAsString(request)
         val body: RequestBody = json.toRequestBody(mediaType)
         return Request.Builder()
             .url("$azureBaseUrl/openai/deployments/$modelName/$endpoint?api-version=$apiVersion")

@@ -1,6 +1,6 @@
 package com.cjcrafter.openai.completions
 
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
 
 /**
  * `CompletionRequest` holds the configurable options that can be sent to the OpenAI
@@ -37,18 +37,18 @@ data class CompletionRequest @JvmOverloads constructor(
     var model: String,
     var prompt: Any? = null,
     var suffix: String? = null,
-    @field:SerializedName("max_tokens") var maxTokens: Int? = null,
+    @JsonProperty("max_tokens") var maxTokens: Int? = null,
     var temperature: Number? = null,
-    @field:SerializedName("top_p") var topP: Number? = null,
+    @JsonProperty("top_p") var topP: Number? = null,
     var n: Int? = null,
     @Deprecated("Use OpenAI#streamCompletion") var stream: Boolean? = null,
     var logprobs: Int? = null,
     var echo: Boolean? = null,
     var stop: Any? = null,
-    @field:SerializedName("presence_penalty") var presencePenalty: Number? = null,
-    @field:SerializedName("frequency_penalty") var frequencyPenalty: Number? = null,
-    @field:SerializedName("best_of") var bestOf: Int? = null,
-    @field:SerializedName("logit_bias") var logitBias: Map<String, Int>? = null,
+    @JsonProperty("presence_penalty") var presencePenalty: Number? = null,
+    @JsonProperty("frequency_penalty") var frequencyPenalty: Number? = null,
+    @JsonProperty("best_of") var bestOf: Int? = null,
+    @JsonProperty("logit_bias") var logitBias: Map<String, Int>? = null,
     var user: String? = null
 ) {
 

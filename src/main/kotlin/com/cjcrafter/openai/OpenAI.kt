@@ -5,8 +5,15 @@ import com.cjcrafter.openai.chat.tool.ToolChoice
 import com.cjcrafter.openai.completions.CompletionRequest
 import com.cjcrafter.openai.completions.CompletionResponse
 import com.cjcrafter.openai.completions.CompletionResponseChunk
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
+import com.cjcrafter.openai.jackson.ChatChoiceChunkDeserializer
+import com.cjcrafter.openai.jackson.ChatChoiceChunkSerializer
+import com.cjcrafter.openai.jackson.ToolChoiceDeserializer
+import com.cjcrafter.openai.jackson.ToolChoiceSerializer
+import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.module.SimpleModule
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import okhttp3.OkHttpClient
 
 interface OpenAI {
@@ -129,22 +136,22 @@ interface OpenAI {
         fun azureBuilder() = AzureBuilder()
 
         /**
-         * Returns a Gson instance with the default OpenAI adapters registered.
+         * Returns an ObjectMapper instance with the default OpenAI adapters registered.
          * This can be used to save conversations (and other data) to file.
          */
-        @JvmStatic
-        fun createGson(): Gson = createGsonBuilder().create()
+        fun createObjectMapper(): ObjectMapper = jacksonObjectMapper().apply {
+            setSerializationInclusion(JsonInclude.Include.NON_NULL)
+            configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
-        /**
-         * Returns a GsonBuilder instance with the default OpenAI adapters
-         * registered.
-         */
-        @JvmStatic
-        fun createGsonBuilder(): GsonBuilder {
-            return GsonBuilder()
-                .serializeNulls()
-                .registerTypeAdapter(ChatChoiceChunk::class.java, ChatChoiceChunk.adapter())
-                .registerTypeAdapter(ToolChoice::class.java, ToolChoice.adapter())
+            // Register modules with custom serializers/deserializers
+            val module = SimpleModule().apply {
+                addSerializer(ChatChoiceChunk::class.java, ChatChoiceChunkSerializer())
+                addDeserializer(ChatChoiceChunk::class.java, ChatChoiceChunkDeserializer())
+                addSerializer(ToolChoice::class.java, ToolChoiceSerializer())
+                addDeserializer(ToolChoice::class.java, ToolChoiceDeserializer())
+            }
+
+            registerModule(module)
         }
 
         /**

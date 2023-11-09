@@ -19,7 +19,12 @@ repositories {
 
 dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.9.2")
-    implementation("com.google.code.gson:gson:2.10.1")
+
+    implementation("com.fasterxml.jackson.core:jackson-core:2.15.3")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.15.3")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:2.15.3")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.3")
+
     implementation("org.jetbrains:annotations:24.0.1")
 
     testImplementation("io.github.cdimascio:dotenv-kotlin:6.4.1")

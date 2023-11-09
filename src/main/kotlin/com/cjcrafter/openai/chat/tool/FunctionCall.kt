@@ -1,10 +1,10 @@
 package com.cjcrafter.openai.chat.tool
 
 import com.cjcrafter.openai.exception.HallucinationException
-import com.google.gson.Gson
-import com.google.gson.JsonElement
-import com.google.gson.JsonPrimitive
-import com.google.gson.JsonSyntaxException
+import com.fasterxml.jackson.core.JsonProcessingException
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 
 /**
  * Represents a function call by ChatGPT. When ChatGPT calls a function, you
@@ -39,44 +39,47 @@ data class FunctionCall(
      * @param tools The list of tools that ChatGPT has access to, or null to skip advanced checking.
      * @return The parsed arguments.
      */
+
     @JvmOverloads
     @Throws(HallucinationException::class)
-    fun tryParseArguments(tools: List<Tool>? = null): Map<String, JsonElement> {
-        val parameters = if (tools == null) null else tools.find { it.type == ToolType.FUNCTION && it.function.name == name }?.function?.parameters
-            ?: throw HallucinationException("Unknown function: $name")
+    fun tryParseArguments(tools: List<Tool>? = null): Map<String, JsonNode> {
+        var parameters: FunctionParameters? = null
+        if (tools != null) {
+            parameters = tools.find { it.type == ToolType.FUNCTION && it.function.name == name }?.function?.parameters
+                ?: throw HallucinationException("Unknown function: $name")
+        }
 
         try {
-            // use the default Gson since we don't want any special parsing
-            val gson = Gson()
-            val element: JsonElement = gson.fromJson(arguments, JsonElement::class.java)
-            val jsonObject = element.asJsonObject
+            val mapper = jacksonObjectMapper()
+            val rootNode: JsonNode = mapper.readValue(arguments)
+
+            if (!rootNode.isObject) {
+                throw HallucinationException("Expected to get a JSON object")
+            }
 
             // Check for required parameters
-            if (parameters != null) {
-                for (required in parameters.required) {
-                    if (!jsonObject.has(required))
-                        throw HallucinationException("Missing required argument: $required")
-                }
+            parameters?.required?.forEach { required ->
+                if (!rootNode.has(required))
+                    throw HallucinationException("Missing required argument: $required")
             }
 
             // Loop through all parameters and ensure they are valid
-            return jsonObject.entrySet().associate { (key, value) ->
-                if (parameters != null) {
-                    val property = parameters[key] ?: throw HallucinationException("Unknown argument: $key")
-
-                    // Ensure the type is correct
-                    if (property.type == "integer" && (value !is JsonPrimitive || !value.isNumber))
-                        throw HallucinationException("Expected an integer for argument $key")
-                    if (property.enum != null && (value !is JsonPrimitive || !value.isString))
-                        throw HallucinationException("Expected a string for argument $key")
+            return rootNode.fields().asSequence().associate { (key, value) ->
+                parameters?.let { params ->
+                    params[key]?.let { property ->
+                        // Ensure the type is correct
+                        when (property.type) {
+                            "integer" -> if (!value.isInt)
+                                throw HallucinationException("Expected an integer for argument $key")
+                            "enum" -> if (!value.isTextual)
+                                throw HallucinationException("Expected a string for argument $key")
+                        }
+                    } ?: throw HallucinationException("Unknown argument: $key")
                 }
-
                 key to value
             }
-        } catch (e: JsonSyntaxException) {
+        } catch (e: JsonProcessingException) {
             throw HallucinationException("Error parsing JSON arguments: ${e.message}")
-        } catch (e: IllegalStateException) {
-            throw HallucinationException("Expected to get a JSON object: ${e.message}")
         }
     }
 }

@@ -1,6 +1,9 @@
 package com.cjcrafter.openai.chat
 
-import com.google.gson.JsonObject
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.node.ArrayNode
+import com.fasterxml.jackson.databind.node.ObjectNode
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -26,10 +29,10 @@ data class ChatResponseChunk(
     val created: Long,
     val choices: List<ChatChoiceChunk>,
 ) {
-
-    internal fun update(json: JsonObject) {
-        json["choices"].asJsonArray.forEachIndexed { index, jsonElement ->
-            choices[index].update(jsonElement.asJsonObject)
+    internal fun update(json: ObjectNode) {
+        val choicesArray = json.get("choices") as? ArrayNode
+        choicesArray?.forEachIndexed { index, jsonNode ->
+            choices[index].update(jsonNode.toString())
         }
     }
 

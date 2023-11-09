@@ -1,7 +1,8 @@
 package com.cjcrafter.openai.chat
 
 import com.cjcrafter.openai.chat.tool.ToolCall
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.annotation.JsonProperty
 
 /**
  * ChatGPT's biggest innovation is its conversation memory. To remember the
@@ -14,9 +15,9 @@ import com.google.gson.annotations.SerializedName
  */
 data class ChatMessage @JvmOverloads constructor(
     var role: ChatUser,
-    var content: String?,
-    @field:SerializedName("tool_calls") var toolCalls: List<ToolCall>? = null,
-    @field:SerializedName("tool_call_id") var toolCallId: String? = null,
+    @JsonInclude var content: String?, // JsonInclude here is important for tools
+    @JsonProperty("tool_calls") var toolCalls: List<ToolCall>? = null,
+    @JsonProperty("tool_call_id") var toolCallId: String? = null,
 ) {
     init {
         if (role == ChatUser.TOOL) {

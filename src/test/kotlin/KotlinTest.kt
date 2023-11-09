@@ -1,4 +1,5 @@
 import com.cjcrafter.openai.FinishReason
+import com.cjcrafter.openai.OpenAI
 import com.cjcrafter.openai.OpenAIImpl
 import com.cjcrafter.openai.chat.*
 import com.cjcrafter.openai.chat.ChatMessage.Companion.toSystemMessage
@@ -6,10 +7,11 @@ import com.cjcrafter.openai.chat.ChatMessage.Companion.toUserMessage
 import com.cjcrafter.openai.chat.tool.FunctionTool
 import com.cjcrafter.openai.chat.tool.ToolType
 import com.cjcrafter.openai.completions.CompletionRequest
-import com.cjcrafter.openai.exception.OpenAIError
 import io.github.cdimascio.dotenv.dotenv
+import okhttp3.OkHttpClient
 import org.intellij.lang.annotations.Language
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 // Colors for pretty formatting
 const val RESET = "\u001b[0m"
@@ -99,7 +101,14 @@ fun doChat(stream: Boolean) {
 
     // Loads the API key from the .env file in the root directory.
     val key = dotenv()["OPENAI_TOKEN"]
-    val openai = OpenAIImpl(key)
+    val openai = OpenAI.builder()
+        .apiKey(key)
+        .client(OkHttpClient.Builder()
+            .connectTimeout(5, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .build()
+        ).build()
 
     // The conversation lasts until the user quits the program
     while (true) {
@@ -137,7 +146,7 @@ fun doChat(stream: Boolean) {
                     println("    $CYAN Called function ${tool.function.name} with arguments \n${tool.function.arguments.split("\n").joinToString("        \n")} $PURPLE")
 
                     val args = tool.function.tryParseArguments()
-                    val length = get_length(args["thing"]!!.asString, args["unit"]!!.asString)
+                    val length = get_length(args["thing"]!!.asText(), args["unit"]!!.asText())
                     messages.add(ChatMessage(
                         role = ChatUser.TOOL,
                         content = length,
