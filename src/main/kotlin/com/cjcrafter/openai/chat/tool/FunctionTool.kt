@@ -1,7 +1,9 @@
 package com.cjcrafter.openai.chat.tool
 
 import com.cjcrafter.openai.util.FunctionTag
+import com.cjcrafter.openai.util.OpenAIDslMarker
 import com.cjcrafter.openai.util.RegexInternals
+import org.jetbrains.annotations.ApiStatus
 
 /**
  * Represents a function for use by ChatGPT in a chat completion. A function is
@@ -29,6 +31,7 @@ data class FunctionTool internal constructor(
 
     override fun getToolType() = ToolType.FUNCTION
 
+    @OpenAIDslMarker
     class Builder internal constructor() {
         @FunctionTag private var name: String? = null
         private var parameters: FunctionParameters? = null
@@ -75,6 +78,27 @@ data class FunctionTool internal constructor(
         fun addIntegerParameter(name: String, description: String?, required: Boolean = false) = addParameter(name, "integer", description, required)
 
         /**
+         * Number parameters are parameters that can be any number (Usually a
+         * floating point number).
+         *
+         * @param name The name of the parameter
+         * @param description The description of the parameter
+         * @param required True to force ChatGPT to use this parameter
+         */
+        @JvmOverloads
+        fun addNumberParameter(name: String, description: String?, required: Boolean = false) = addParameter(name, "number", description, required)
+
+        /**
+         * Boolean parameters are parameters that can be either true or false.
+         *
+         * @param name The name of the parameter
+         * @param description The description of the parameter
+         * @param required True to force ChatGPT to use this parameter
+         */
+        @JvmOverloads
+        fun addBooleanParameter(name: String, description: String?, required: Boolean = false) = addParameter(name, "boolean", description, required)
+
+        /**
          * For any other type of parameter, use this method. In general, there
          * is no strict list of types for you to choose from. Instead, ChatGPT
          * will read the string and interpret what the type should be.
@@ -84,6 +108,7 @@ data class FunctionTool internal constructor(
          * @param description The description of the parameter
          * @param required True to force ChatGPT to use this parameter
          */
+        @ApiStatus.Experimental
         @JvmOverloads
         fun addParameter(name: String, type: String, description: String?, required: Boolean = false) = apply {
             if (parameters == null) parameters = FunctionParameters()
@@ -100,6 +125,7 @@ data class FunctionTool internal constructor(
     }
 
     companion object {
+        @JvmStatic
         fun builder() = Builder()
     }
 }

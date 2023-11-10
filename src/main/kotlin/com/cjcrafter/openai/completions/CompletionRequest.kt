@@ -1,9 +1,10 @@
 package com.cjcrafter.openai.completions
 
+import com.cjcrafter.openai.util.OpenAIDslMarker
 import com.fasterxml.jackson.annotation.JsonProperty
 
 /**
- * `CompletionRequest` holds the configurable options that can be sent to the OpenAI
+ * Holds the configurable options that can be sent to the OpenAI
  * Completions API. For most use cases, you only need to set [model] and [prompt].
  * For more detailed descriptions for each option, refer to the
  * [Completions Wiki](https://platform.openai.com/docs/api-reference/completions/create).
@@ -66,6 +67,7 @@ data class CompletionRequest @JvmOverloads constructor(
      *      .build()
      * ```
      */
+    @OpenAIDslMarker
     class Builder {
         private var model: String? = null
         private var prompt: Any? = null

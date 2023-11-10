@@ -20,10 +20,16 @@ data class ChatMessage @JvmOverloads constructor(
     @JsonProperty("tool_call_id") var toolCallId: String? = null,
 ) {
     init {
-        if (role == ChatUser.TOOL) {
+        if (role == ChatUser.TOOL)
             requireNotNull(toolCallId) { "toolCallId must be set when role is TOOL" }
-        }
+        if (role != ChatUser.ASSISTANT)
+            require(toolCalls == null) { "Only ChatUser.ASSISTANT can make toolCalls" }
     }
+
+    /**
+     * Returns true if this message has tool calls.
+     */
+    fun hasToolCalls() = toolCalls != null
 
     companion object {
 

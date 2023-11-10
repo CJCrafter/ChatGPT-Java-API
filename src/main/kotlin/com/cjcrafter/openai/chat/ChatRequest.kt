@@ -1,8 +1,10 @@
 package com.cjcrafter.openai.chat
 
 import com.cjcrafter.openai.chat.tool.AbstractTool
+import com.cjcrafter.openai.chat.tool.FunctionTool
 import com.cjcrafter.openai.chat.tool.Tool
 import com.cjcrafter.openai.chat.tool.ToolChoice
+import com.cjcrafter.openai.util.OpenAIDslMarker
 import com.fasterxml.jackson.annotation.JsonProperty
 
 data class ChatRequest @JvmOverloads internal constructor(
@@ -37,6 +39,7 @@ data class ChatRequest @JvmOverloads internal constructor(
      *     .build()
      * ```
      */
+    @OpenAIDslMarker
     class Builder internal constructor() {
         private var messages: MutableList<ChatMessage>? = null
         private var model: String? = null
@@ -93,21 +96,21 @@ data class ChatRequest @JvmOverloads internal constructor(
         /**
          * Blocks ChatGPT from using any tools.
          */
-        fun noTool() = apply {
+        fun useNoTool() = apply {
             toolChoice = ToolChoice.None
         }
 
         /**
          * Lets ChatGPT decide whether to use tools.
          */
-        fun autoTool() = apply {
+        fun useAutoTool() = apply {
             toolChoice = ToolChoice.Auto
         }
 
         /**
          * Forces ChatGPT to call the specified function.
          */
-        fun functionTool(name: String) = apply {
+        fun useFunctionTool(name: String) = apply {
             toolChoice = ToolChoice.Function(name)
         }
 

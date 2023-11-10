@@ -35,6 +35,9 @@ data class ChatChoiceChunk(
 ) {
     val message: ChatMessage = ChatMessage(delta?.role!!, delta?.content, delta?.toolCalls?.map { it.toToolCall() })
 
+    // add a getter for delta.content
+    val deltaContent: String? get() = delta?.content
+
     // Reads the json from the OpenAI API, and sets delta. message accumulates changes
     internal fun update(json: JsonNode) {
         val deltaNode = json.get("delta") ?: throw IllegalArgumentException("Passed a json without delta")

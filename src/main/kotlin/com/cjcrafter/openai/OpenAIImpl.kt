@@ -65,7 +65,6 @@ open class OpenAIImpl @ApiStatus.Internal constructor(
 
         val json = httpResponse.body?.byteStream()?.bufferedReader() ?: throw IOException("Response body is null")
         val str = json.readText()
-        println(str)
         return objectMapper.readValue(str, ChatResponse::class.java)
     }
 

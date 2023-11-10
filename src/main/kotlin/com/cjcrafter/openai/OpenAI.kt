@@ -5,14 +5,14 @@ import com.cjcrafter.openai.chat.tool.ToolChoice
 import com.cjcrafter.openai.completions.CompletionRequest
 import com.cjcrafter.openai.completions.CompletionResponse
 import com.cjcrafter.openai.completions.CompletionResponseChunk
-import com.cjcrafter.openai.jackson.ToolChoiceDeserializer
-import com.cjcrafter.openai.jackson.ToolChoiceSerializer
+import com.cjcrafter.openai.util.OpenAIDslMarker
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import okhttp3.OkHttpClient
+import org.jetbrains.annotations.ApiStatus
 
 interface OpenAI {
 
@@ -27,6 +27,7 @@ interface OpenAI {
      * @param request The request to send to the API
      * @return The response from the API
      */
+    @ApiStatus.Obsolete
     fun createCompletion(request: CompletionRequest): CompletionResponse
 
     /**
@@ -50,6 +51,7 @@ interface OpenAI {
      * @param request The request to send to the API
      * @return The response from the API
      */
+    @ApiStatus.Obsolete
     fun streamCompletion(request: CompletionRequest): Iterable<CompletionResponseChunk>
 
     /**
@@ -79,6 +81,7 @@ interface OpenAI {
      */
     fun streamChatCompletion(request: ChatRequest): Iterable<ChatResponseChunk>
 
+    @OpenAIDslMarker
     open class Builder internal constructor() {
         protected var apiKey: String? = null
         protected var organization: String? = null
@@ -97,6 +100,7 @@ interface OpenAI {
         }
     }
 
+    @OpenAIDslMarker
     class AzureBuilder internal constructor(): Builder() {
         private var azureBaseUrl: String? = null
         private var apiVersion: String? = null
@@ -143,8 +147,8 @@ interface OpenAI {
 
             // Register modules with custom serializers/deserializers
             val module = SimpleModule().apply {
-                addSerializer(ToolChoice::class.java, ToolChoiceSerializer())
-                addDeserializer(ToolChoice::class.java, ToolChoiceDeserializer())
+                addSerializer(ToolChoice::class.java, ToolChoice.serializer())
+                addDeserializer(ToolChoice::class.java, ToolChoice.deserializer())
             }
 
             registerModule(module)
@@ -167,3 +171,7 @@ interface OpenAI {
         }
     }
 }
+
+fun openAI(init: OpenAI.Builder.() -> Unit) = OpenAI.builder().apply(init).build()
+
+fun azureOpenAI(init: OpenAI.AzureBuilder.() -> Unit) = OpenAI.azureBuilder().apply(init).build()
