@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import okhttp3.OkHttpClient
 import org.jetbrains.annotations.ApiStatus
+import org.jetbrains.annotations.Contract
 
 interface OpenAI {
 
@@ -28,6 +29,7 @@ interface OpenAI {
      * @return The response from the API
      */
     @ApiStatus.Obsolete
+    @Contract(pure = true)
     fun createCompletion(request: CompletionRequest): CompletionResponse
 
     /**
@@ -52,6 +54,7 @@ interface OpenAI {
      * @return The response from the API
      */
     @ApiStatus.Obsolete
+    @Contract(pure = true)
     fun streamCompletion(request: CompletionRequest): Iterable<CompletionResponseChunk>
 
     /**
@@ -61,6 +64,7 @@ interface OpenAI {
      * @param request The request to send to the API
      * @return The response from the API
      */
+    @Contract(pure = true)
     fun createChatCompletion(request: ChatRequest): ChatResponse
 
     /**
@@ -79,6 +83,7 @@ interface OpenAI {
      * @param request The request to send to the API
      * @return The response from the API
      */
+    @Contract(pure = true)
     fun streamChatCompletion(request: ChatRequest): Iterable<ChatResponseChunk>
 
     @OpenAIDslMarker
@@ -91,6 +96,7 @@ interface OpenAI {
         fun organization(organization: String?) = apply { this.organization = organization }
         fun client(client: OkHttpClient) = apply { this.client = client }
 
+        @Contract(pure = true)
         open fun build(): OpenAI {
             return OpenAIImpl(
                 apiKey ?: throw IllegalStateException("apiKey must be defined to use OpenAI"),
@@ -110,6 +116,7 @@ interface OpenAI {
         fun apiVersion(apiVersion: String) = apply { this.apiVersion = apiVersion }
         fun modelName(modelName: String) = apply { this.modelName = modelName }
 
+        @Contract(pure = true)
         override fun build(): OpenAI {
             return AzureOpenAI(
                 apiKey ?: throw IllegalStateException("apiKey must be defined to use OpenAI"),
@@ -129,18 +136,21 @@ interface OpenAI {
          * OpenAI, use [azureBuilder] instead.
          */
         @JvmStatic
+        @Contract(pure = true)
         fun builder() = Builder()
 
         /**
          * Instantiates a builder for an Azure OpenAI.
          */
         @JvmStatic
+        @Contract(pure = true)
         fun azureBuilder() = AzureBuilder()
 
         /**
          * Returns an ObjectMapper instance with the default OpenAI adapters registered.
          * This can be used to save conversations (and other data) to file.
          */
+        @Contract(pure = true)
         fun createObjectMapper(): ObjectMapper = jacksonObjectMapper().apply {
             setSerializationInclusion(JsonInclude.Include.NON_NULL)
             configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
@@ -172,6 +182,8 @@ interface OpenAI {
     }
 }
 
+@Contract(pure = true)
 fun openAI(init: OpenAI.Builder.() -> Unit) = OpenAI.builder().apply(init).build()
 
+@Contract(pure = true)
 fun azureOpenAI(init: OpenAI.AzureBuilder.() -> Unit) = OpenAI.azureBuilder().apply(init).build()
