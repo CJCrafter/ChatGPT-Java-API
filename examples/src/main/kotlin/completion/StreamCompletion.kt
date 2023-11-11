@@ -5,7 +5,8 @@ import com.cjcrafter.openai.openAI
 import io.github.cdimascio.dotenv.dotenv
 
 /**
- * In this Kotlin example, we will be using the Completions API to generate a response.
+ * In this Kotlin example, we will be using the Completions API to generate a
+ * response. We will stream the tokens 1 at a time for a faster response time.
  */
 fun main() {
 
@@ -18,8 +19,10 @@ fun main() {
     val request = completionRequest {
         model("davinci")
         prompt("The wheels on the bus go")
+        maxTokens(500)
     }
 
-    val completion = openai.createCompletion(request)[0]
-    println(completion.text)
+    for (chunk in openai.streamCompletion(request)) {
+        print(chunk.choices[0].text)
+    }
 }
