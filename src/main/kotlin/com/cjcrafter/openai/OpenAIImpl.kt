@@ -16,7 +16,8 @@ import java.io.IOException
 open class OpenAIImpl @ApiStatus.Internal constructor(
     protected val apiKey: String,
     protected val organization: String? = null,
-    private val client: OkHttpClient = OkHttpClient()
+    protected val client: OkHttpClient = OkHttpClient(),
+    protected val baseUrl: String = "https://api.openai.com",
 ): OpenAI {
     protected val mediaType = "application/json; charset=utf-8".toMediaType()
     protected val objectMapper = OpenAI.createObjectMapper()
@@ -25,7 +26,7 @@ open class OpenAIImpl @ApiStatus.Internal constructor(
         val json = objectMapper.writeValueAsString(request)
         val body: RequestBody = json.toRequestBody(mediaType)
         return Request.Builder()
-            .url("https://api.openai.com/$endpoint")
+            .url("$baseUrl/$endpoint")
             .addHeader("Content-Type", "application/json")
             .addHeader("Authorization", "Bearer $apiKey")
             .apply { if (organization != null) addHeader("OpenAI-Organization", organization) }
@@ -43,6 +44,7 @@ open class OpenAIImpl @ApiStatus.Internal constructor(
         val jsonReader = httpResponse.body?.byteStream()?.bufferedReader()
             ?: throw IOException("Response body is null")
         val responseStr = jsonReader.readText()
+        OpenAI.logger.debug(responseStr)
         return objectMapper.readValue(responseStr, responseType)
     }
 
@@ -72,6 +74,8 @@ open class OpenAIImpl @ApiStatus.Internal constructor(
                         var line: String?
                         do {
                             line = reader.readLine()
+                            OpenAI.logger.debug(line)
+
                             if (line == "data: [DONE]") {
                                 reader.close()
                                 return null
@@ -86,6 +90,7 @@ open class OpenAIImpl @ApiStatus.Internal constructor(
 
                     override fun next(): T {
                         val line = nextLine ?: throw NoSuchElementException("No more lines")
+
                         currentResponse = if (currentResponse == null) {
                             objectMapper.readValue(line, responseType)
                         } else {

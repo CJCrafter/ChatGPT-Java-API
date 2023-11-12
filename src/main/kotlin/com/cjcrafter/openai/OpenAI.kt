@@ -6,6 +6,7 @@ import com.cjcrafter.openai.completions.CompletionRequest
 import com.cjcrafter.openai.completions.CompletionResponse
 import com.cjcrafter.openai.completions.CompletionResponseChunk
 import com.cjcrafter.openai.util.OpenAIDslMarker
+import com.fasterxml.jackson.annotation.JsonAutoDetect
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -14,6 +15,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import okhttp3.OkHttpClient
 import org.jetbrains.annotations.ApiStatus
 import org.jetbrains.annotations.Contract
+import org.slf4j.LoggerFactory
 
 interface OpenAI {
 
@@ -91,45 +93,48 @@ interface OpenAI {
         protected var apiKey: String? = null
         protected var organization: String? = null
         protected var client: OkHttpClient = OkHttpClient()
+        protected var baseUrl: String = "https://api.openai.com"
 
         fun apiKey(apiKey: String) = apply { this.apiKey = apiKey }
         fun organization(organization: String?) = apply { this.organization = organization }
         fun client(client: OkHttpClient) = apply { this.client = client }
+        fun baseUrl(baseUrl: String) = apply { this.baseUrl = baseUrl }
 
         @Contract(pure = true)
         open fun build(): OpenAI {
             return OpenAIImpl(
-                apiKey ?: throw IllegalStateException("apiKey must be defined to use OpenAI"),
-                organization,
-                client
+                apiKey = apiKey ?: throw IllegalStateException("apiKey must be defined to use OpenAI"),
+                organization = organization,
+                client = client,
+                baseUrl = baseUrl,
             )
         }
     }
 
     @OpenAIDslMarker
     class AzureBuilder internal constructor(): Builder() {
-        private var azureBaseUrl: String? = null
         private var apiVersion: String? = null
         private var modelName: String? = null
 
-        fun azureBaseUrl(azureBaseUrl: String) = apply { this.azureBaseUrl = azureBaseUrl }
         fun apiVersion(apiVersion: String) = apply { this.apiVersion = apiVersion }
         fun modelName(modelName: String) = apply { this.modelName = modelName }
 
         @Contract(pure = true)
         override fun build(): OpenAI {
             return AzureOpenAI(
-                apiKey ?: throw IllegalStateException("apiKey must be defined to use OpenAI"),
-                organization,
-                client,
-                azureBaseUrl ?: throw IllegalStateException("azureBaseUrl must be defined for azure"),
-                apiVersion ?: throw IllegalStateException("apiVersion must be defined for azure"),
-                modelName ?: throw IllegalStateException("modelName must be defined for azure")
+                apiKey = apiKey ?: throw IllegalStateException("apiKey must be defined to use OpenAI"),
+                organization = organization,
+                client = client,
+                baseUrl = if (baseUrl == "https://api.openai.com") throw IllegalStateException("baseUrl must be set to an azure endpoint") else baseUrl,
+                apiVersion = apiVersion ?: throw IllegalStateException("apiVersion must be defined for azure"),
+                modelName = modelName ?: throw IllegalStateException("modelName must be defined for azure")
             )
         }
     }
 
     companion object {
+
+        internal val logger = LoggerFactory.getLogger(OpenAI::class.java)
 
         /**
          * Instantiates a builder for a default OpenAI instance. For Azure's
@@ -154,6 +159,14 @@ interface OpenAI {
         fun createObjectMapper(): ObjectMapper = jacksonObjectMapper().apply {
             setSerializationInclusion(JsonInclude.Include.NON_NULL)
             configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+
+            // By default, Jackson can serialize fields AND getters. We just want fields.
+            setVisibility(serializationConfig.getDefaultVisibilityChecker()
+                .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
+                .withGetterVisibility(JsonAutoDetect.Visibility.NONE)
+                .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
+                .withCreatorVisibility(JsonAutoDetect.Visibility.NONE)
+            )
 
             // Register modules with custom serializers/deserializers
             val module = SimpleModule().apply {
@@ -181,9 +194,3 @@ interface OpenAI {
         }
     }
 }
-
-@Contract(pure = true)
-fun openAI(init: OpenAI.Builder.() -> Unit) = OpenAI.builder().apply(init).build()
-
-@Contract(pure = true)
-fun azureOpenAI(init: OpenAI.AzureBuilder.() -> Unit) = OpenAI.azureBuilder().apply(init).build()

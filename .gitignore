@@ -30,3 +30,4 @@ target/
 
 # ChatGPT-Java-API Specific Ignore
 .env
+debug.log

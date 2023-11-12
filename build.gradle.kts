@@ -25,10 +25,14 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-annotations:2.15.3")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.3")
 
+    implementation("org.slf4j:slf4j-api:2.0.9")
+
     implementation("org.jetbrains:annotations:24.0.1")
 
     testImplementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
+    testImplementation("com.squareup.okhttp3:okhttp:4.9.2")
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.9.2")
 }
 
 kotlin {
