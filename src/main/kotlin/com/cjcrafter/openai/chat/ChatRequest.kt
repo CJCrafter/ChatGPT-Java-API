@@ -51,7 +51,6 @@ data class ChatRequest @JvmOverloads internal constructor(
         private var responseFormat: ChatResponseFormat? = null
         private var seed: Int? = null
         private var stop: String? = null
-        private var stream: Boolean? = null
         private var temperature: Float? = null
         private var topP: Float? = null
         private var tools: MutableList<Tool>? = null
@@ -68,7 +67,6 @@ data class ChatRequest @JvmOverloads internal constructor(
         fun responseFormat(responseFormat: ChatResponseFormat) = apply { this.responseFormat = responseFormat }
         fun seed(seed: Int) = apply { this.seed = seed }
         fun stop(stop: String) = apply { this.stop = stop }
-        fun stream(stream: Boolean) = apply { this.stream = stream }
         fun temperature(temperature: Float) = apply { this.temperature = temperature }
         fun topP(topP: Float) = apply { this.topP = topP }
         fun tools(tools: MutableList<Tool>) = apply { this.tools = tools }
@@ -126,7 +124,6 @@ data class ChatRequest @JvmOverloads internal constructor(
                 responseFormat = responseFormat,
                 seed = seed,
                 stop = stop,
-                stream = stream,
                 temperature = temperature,
                 topP = topP,
                 tools = tools,
