@@ -7,7 +7,7 @@
   [![](https://img.shields.io/github/discussions/CJCrafter/ChatGPT-Java-API)](https://github.com/CJCrafter/ChatGPT-Java-API/discussions)
   [![License](https://img.shields.io/github/license/CJCrafter/ChatGPT-Java-API)](https://github.com/CJCrafter/ChatGPT-Java-API/blob/master/LICENSE)
 
-A community-maintained easy-to-use Java/Kotlin OpenAI API for ChatGPT, Text Completions, and more!
+An unofficial, easy-to-use Java/Kotlin OpenAI API for ChatGPT, Text Completions, and more!
 </div>
 
 ## Features
@@ -95,6 +95,34 @@ For more examples, check out [examples](https://github.com/CJCrafter/ChatGPT-Jav
 
 > **Note**: OpenAI recommends using environment variables for your API token 
 ([Read more](https://help.openai.com/en/articles/5112595-best-practices-for-api-key-safety)).
+
+## Logging
+We use [SLF4J](http://www.slf4j.org/) for logging. To enable logging, add a logging implementation to your project.
+If you encounter an issue with the JSON parsing, we will ask that you enable logging and send us the logs.
+
+Adding a logging implementation:
+```kotlin
+implementation("ch.qos.logback:logback-classic:$version")
+``` 
+
+Add a `logback.xml` file to your resources folder:
+```xml
+<configuration>
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>debug.log</file>
+        <append>false</append>
+        <encoder>
+            <pattern>%date %level [%thread] %logger{10} %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.cjcrafter.openai" level="DEBUG"/> <!-- Change to OFF to disable our logging -->
+
+    <root level="DEBUG">
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>
+```
 
 ## Support
 If I have saved you time, please consider [sponsoring me](https://github.com/sponsors/CJCrafter).

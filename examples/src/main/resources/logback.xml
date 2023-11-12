@@ -7,6 +7,8 @@
         </encoder>
     </appender>
 
+    <logger name="com.cjcrafter.openai" level="DEBUG"/>
+
     <root level="DEBUG">
         <appender-ref ref="FILE"/>
     </root>

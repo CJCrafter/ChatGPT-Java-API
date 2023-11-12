@@ -1,14 +1,14 @@
 import com.github.breadmoirai.githubreleaseplugin.GithubReleaseTask
 
 group = "com.cjcrafter"
-version = "2.0.0"
+version = "2.0.1"
 
 plugins {
     `java-library`
     `maven-publish`
     signing
     id("io.codearte.nexus-staging") version "0.30.0"
-    kotlin("jvm") version "1.7.20-RC"
+    kotlin("jvm") version "1.9.20"
     id("org.jetbrains.dokka") version "1.8.10" // KDoc Documentation Builder
     id("com.github.breadmoirai.github-release") version "2.4.1"
 }
@@ -18,7 +18,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.squareup.okhttp3:okhttp:4.9.2")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
     implementation("com.fasterxml.jackson.core:jackson-core:2.15.3")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.15.3")
@@ -31,8 +31,8 @@ dependencies {
 
     testImplementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
-    testImplementation("com.squareup.okhttp3:okhttp:4.9.2")
-    testImplementation("com.squareup.okhttp3:mockwebserver:4.9.2")
+    testImplementation("com.squareup.okhttp3:okhttp:4.12.0")
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
 }
 
 kotlin {

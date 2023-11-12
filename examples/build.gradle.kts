@@ -1,6 +1,6 @@
 plugins {
     `java-library`
-    kotlin("jvm") version "1.7.20-RC"
+    kotlin("jvm") version "1.9.20"
 }
 
 repositories {
@@ -9,7 +9,7 @@ repositories {
 
 dependencies {
     implementation(project(":"))
-    implementation("com.squareup.okhttp3:okhttp:4.9.2")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.fasterxml.jackson.core:jackson-core:2.15.3")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.15.3")
     implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
