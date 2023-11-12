@@ -22,7 +22,7 @@ An unofficial, easy-to-use Java/Kotlin OpenAI API for ChatGPT, Text Completions,
 For Kotlin DSL (`build.gradle.kts`), add this to your dependencies block:
 ```kotlin
 dependencies {
-    implementation("com.cjcrafter:openai:2.0.0")
+    implementation("com.cjcrafter:openai:2.0.1")
 }
 ```
 For Maven projects, add this to your `pom.xml` file in the `<dependencies>` block:
@@ -30,10 +30,10 @@ For Maven projects, add this to your `pom.xml` file in the `<dependencies>` bloc
 <dependency>
     <groupId>com.cjcrafter</groupId>
     <artifactId>openai</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.1</version>
 </dependency>
 ```
-See the [maven repository](https://central.sonatype.com/artifact/com.cjcrafter/openai/2.0.0) for gradle/ant/etc.
+See the [maven repository](https://central.sonatype.com/artifact/com.cjcrafter/openai/2.0.1) for gradle/ant/etc.
 
 
 ## Working Example
