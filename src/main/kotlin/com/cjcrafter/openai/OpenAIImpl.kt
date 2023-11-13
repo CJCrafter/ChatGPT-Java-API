@@ -13,10 +13,8 @@ import okhttp3.*
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
-import org.intellij.lang.annotations.Language
 import org.jetbrains.annotations.ApiStatus
 import java.io.BufferedReader
-import java.io.File
 import java.io.IOException
 
 open class OpenAIImpl @ApiStatus.Internal constructor(
@@ -188,7 +186,7 @@ open class OpenAIImpl @ApiStatus.Internal constructor(
         return executeRequest(httpRequest, ListFilesResponse::class.java)
     }
 
-    override fun uploadFile(request: FileUploadRequest): FileObject {
+    override fun uploadFile(request: UploadFileRequest): FileObject {
         val httpRequest = buildMultipartRequest(FILES_ENDPOINT) {
             addFormDataPart("purpose", OpenAI.createObjectMapper().writeValueAsString(request.purpose).trim('"'))
             addFormDataPart("file", request.fileName, request.requestBody)

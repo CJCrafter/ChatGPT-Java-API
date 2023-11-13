@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * @see FinishReason
  */
 data class ChatChoice(
-    val index: Int,
-    val message: ChatMessage,
-    @JsonProperty("finish_reason") val finishReason: FinishReason
+    @JsonProperty(required = true) val index: Int,
+    @JsonProperty(required = true) val message: ChatMessage,
+    @JsonProperty("finish_reason", required = true) val finishReason: FinishReason
 )

@@ -1,5 +1,7 @@
 package com.cjcrafter.openai.embeddings
 
+import com.fasterxml.jackson.annotation.JsonProperty
+
 /**
  * Represents 1 embedding as a vector of floats or strings.
  *
@@ -7,8 +9,8 @@ package com.cjcrafter.openai.embeddings
  * @property index The index of the embedding in the list of embeddings
  */
 data class Embedding(
-    val embedding: List<Any>,
-    val index: Int,
+    @JsonProperty(required = true) val embedding: List<Any>,
+    @JsonProperty(required = true) val index: Int,
 ) {
     /**
      * Returns the embedding as a list of floats. Make sure to use [EncodingFormat.FLOAT].

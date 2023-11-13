@@ -1,0 +1,36 @@
+{
+  "object": "list",
+  "has_more": false,
+  "data": [
+    {
+      "object": "file",
+      "id": "file-dHi3kzWH77pV7SPBF41Fx47F",
+      "purpose": "assistants",
+      "filename": "README.md",
+      "bytes": 5461,
+      "created_at": 1699895520,
+      "status": "processed",
+      "status_details": null
+    },
+    {
+      "object": "file",
+      "id": "file-BEgKudIHeTb6fSbkqqNyfgx5",
+      "purpose": "fine-tune-results",
+      "filename": "step_metrics.csv",
+      "bytes": 1749,
+      "created_at": 1692816154,
+      "status": "processed",
+      "status_details": null
+    },
+    {
+      "object": "file",
+      "id": "file-z5NUNr81w83DMjNRFgLEVwwH",
+      "purpose": "fine-tune",
+      "filename": "file",
+      "bytes": 5714,
+      "created_at": 1692810545,
+      "status": "processed",
+      "status_details": null
+    }
+  ]
+}

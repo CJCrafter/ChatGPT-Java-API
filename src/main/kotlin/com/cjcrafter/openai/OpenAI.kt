@@ -138,7 +138,7 @@ interface OpenAI {
      * @return The OpenAI file object created
      */
     @ApiStatus.Experimental
-    fun uploadFile(request: FileUploadRequest): FileObject
+    fun uploadFile(request: UploadFileRequest): FileObject
 
     @ApiStatus.Experimental
     fun deleteFile(fileId: String): FileDeletionStatus

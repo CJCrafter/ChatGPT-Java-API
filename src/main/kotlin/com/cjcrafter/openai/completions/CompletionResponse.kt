@@ -1,5 +1,6 @@
 package com.cjcrafter.openai.completions
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -18,11 +19,11 @@ import java.util.*
  * @constructor Create Completion response (for internal usage)
  */
 data class CompletionResponse(
-    val id: String,
-    val created: Long,
-    val model: String,
-    val choices: List<CompletionChoice>,
-    val usage: CompletionUsage
+    @JsonProperty(required = true) val id: String,
+    @JsonProperty(required = true) val created: Long,
+    @JsonProperty(required = true) val model: String,
+    @JsonProperty(required = true) val choices: List<CompletionChoice>,
+    @JsonProperty(required = true) val usage: CompletionUsage
 ) {
 
     /**

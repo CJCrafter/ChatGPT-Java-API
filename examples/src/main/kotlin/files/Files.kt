@@ -1,13 +1,11 @@
 package files
 
 import com.cjcrafter.openai.files.FilePurpose
-import com.cjcrafter.openai.files.ListFilesRequest
-import com.cjcrafter.openai.files.fileUploadRequest
+import com.cjcrafter.openai.files.uploadFileRequest
 import com.cjcrafter.openai.files.listFilesRequest
 import com.cjcrafter.openai.openAI
 import io.github.cdimascio.dotenv.dotenv
 import java.io.File
-import java.util.Scanner
 
 // To use dotenv, you need to add the "io.github.cdimascio:dotenv-kotlin:version"
 // dependency. Then you can add a .env file in your project directory.
@@ -44,7 +42,7 @@ fun uploadFile() {
     print("Enter the file name: ")
     val fileName = readln()
     val input = File(fileName)
-    val request = fileUploadRequest {
+    val request = uploadFileRequest {
         file(input)
         purpose(FilePurpose.ASSISTANTS)
     }

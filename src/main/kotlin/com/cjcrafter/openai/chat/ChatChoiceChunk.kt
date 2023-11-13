@@ -29,9 +29,9 @@ import java.lang.IllegalArgumentException
  * @since 1.2.0
  */
 data class ChatChoiceChunk(
-    val index: Int,
-    var delta: ChatMessageDelta? = null,
-    @JsonProperty("finish_reason") var finishReason: FinishReason?
+    @JsonProperty(required = true) val index: Int,
+    @JsonProperty(required = true) var delta: ChatMessageDelta? = null,
+    @JsonProperty("finish_reason", required = true) var finishReason: FinishReason?
 ) {
     val message: ChatMessage = ChatMessage(delta?.role!!, delta?.content, delta?.toolCalls?.map { it.toToolCall() })
 

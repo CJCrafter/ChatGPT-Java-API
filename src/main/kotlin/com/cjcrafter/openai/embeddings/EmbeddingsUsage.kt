@@ -10,6 +10,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * @property totalTokens The total number of tokens used
  */
 data class EmbeddingsUsage(
-    @JsonProperty("prompt_tokens") val promptTokens: Int,
-    @JsonProperty("total_tokens") val totalTokens: Int,
+    @JsonProperty("prompt_tokens", required = true) val promptTokens: Int,
+    @JsonProperty("total_tokens", required = true) val totalTokens: Int,
 )

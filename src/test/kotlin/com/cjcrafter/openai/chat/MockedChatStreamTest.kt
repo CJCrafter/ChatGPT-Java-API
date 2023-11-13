@@ -4,15 +4,11 @@ import com.cjcrafter.openai.MockedTest
 import com.cjcrafter.openai.chat.ChatMessage.Companion.toSystemMessage
 import com.cjcrafter.openai.chat.tool.ToolType
 import com.cjcrafter.openai.openAI
-import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.MockWebServer
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class StreamChatCompletionTest : MockedTest() {
+class MockedChatStreamTest : MockedTest() {
 
     @Test
     fun `test stream`() {
@@ -20,13 +16,6 @@ class StreamChatCompletionTest : MockedTest() {
         // Create a mock webserver with our 2 responses (see stream_chat_completion_1.txt and 2)
         mockWebServer.enqueue(MockResponse().setBody(readResource("stream_chat_completion_1.txt")))
         mockWebServer.enqueue(MockResponse().setBody(readResource("stream_chat_completion_2.txt")))
-
-        // Create a new OpenAI instance with our mock webserver
-        val openai = openAI {
-            apiKey("sk-123456789")
-            client(client)
-            baseUrl(mockWebServer.url("/").toString())
-        }
 
         val dummyRequest = chatRequest {
             model("gpt-3.5-turbo")

@@ -21,10 +21,10 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * @see FinishReason
  */
 data class CompletionChoiceChunk(
-    val text: String,
-    val index: Int,
-    val logprobs: List<Float>?,
-    @JsonProperty("finish_reason") val finishReason: FinishReason?
+    @JsonProperty(required = true) val text: String,
+    @JsonProperty(required = true) val index: Int,
+    @JsonProperty(required = true) val logprobs: List<Float>?,
+    @JsonProperty("finish_reason", required = true) val finishReason: FinishReason?
 ) {
     /**
      * Returns `true` if this message chunk is complete. Once complete, no more

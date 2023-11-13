@@ -5,7 +5,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.InputStream
 
-data class FileUploadRequest internal constructor(
+data class UploadFileRequest internal constructor(
     var fileName: String,
     var requestBody: RequestBody,
     var purpose: FilePurpose,
@@ -21,7 +21,8 @@ data class FileUploadRequest internal constructor(
         fun purpose(purpose: FilePurpose) = apply { this.purpose = purpose }
 
         /**
-         * Uploads a java.io.File as a file.
+         * Uploads a java.io.File as a file. Note that the specific [FilePurpose]
+         * can only have specific file types.
          *
          * @param file The file to upload
          */
@@ -64,11 +65,11 @@ data class FileUploadRequest internal constructor(
             requestBody = string.toRequestBody()
         }
 
-        fun build(): FileUploadRequest {
-            return FileUploadRequest(
+        fun build(): UploadFileRequest {
+            return UploadFileRequest(
                 fileName = fileName ?: throw IllegalStateException("fileName must be defined to use FileUploadRequest"),
-                requestBody = requestBody!!,
-                purpose = purpose!!
+                requestBody = requestBody ?: throw IllegalStateException("requestBody must be defined to use FileUploadRequest"),
+                purpose = purpose ?: throw IllegalStateException("purpose must be defined to use FileUploadRequest")
             )
         }
     }
@@ -76,7 +77,7 @@ data class FileUploadRequest internal constructor(
     companion object {
 
         /**
-         * Creates a [FileUploadRequest.Builder] to build a [FileUploadRequest].
+         * Creates a [UploadFileRequest.Builder] to build a [UploadFileRequest].
          */
         @JvmStatic
         fun builder() = Builder()

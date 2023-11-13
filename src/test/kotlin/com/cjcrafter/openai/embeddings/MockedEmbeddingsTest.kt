@@ -7,17 +7,11 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.Assertions.*
 
-class CreateEmbeddingsTest : MockedTest() {
+class MockedEmbeddingsTest : MockedTest() {
 
     @Test
     fun `test create embeddings list`() {
         mockWebServer.enqueue(MockResponse().setBody(readResource("create_embeddings.txt")))
-
-        val openai = openAI {
-            apiKey("sk-123456789")
-            client(client)
-            baseUrl(mockWebServer.url("/").toString())
-        }
 
         val dummyRequest = embeddingsRequest {
             input(listOf("Once upon a time", "There was a frog"))

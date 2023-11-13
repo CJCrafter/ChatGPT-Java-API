@@ -9,11 +9,17 @@ abstract class MockedTest {
 
     protected val mockWebServer = MockWebServer()
     protected lateinit var client: OkHttpClient
+    protected lateinit var openai: OpenAI
 
     @BeforeEach
     fun setUp() {
         mockWebServer.start()
         client = OkHttpClient.Builder().build()
+        openai = openAI {
+            apiKey("sk-123456789")
+            client(client)
+            baseUrl(mockWebServer.url("/").toString())
+        }
     }
 
     @AfterEach

@@ -1,5 +1,7 @@
 package com.cjcrafter.openai.embeddings
 
+import com.fasterxml.jackson.annotation.JsonProperty
+
 /**
  * The API response from the [EmbeddingsRequest].
  *
@@ -8,9 +10,9 @@ package com.cjcrafter.openai.embeddings
  * @property usage How many tokens were used by the API request
  */
 data class EmbeddingsResponse(
-    val data: List<Embedding>,
-    val model: String,
-    val usage: EmbeddingsUsage,
+    @JsonProperty(required = true) val data: List<Embedding>,
+    @JsonProperty(required = true) val model: String,
+    @JsonProperty(required = true) val usage: EmbeddingsUsage,
 ) {
     /**
      * Returns the [data] at the given [index].

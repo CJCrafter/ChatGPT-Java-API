@@ -1,5 +1,6 @@
 package com.cjcrafter.openai.chat
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
@@ -25,9 +26,9 @@ import java.util.*
  * @since 1.2.0
  */
 data class ChatResponseChunk(
-    val id: String,
-    val created: Long,
-    val choices: List<ChatChoiceChunk>,
+    @JsonProperty(required = true) val id: String,
+    @JsonProperty(required = true) val created: Long,
+    @JsonProperty(required = true) val choices: List<ChatChoiceChunk>,
 ) {
     internal fun update(json: ObjectNode) {
         val choicesArray = json.get("choices") as? ArrayNode

@@ -1,5 +1,6 @@
 package com.cjcrafter.openai.chat
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -17,10 +18,10 @@ import java.util.*
  * @constructor Create Chat response (for internal usage).
  */
 data class ChatResponse(
-    val id: String,
-    val created: Long,
-    val choices: List<ChatChoice>,
-    val usage: ChatUsage
+    @JsonProperty(required = true) val id: String,
+    @JsonProperty(required = true) val created: Long,
+    @JsonProperty(required = true) val choices: List<ChatChoice>,
+    @JsonProperty(required = true) val usage: ChatUsage
 ) {
 
     /**

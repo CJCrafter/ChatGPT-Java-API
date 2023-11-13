@@ -9,6 +9,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * @property data The list of files.
  */
 data class ListFilesResponse(
-    @JsonProperty("has_more") val hasMore: Boolean,
-    val data: List<FileObject>,
-)//: List<FileObject> by data
+    @JsonProperty("has_more", required = true) val hasMore: Boolean,
+    @JsonProperty(required = true) val data: List<FileObject>,
+)

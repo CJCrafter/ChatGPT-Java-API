@@ -17,11 +17,11 @@ import java.util.*
  * @constructor Create empty File object
  */
 data class FileObject(
-    val id: String,
-    val bytes: Int,
-    @JsonProperty("created_at") val createdAt: Int,
-    @JsonProperty("filename") val fileName: String,
-    val purpose: FilePurpose,
+    @JsonProperty(required = true) val id: String,
+    @JsonProperty(required = true) val bytes: Int,
+    @JsonProperty("created_at", required = true) val createdAt: Int,
+    @JsonProperty("filename", required = true) val fileName: String,
+    @JsonProperty(required = true) val purpose: FilePurpose,
 ) {
 
     /**
