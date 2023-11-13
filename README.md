@@ -17,12 +17,14 @@ An unofficial, easy-to-use Java/Kotlin OpenAI API for ChatGPT, Text Completions,
   * Streaming support via `OpenAI#streamChatCompletion`
   * Functions support, check out the [java examples](https://github.com/CJCrafter/ChatGPT-Java-API/blob/master/examples/src/main/java/chat/StreamChatCompletionFunction.java#L49) and [kotlin examples](https://github.com/CJCrafter/ChatGPT-Java-API/blob/master/examples/src/main/kotlin/chat/StreamChatCompletionFunction.kt#L37)
   * [Azure OpenAI](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference) support via `AzureOpenAI` class
+* [Embeddings](https://platform.openai.com/docs/api-reference/embeddings) (New!)
+* [Files](https://platform.openai.com/docs/api-reference/files) (New!)
 
 ## Installation
 For Kotlin DSL (`build.gradle.kts`), add this to your dependencies block:
 ```kotlin
 dependencies {
-    implementation("com.cjcrafter:openai:2.0.1")
+    implementation("com.cjcrafter:openai:2.0.2")
 }
 ```
 For Maven projects, add this to your `pom.xml` file in the `<dependencies>` block:
@@ -30,10 +32,10 @@ For Maven projects, add this to your `pom.xml` file in the `<dependencies>` bloc
 <dependency>
     <groupId>com.cjcrafter</groupId>
     <artifactId>openai</artifactId>
-    <version>2.0.1</version>
+    <version>2.0.2</version>
 </dependency>
 ```
-See the [maven repository](https://central.sonatype.com/artifact/com.cjcrafter/openai/2.0.1) for gradle/ant/etc.
+See the [maven repository](https://central.sonatype.com/artifact/com.cjcrafter/openai/2.0.2) for gradle/ant/etc.
 
 
 ## Working Example
