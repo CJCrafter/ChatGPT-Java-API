@@ -7,6 +7,7 @@ import com.cjcrafter.openai.completions.CompletionResponse
 import com.cjcrafter.openai.completions.CompletionResponseChunk
 import com.cjcrafter.openai.embeddings.EmbeddingsRequest
 import com.cjcrafter.openai.embeddings.EmbeddingsResponse
+import com.cjcrafter.openai.files.*
 import com.cjcrafter.openai.util.OpenAIDslMarker
 import com.fasterxml.jackson.annotation.JsonAutoDetect
 import com.fasterxml.jackson.annotation.JsonInclude
@@ -19,6 +20,21 @@ import org.jetbrains.annotations.ApiStatus
 import org.jetbrains.annotations.Contract
 import org.slf4j.LoggerFactory
 
+/**
+ * The main interface for the OpenAI API. This interface contains methods for
+ * all the API endpoints. To instantiate an instance of this interface, use
+ * [builder].
+ *
+ * All the methods in this class are blocking (except the stream methods,
+ * [streamCompletion] and [streamChatCompletion], which return an iterator
+ * which blocks the thread).
+ *
+ * The methods in this class all throw io exceptions if the request fails. The
+ * error message will contain the JSON response from the API (if present).
+ * Common errors include:
+ * 1. Not having a valid API key
+ * 2. Passing a bad parameter to a request
+ */
 interface OpenAI {
 
     /**
@@ -99,7 +115,63 @@ interface OpenAI {
      * @return The response from the API
      */
     @Contract(pure = true)
+    @ApiStatus.Experimental
     fun createEmbeddings(request: EmbeddingsRequest): EmbeddingsResponse
+
+    /**
+     * Calls the [list files](https://platform.openai.com/docs/api-reference/files)
+     * endpoint to return a list of all files that belong to your organization.
+     * This method is blocking.
+     *
+     * @param request The request to send to the API
+     * @return The list of files returned from the API
+     */
+    @Contract(pure = true)
+    @ApiStatus.Experimental
+    fun listFiles(request: ListFilesRequest): ListFilesResponse
+
+    /**
+     * Uploads a file to the [files](https://platform.openai.com/docs/api-reference/files)
+     * endpoint. This method is blocking.
+     *
+     * @param request The file to upload
+     * @return The OpenAI file object created
+     */
+    @ApiStatus.Experimental
+    fun uploadFile(request: FileUploadRequest): FileObject
+
+    @ApiStatus.Experimental
+    fun deleteFile(fileId: String): FileDeletionStatus
+
+    /**
+     * Retrieves the file wrapper data using the [files](https://platform.openai.com/docs/api-reference/files)
+     * endpoint. This method is blocking.
+     *
+     * This method does not return the *contents* of the file, only some metadata.
+     * To retrieve the contents of the file, use [retrieveFileContents].
+     *
+     * @param fileId The id of the file to retrieve
+     * @return The OpenAI file object
+     */
+    @Contract(pure = true)
+    @ApiStatus.Experimental
+    fun retrieveFile(fileId: String): FileObject
+
+    /**
+     * Returns the contents of the file as a string. This method is blocking.
+     *
+     * OpenAI does not allow you to download files that you uploaded. Instead,
+     * this method will only work if the file's purpose is:
+     * 1. [FilePurpose.ASSISTANTS_OUTPUT]
+     * 2. [FilePurpose.FINE_TUNE_RESULTS]
+     *
+     * @param fileId The id of the file to retrieve
+     * @return The contents of the file as a string
+     */
+    @Contract(pure = true)
+    @ApiStatus.Experimental
+    fun retrieveFileContents(fileId: String): String
+
 
     @OpenAIDslMarker
     open class Builder internal constructor() {

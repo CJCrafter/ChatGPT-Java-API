@@ -6,13 +6,17 @@ import com.cjcrafter.openai.completions.CompletionResponse
 import com.cjcrafter.openai.completions.CompletionResponseChunk
 import com.cjcrafter.openai.embeddings.EmbeddingsRequest
 import com.cjcrafter.openai.embeddings.EmbeddingsResponse
+import com.cjcrafter.openai.files.*
 import com.fasterxml.jackson.databind.JavaType
 import com.fasterxml.jackson.databind.node.ObjectNode
 import okhttp3.*
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.intellij.lang.annotations.Language
 import org.jetbrains.annotations.ApiStatus
 import java.io.BufferedReader
+import java.io.File
 import java.io.IOException
 
 open class OpenAIImpl @ApiStatus.Internal constructor(
@@ -35,7 +39,36 @@ open class OpenAIImpl @ApiStatus.Internal constructor(
             .post(body).build()
     }
 
-    protected open fun <T> executeRequest(httpRequest: Request, responseType: Class<T>): T {
+    protected open fun buildRequestNoBody(endpoint: String, params: Map<String, Any>? = null): Request.Builder{
+        val url = "$baseUrl/$endpoint".toHttpUrl().newBuilder()
+            .apply {
+                params?.forEach { (key, value) -> addQueryParameter(key, value.toString()) }
+            }.build().toString()
+
+        return Request.Builder()
+            .url(url)
+            .addHeader("Authorization", "Bearer $apiKey")
+            .apply { if (organization != null) addHeader("OpenAI-Organization", organization) }
+    }
+
+    protected open fun buildMultipartRequest(
+        endpoint: String,
+        function: MultipartBody.Builder.() -> Unit,
+    ): Request {
+
+        val multipartBody = MultipartBody.Builder()
+            .setType(MultipartBody.FORM)
+            .apply(function)
+            .build()
+
+        return Request.Builder()
+            .url("$baseUrl/$endpoint")
+            .addHeader("Authorization", "Bearer $apiKey")
+            .apply { if (organization != null) addHeader("OpenAI-Organization", organization) }
+            .post(multipartBody).build()
+    }
+
+    protected open fun executeRequest(httpRequest: Request): String {
         val httpResponse = client.newCall(httpRequest).execute()
         if (!httpResponse.isSuccessful) {
             val json = httpResponse.body?.byteStream()?.bufferedReader()?.readText()
@@ -47,7 +80,12 @@ open class OpenAIImpl @ApiStatus.Internal constructor(
             ?: throw IOException("Response body is null")
         val responseStr = jsonReader.readText()
         OpenAI.logger.debug(responseStr)
-        return objectMapper.readValue(responseStr, responseType)
+        return responseStr
+    }
+
+    protected open fun <T> executeRequest(httpRequest: Request, responseType: Class<T>): T {
+        val str = executeRequest(httpRequest)
+        return objectMapper.readValue(str, responseType)
     }
 
     private fun <T> streamResponses(
@@ -145,9 +183,39 @@ open class OpenAIImpl @ApiStatus.Internal constructor(
         return executeRequest(httpRequest, EmbeddingsResponse::class.java)
     }
 
+    override fun listFiles(request: ListFilesRequest): ListFilesResponse {
+        val httpRequest = buildRequestNoBody(FILES_ENDPOINT, request.toMap()).get().build()
+        return executeRequest(httpRequest, ListFilesResponse::class.java)
+    }
+
+    override fun uploadFile(request: FileUploadRequest): FileObject {
+        val httpRequest = buildMultipartRequest(FILES_ENDPOINT) {
+            addFormDataPart("purpose", OpenAI.createObjectMapper().writeValueAsString(request.purpose).trim('"'))
+            addFormDataPart("file", request.fileName, request.requestBody)
+        }
+        return executeRequest(httpRequest, FileObject::class.java)
+    }
+
+    override fun deleteFile(fileId: String): FileDeletionStatus {
+        val httpRequest = buildRequestNoBody("$FILES_ENDPOINT/$fileId").delete().build()
+        return executeRequest(httpRequest, FileDeletionStatus::class.java)
+    }
+
+    override fun retrieveFile(fileId: String): FileObject {
+        val httpRequest = buildRequestNoBody("$FILES_ENDPOINT/$fileId").get().build()
+        return executeRequest(httpRequest, FileObject::class.java)
+    }
+
+    override fun retrieveFileContents(fileId: String): String {
+        val httpRequest = buildRequestNoBody("$FILES_ENDPOINT/$fileId/content").get().build()
+        return executeRequest(httpRequest)
+    }
+
+
     companion object {
         const val COMPLETIONS_ENDPOINT = "v1/completions"
         const val CHAT_ENDPOINT = "v1/chat/completions"
         const val EMBEDDINGS_ENDPOINT = "v1/embeddings"
+        const val FILES_ENDPOINT = "v1/files"
     }
 }

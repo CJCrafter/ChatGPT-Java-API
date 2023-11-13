@@ -68,7 +68,7 @@ data class CompletionRequest @JvmOverloads constructor(
      * ```
      */
     @OpenAIDslMarker
-    class Builder {
+    class Builder internal constructor() {
         private var model: String? = null
         private var prompt: Any? = null
         private var suffix: String? = null

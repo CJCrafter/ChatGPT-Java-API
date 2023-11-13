@@ -3,9 +3,8 @@ package com.cjcrafter.openai.embeddings
 /**
  * Represents 1 embedding as a vector of floats or strings.
  *
- * @property embedding
- * @property index
- * @constructor Create empty Embedding
+ * @property embedding The embedding as a list of floats or strings
+ * @property index The index of the embedding in the list of embeddings
  */
 data class Embedding(
     val embedding: List<Any>,
