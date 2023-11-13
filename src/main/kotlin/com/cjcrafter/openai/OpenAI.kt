@@ -5,6 +5,8 @@ import com.cjcrafter.openai.chat.tool.ToolChoice
 import com.cjcrafter.openai.completions.CompletionRequest
 import com.cjcrafter.openai.completions.CompletionResponse
 import com.cjcrafter.openai.completions.CompletionResponseChunk
+import com.cjcrafter.openai.embeddings.EmbeddingsRequest
+import com.cjcrafter.openai.embeddings.EmbeddingsResponse
 import com.cjcrafter.openai.util.OpenAIDslMarker
 import com.fasterxml.jackson.annotation.JsonAutoDetect
 import com.fasterxml.jackson.annotation.JsonInclude
@@ -87,6 +89,17 @@ interface OpenAI {
      */
     @Contract(pure = true)
     fun streamChatCompletion(request: ChatRequest): Iterable<ChatResponseChunk>
+
+    /**
+     * Calls the [embeddings](https://beta.openai.com/docs/api-reference/embeddings)
+     * API endpoint to generate the vector representation of text. The returned
+     * vector can be used in Machine Learning models. This method is blocking.
+     *
+     * @param request The request to send to the API
+     * @return The response from the API
+     */
+    @Contract(pure = true)
+    fun createEmbeddings(request: EmbeddingsRequest): EmbeddingsResponse
 
     @OpenAIDslMarker
     open class Builder internal constructor() {

@@ -1,5 +1,6 @@
 package com.cjcrafter.openai.chat
 
+import com.cjcrafter.openai.MockedTest
 import com.cjcrafter.openai.chat.ChatMessage.Companion.toSystemMessage
 import com.cjcrafter.openai.chat.tool.ToolType
 import com.cjcrafter.openai.openAI
@@ -11,21 +12,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class StreamChatCompletionTest {
-
-    private val mockWebServer = MockWebServer()
-    private lateinit var client: OkHttpClient
-
-    @BeforeEach
-    fun setUp() {
-        mockWebServer.start()
-        client = OkHttpClient.Builder().build()
-    }
-
-    @AfterEach
-    fun tearDown() {
-        mockWebServer.shutdown()
-    }
+class StreamChatCompletionTest : MockedTest() {
 
     @Test
     fun `test stream`() {
@@ -80,9 +67,5 @@ class StreamChatCompletionTest {
         assertEquals("The result of 3 divided by 2 is 1.5.", message.content)
         assertEquals(null, message.toolCalls)
         assertEquals(null, message.toolCallId)
-    }
-
-    private fun readResource(resource: String): String {
-        return this::class.java.classLoader.getResource(resource)?.readText() ?: throw Exception("Resource '$resource' not found")
     }
 }

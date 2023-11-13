@@ -4,6 +4,8 @@ import com.cjcrafter.openai.chat.*
 import com.cjcrafter.openai.completions.CompletionRequest
 import com.cjcrafter.openai.completions.CompletionResponse
 import com.cjcrafter.openai.completions.CompletionResponseChunk
+import com.cjcrafter.openai.embeddings.EmbeddingsRequest
+import com.cjcrafter.openai.embeddings.EmbeddingsResponse
 import com.fasterxml.jackson.databind.JavaType
 import com.fasterxml.jackson.databind.node.ObjectNode
 import okhttp3.*
@@ -138,8 +140,14 @@ open class OpenAIImpl @ApiStatus.Internal constructor(
         }
     }
 
+    override fun createEmbeddings(request: EmbeddingsRequest): EmbeddingsResponse {
+        val httpRequest = buildRequest(request, EMBEDDINGS_ENDPOINT)
+        return executeRequest(httpRequest, EmbeddingsResponse::class.java)
+    }
+
     companion object {
         const val COMPLETIONS_ENDPOINT = "v1/completions"
         const val CHAT_ENDPOINT = "v1/chat/completions"
+        const val EMBEDDINGS_ENDPOINT = "v1/embeddings"
     }
 }
