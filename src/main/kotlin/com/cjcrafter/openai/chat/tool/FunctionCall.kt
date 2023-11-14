@@ -76,8 +76,14 @@ data class FunctionCall(
                         when (property.type) {
                             "integer" -> if (!value.isInt)
                                 throw HallucinationException("Expected an integer for argument $key")
-                            "enum" -> if (!value.isTextual)
+                            "number" -> if (!value.isDouble && !value.isInt)
+                                throw HallucinationException("Expected a number for argument $key")
+                            "boolean" -> if (!value.isBoolean)
+                                throw HallucinationException("Expected a boolean for argument $key")
+                            "string" -> if (!value.isTextual)
                                 throw HallucinationException("Expected a string for argument $key")
+                            "enum" -> if (!value.isTextual || !property.enum!!.contains(value.asText()))
+                                throw HallucinationException("Expected one of ${property.enum}, got $key")
                         }
                     } ?: throw HallucinationException("Unknown argument: $key")
                 }

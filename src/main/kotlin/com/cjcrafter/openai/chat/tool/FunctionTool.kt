@@ -117,6 +117,13 @@ data class FunctionTool internal constructor(
                 parameters!!.require(name)
         }
 
+        /**
+         * Makes this function take no parameters.
+         */
+        fun noParameters() = apply {
+            parameters = FunctionParameters()
+        }
+
         fun build() = FunctionTool(
             name = name ?: throw IllegalStateException("Name must be set"),
             parameters = parameters ?: throw IllegalStateException("Parameters must be set"),
