@@ -1,5 +1,7 @@
 package com.cjcrafter.openai
 
+import com.cjcrafter.openai.assistants.AssistantHandler
+import com.cjcrafter.openai.assistants.AssistantHandlerImpl
 import com.cjcrafter.openai.chat.*
 import com.cjcrafter.openai.chat.tool.ToolChoice
 import com.cjcrafter.openai.completions.CompletionRequest
@@ -8,6 +10,8 @@ import com.cjcrafter.openai.completions.CompletionResponseChunk
 import com.cjcrafter.openai.embeddings.EmbeddingsRequest
 import com.cjcrafter.openai.embeddings.EmbeddingsResponse
 import com.cjcrafter.openai.files.*
+import com.cjcrafter.openai.threads.ThreadHandler
+import com.cjcrafter.openai.threads.message.TextAnnotation
 import com.cjcrafter.openai.util.OpenAIDslMarker
 import com.fasterxml.jackson.annotation.JsonAutoDetect
 import com.fasterxml.jackson.annotation.JsonInclude
@@ -119,59 +123,22 @@ interface OpenAI {
     fun createEmbeddings(request: EmbeddingsRequest): EmbeddingsResponse
 
     /**
-     * Calls the [list files](https://platform.openai.com/docs/api-reference/files)
-     * endpoint to return a list of all files that belong to your organization.
-     * This method is blocking.
-     *
-     * @param request The request to send to the API
-     * @return The list of files returned from the API
+     * Returns the handler for the files endpoint. This handler can be used to
+     * create, retrieve, and delete files.
      */
-    @Contract(pure = true)
-    @ApiStatus.Experimental
-    fun listFiles(request: ListFilesRequest): ListFilesResponse
+    val files: FileHandler
 
     /**
-     * Uploads a file to the [files](https://platform.openai.com/docs/api-reference/files)
-     * endpoint. This method is blocking.
-     *
-     * @param request The file to upload
-     * @return The OpenAI file object created
+     * Returns the handler for the assistants endpoint. This handler can be used
+     * to create, retrieve, and delete assistants.
      */
-    @ApiStatus.Experimental
-    fun uploadFile(request: UploadFileRequest): FileObject
-
-    @ApiStatus.Experimental
-    fun deleteFile(fileId: String): FileDeletionStatus
+    val assistants: AssistantHandler
 
     /**
-     * Retrieves the file wrapper data using the [files](https://platform.openai.com/docs/api-reference/files)
-     * endpoint. This method is blocking.
-     *
-     * This method does not return the *contents* of the file, only some metadata.
-     * To retrieve the contents of the file, use [retrieveFileContents].
-     *
-     * @param fileId The id of the file to retrieve
-     * @return The OpenAI file object
+     * Returns the handler for the threads endpoint. This handler can be used
+     * to create, retrieve, and delete threads.
      */
-    @Contract(pure = true)
-    @ApiStatus.Experimental
-    fun retrieveFile(fileId: String): FileObject
-
-    /**
-     * Returns the contents of the file as a string. This method is blocking.
-     *
-     * OpenAI does not allow you to download files that you uploaded. Instead,
-     * this method will only work if the file's purpose is:
-     * 1. [FilePurpose.ASSISTANTS_OUTPUT]
-     * 2. [FilePurpose.FINE_TUNE_RESULTS]
-     *
-     * @param fileId The id of the file to retrieve
-     * @return The contents of the file as a string
-     */
-    @Contract(pure = true)
-    @ApiStatus.Experimental
-    fun retrieveFileContents(fileId: String): String
-
+    val threads: ThreadHandler
 
     @OpenAIDslMarker
     open class Builder internal constructor() {

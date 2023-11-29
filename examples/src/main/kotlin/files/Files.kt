@@ -34,7 +34,7 @@ fun main() {
 }
 
 fun listFiles() {
-    val response = openai.listFiles(listFilesRequest {  })
+    val response = openai.files.list()
     println(response)
 }
 
@@ -46,27 +46,27 @@ fun uploadFile() {
         file(input)
         purpose(FilePurpose.ASSISTANTS)
     }
-    val response = openai.uploadFile(request)
+    val response = openai.files.upload(request)
     println(response)
 }
 
 fun deleteFile() {
     print("Enter the file id: ")
     val fileId = readln()
-    val response = openai.deleteFile(fileId)
+    val response = openai.files.delete(fileId)
     println(response)
 }
 
 fun retrieveFile() {
     print("Enter the file id: ")
     val fileId = readln()
-    val response = openai.retrieveFile(fileId)
+    val response = openai.files.retrieve(fileId)
     println(response)
 }
 
 fun retrieveFileContents() {
     print("Enter the file id: ")
     val fileId = readln()
-    val contents = openai.retrieveFileContents(fileId)
+    val contents = openai.files.retrieveContents(fileId)
     println(contents)
 }

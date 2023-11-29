@@ -11,8 +11,7 @@ class MockedFilesTest : MockedTest() {
     fun listFiles() {
         mockWebServer.enqueue(MockResponse().setBody(readResource("list_files.json")))
 
-        val dummyRequest = listFilesRequest { /* empty */ }
-        val response = openai.listFiles(dummyRequest)
+        val response = openai.files.list()
 
         // Intentionally empty... parsing to a valid response is the test
     }
@@ -25,7 +24,7 @@ class MockedFilesTest : MockedTest() {
             file(File("README.md"))
             purpose(FilePurpose.ASSISTANTS)
         }
-        val response = openai.uploadFile(dummyRequest)
+        val response = openai.files.upload(dummyRequest)
 
         // Intentionally empty... parsing to a valid response is the test
     }
@@ -34,7 +33,7 @@ class MockedFilesTest : MockedTest() {
     fun retrieveFile() {
         mockWebServer.enqueue(MockResponse().setBody(readResource("file.json")))
 
-        val response = openai.retrieveFile("file-123abc")
+        val response = openai.files.retrieve("file-123abc")
 
         // Intentionally empty... parsing to a valid response is the test
     }
@@ -43,7 +42,7 @@ class MockedFilesTest : MockedTest() {
     fun deleteFile() {
         mockWebServer.enqueue(MockResponse().setBody(readResource("delete_file.json")))
 
-        val response = openai.deleteFile("file-123abc")
+        val response = openai.files.delete("file-123abc")
 
         // Intentionally empty... parsing to a valid response is the test
     }
