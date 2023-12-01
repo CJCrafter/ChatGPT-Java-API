@@ -2,8 +2,6 @@ package com.cjcrafter.openai.chat
 
 import com.cjcrafter.openai.MockedTest
 import com.cjcrafter.openai.chat.ChatMessage.Companion.toSystemMessage
-import com.cjcrafter.openai.chat.tool.ToolType
-import com.cjcrafter.openai.openAI
 import okhttp3.mockwebserver.MockResponse
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

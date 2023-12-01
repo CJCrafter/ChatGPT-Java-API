@@ -137,7 +137,7 @@ open class OpenAIImpl @ApiStatus.Internal constructor(
 
     private var threads0: ThreadHandlerImpl? = null
     override val threads: ThreadHandler
-        get() = threads0 ?: ThreadHandlerImpl(requestHelper, ASSISTANTS_ENDPOINT).also { threads0 = it }
+        get() = threads0 ?: ThreadHandlerImpl(requestHelper, THREADS_ENDPOINT).also { threads0 = it }
 
     companion object {
         const val COMPLETIONS_ENDPOINT = "v1/completions"
@@ -145,5 +145,6 @@ open class OpenAIImpl @ApiStatus.Internal constructor(
         const val EMBEDDINGS_ENDPOINT = "v1/embeddings"
         const val FILES_ENDPOINT = "v1/files"
         const val ASSISTANTS_ENDPOINT = "v1/assistants"
+        const val THREADS_ENDPOINT = "v1/threads"
     }
 }

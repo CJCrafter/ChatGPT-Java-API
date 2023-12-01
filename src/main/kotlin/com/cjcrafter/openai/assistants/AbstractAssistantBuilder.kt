@@ -1,6 +1,5 @@
 package com.cjcrafter.openai.assistants
 
-import com.cjcrafter.openai.chat.tool.AbstractTool
 import com.cjcrafter.openai.chat.tool.Tool
 import com.cjcrafter.openai.files.FileObject
 import com.cjcrafter.openai.util.OpenAIDslMarker
@@ -129,11 +128,11 @@ abstract class AbstractAssistantBuilder<T> protected constructor() {
      *
      * @throws IllegalStateException if there are already 128 tools
      */
-    fun addTool(tool: AbstractTool) = apply {
+    fun addTool(tool: Tool) = apply {
         if (tools == null) tools = mutableListOf()
         if (tools!!.size > 128)
             throw IllegalStateException("cannot have more than 128 tools")
-        tools!!.add(tool.toTool())
+        tools!!.add(tool)
     }
 
     /**

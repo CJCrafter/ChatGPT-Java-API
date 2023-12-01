@@ -1,7 +1,5 @@
 package com.cjcrafter.openai.chat
 
-import com.cjcrafter.openai.chat.tool.AbstractTool
-import com.cjcrafter.openai.chat.tool.FunctionTool
 import com.cjcrafter.openai.chat.tool.Tool
 import com.cjcrafter.openai.chat.tool.ToolChoice
 import com.cjcrafter.openai.util.OpenAIDslMarker
@@ -86,9 +84,9 @@ data class ChatRequest @JvmOverloads internal constructor(
          *
          * @param tool
          */
-        fun addTool(tool: AbstractTool) = apply {
+        fun addTool(tool: Tool) = apply {
             if (tools == null) tools = mutableListOf()
-            tools!!.add(tool.toTool())
+            tools!!.add(tool)
         }
 
         /**

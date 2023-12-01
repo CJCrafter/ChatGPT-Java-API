@@ -3,6 +3,8 @@ package com.cjcrafter.openai.threads
 import com.cjcrafter.openai.RequestHelper
 import com.cjcrafter.openai.threads.message.MessageHandler
 import com.cjcrafter.openai.threads.message.MessageHandlerImpl
+import com.cjcrafter.openai.threads.runs.RunHandler
+import com.cjcrafter.openai.threads.runs.RunHandlerImpl
 
 class ThreadHandlerImpl(
     private val requestHelper: RequestHelper,
@@ -32,6 +34,13 @@ class ThreadHandlerImpl(
     override fun messages(threadId: String): MessageHandler {
         return messageHandlers.getOrPut(threadId) {
             MessageHandlerImpl(requestHelper, "$endpoint/$threadId/messages", threadId)
+        }
+    }
+
+    private val runHandlers = mutableMapOf<String, RunHandler>()
+    override fun runs(threadId: String): RunHandler {
+        return runHandlers.getOrPut(threadId) {
+            RunHandlerImpl(requestHelper, "$endpoint/$threadId/runs", threadId)
         }
     }
 }

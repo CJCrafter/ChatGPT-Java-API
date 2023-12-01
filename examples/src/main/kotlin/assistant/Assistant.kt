@@ -7,7 +7,7 @@ import io.github.cdimascio.dotenv.dotenv
 
 // To use dotenv, you need to add the "io.github.cdimascio:dotenv-kotlin:version"
 // dependency. Then you can add a .env file in your project directory.
-val openai = openAI { apiKey(dotenv()["OPENAI_TOKEN"]) }
+private val openai = openAI { apiKey(dotenv()["OPENAI_TOKEN"]) }
 
 fun main() {
     do {

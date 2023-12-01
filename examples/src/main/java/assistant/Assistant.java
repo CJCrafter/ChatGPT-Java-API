@@ -2,6 +2,7 @@ package assistant;
 
 import com.cjcrafter.openai.OpenAI;
 import com.cjcrafter.openai.assistants.CreateAssistantRequest;
+import com.cjcrafter.openai.assistants.ModifyAssistantRequest;
 import io.github.cdimascio.dotenv.Dotenv;
 
 import java.util.Scanner;
@@ -73,5 +74,44 @@ public class Assistant {
 
         System.out.println("Request: " + request);
         System.out.println("Response: " + openai.getAssistants().create(request));
+    }
+
+    public static void retrieve() {
+        System.out.print("ID: ");
+        String id = scan.nextLine();
+
+        System.out.println("Response: " + openai.getAssistants().retrieve(id));
+    }
+
+    public static void list() {
+        System.out.println("Response: " + openai.getAssistants().list());
+    }
+
+    public static void delete() {
+        System.out.print("ID: ");
+        String id = scan.nextLine();
+
+        System.out.println("Response: " + openai.getAssistants().delete(id));
+    }
+
+
+    public static void modify() {
+        System.out.print("ID: ");
+        String id = scan.nextLine();
+        System.out.print("Name: ");
+        String name = scan.nextLine();
+        System.out.print("Description: ");
+        String description = scan.nextLine();
+        System.out.print("Instructions: ");
+        String instructions = scan.nextLine();
+
+        ModifyAssistantRequest request = ModifyAssistantRequest.builder()
+                .name(name)
+                .description(description)
+                .instructions(instructions)
+                .build();
+
+        System.out.println("Request: " + request);
+        System.out.println("Response: " + openai.getAssistants().modify(id, request));
     }
 }

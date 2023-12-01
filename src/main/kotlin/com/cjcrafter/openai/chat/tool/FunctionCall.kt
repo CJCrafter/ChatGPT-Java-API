@@ -50,8 +50,9 @@ data class FunctionCall(
     fun tryParseArguments(tools: List<Tool>? = null): Map<String, JsonNode> {
         var parameters: FunctionParameters? = null
         if (tools != null) {
-            parameters = tools.find { it.type == ToolType.FUNCTION && it.function.name == name }?.function?.parameters
+            val functionTool: Tool.FunctionTool = tools.find { it is Tool.FunctionTool && it.function.name == name } as? Tool.FunctionTool
                 ?: throw HallucinationException("Unknown function: $name")
+            parameters = functionTool.function.parameters
         }
 
         try {

@@ -12,7 +12,7 @@ package com.cjcrafter.openai.chat.tool
 data class ToolCallDelta(
     val index: Int,
     val id: String? = null,
-    val type: ToolType? = null,
+    val type: Tool.Type? = null,
     val function: FunctionCallDelta? = null,
 ) {
     internal fun toToolCall() = ToolCall(

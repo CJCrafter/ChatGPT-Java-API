@@ -2,7 +2,7 @@ package com.cjcrafter.openai.chat.tool
 
 /**
  * Wraps a tool call by ChatGPT. You should check the [type] of the tool call,
- * and handle the request. For example, if the type is [ToolType.FUNCTION], you
+ * and handle the request. For example, if the type is [Tool.Type.FUNCTION], you
  * should call the function and return the result.
  *
  * When making subsequent requests to chat completions, you should make sure to
@@ -10,12 +10,12 @@ package com.cjcrafter.openai.chat.tool
  * call.
  *
  * @property id The id of this call. You should use this to construct a [com.cjcrafter.openai.chat.ChatUser.TOOL] message.
- * @property type The type of tool call. Currently, the only type is [ToolType.FUNCTION].
+ * @property type The type of tool call. Currently, the only type is [Tool.Type.FUNCTION].
  * @property function The function call containing the function name and arguments.
  */
 data class ToolCall(
     var id: String,
-    var type: ToolType,
+    var type: Tool.Type,
     var function: FunctionCall,
 ) {
     internal fun update(delta: ToolCallDelta) {

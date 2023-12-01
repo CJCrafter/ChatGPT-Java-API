@@ -97,6 +97,6 @@ data class CreateThreadRequest(
          * Instantiates a new [CreateThreadRequest] builder instance.
          */
         @JvmStatic
-        fun build() = Builder()
+        fun builder() = Builder()
     }
 }

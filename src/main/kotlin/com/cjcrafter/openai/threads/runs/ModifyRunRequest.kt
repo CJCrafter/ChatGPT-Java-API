@@ -1,9 +1,14 @@
-package com.cjcrafter.openai.threads
+package com.cjcrafter.openai.threads.runs
 
 import com.cjcrafter.openai.util.BuilderHelper
 import com.cjcrafter.openai.util.OpenAIDslMarker
 
-data class ModifyThreadRequest(
+/**
+ * A data class which represents a request to modify a [Run].
+ *
+ * @property metadata The metadata to associate with the run
+ */
+data class ModifyRunRequest(
     var metadata: MutableMap<String, String>?,
 ) {
     @OpenAIDslMarker
@@ -16,7 +21,7 @@ data class ModifyThreadRequest(
         }
 
         /**
-         * Add metadata to the thread. Useful for developers.
+         * Add metadata to the run. Useful for attaching data to a run.
          *
          * @param key The metadata key, 64 characters or less
          * @param value The metadata value, 512 characters or less
@@ -28,15 +33,13 @@ data class ModifyThreadRequest(
             BuilderHelper.tryAddMetadata(metadata!!)
             metadata!![key] = value
         }
-
-        /**
-         * Build the [ModifyThreadRequest].
-         */
-        fun build() = ModifyThreadRequest(metadata)
     }
 
     companion object {
-        @JvmStatic
+
+        /**
+         * Creates a new [Builder] for [ModifyRunRequest].
+         */
         fun builder() = Builder()
     }
 }
