@@ -29,7 +29,7 @@ fun main() {
 
     // This is a known limitation in OpenAI, and they are working to address
     // this so that we can easily stream a response without nonsense like this.
-    while (!run.status.isDone) {
+    while (!run.status.isTerminal) {
         Thread.sleep(2500)
         run = openai.threads.runs(thread).retrieve(run)
     }
