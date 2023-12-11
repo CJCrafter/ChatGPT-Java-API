@@ -16,26 +16,36 @@ fun main() {
     val choice = readln().toInt()
     val assistant = assistants.data[choice]
 
+    // We have to create a new thread. We'll save this thread, so we can add
+    // user messages and get responses later.
     val thread = openai.threads.create()
-    openai.threads.messages(thread).create {
-        role(ThreadUser.USER)
-        content("Hi! I am using the threads API right now through Java!")
+
+    while (true) {
+
+        // Handle user input
+        println("Type your input below: ")
+        val input = readln()
+        openai.threads.messages(thread).create {
+            role(ThreadUser.USER)
+            content(input)
+
+            // You can also add files and metadata to the message
+            //addFile(file)
+            //addMetadata("key", "value")
+        }
+
+        // After adding a message to the thread, we have to "run" the thread
+        var run = openai.threads.runs(thread).create {
+            assistant(assistant)
+            //instructions("You can override instructions, model, etc.")
+        }
+
+        // This is a known limitation in OpenAI, and they are working to address
+        // this so that we can easily stream a response without nonsense like this.
+        while (!run.status.isTerminal) {
+            Thread.sleep(2500)
+            run = openai.threads.runs(thread).retrieve(run)
+        }
     }
 
-    var run = openai.threads.runs(thread).create {
-        assistant(assistant)
-        //instructions("You can override instructions, model, etc.")
-    }
-
-    // This is a known limitation in OpenAI, and they are working to address
-    // this so that we can easily stream a response without nonsense like this.
-    while (!run.status.isTerminal) {
-        Thread.sleep(2500)
-        run = openai.threads.runs(thread).retrieve(run)
-    }
-
-    println(run)
-
-    // Cleanup... Optional
-    //openai.threads.delete(thread)
 }

@@ -7,7 +7,11 @@ import com.cjcrafter.openai.threads.message.ThreadMessage
 import com.fasterxml.jackson.annotation.JsonProperty
 
 /**
+ * Represents the current state of a [Run]. You can view the current status of
+ * a run by looking at the [Run.status] field.
  *
+ * @property isTerminal Whether the OpenAI API is "done," and expecting you to
+ *                      take some action.
  */
 enum class RunStatus(
     val isTerminal: Boolean,

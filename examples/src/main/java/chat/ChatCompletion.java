@@ -1,5 +1,6 @@
 package chat;
 
+import com.cjcrafter.openai.Models;
 import com.cjcrafter.openai.OpenAI;
 import com.cjcrafter.openai.chat.ChatMessage;
 import com.cjcrafter.openai.chat.ChatRequest;
@@ -29,7 +30,7 @@ public class ChatCompletion {
 
         // Here you can change the model's settings, add tools, and more.
         ChatRequest request = ChatRequest.builder()
-                .model("gpt-3.5-turbo")
+                .model(Models.Chat.GPT_3_5_TURBO)
                 .messages(messages)
                 .build();
 

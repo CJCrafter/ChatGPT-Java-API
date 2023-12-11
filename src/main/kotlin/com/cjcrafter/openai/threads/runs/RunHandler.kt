@@ -47,7 +47,7 @@ interface RunHandler {
     fun list(request: ListRunsRequest?): ListRunsResponse
 
     /**
-     * When a run has the status [RunStatus.REQUIRES_ACTION] and the action
+     * When a run has the status [RunStatus.REQUIRED_ACTION] and the action
      * type is [RequiredAction.Type.SUBMIT_TOOL_CALLS], this method can be used
      * to submit the outputs from the tool calls once they're all completed.
      * All outputs must be submitted in a single request.
@@ -55,7 +55,7 @@ interface RunHandler {
     fun submitToolOutputs(run: Run, submission: SubmitToolOutputs): Run = submitToolOutputs(run.id, submission)
 
     /**
-     * When a run has the status [RunStatus.REQUIRES_ACTION] and the action
+     * When a run has the status [RunStatus.REQUIRED_ACTION] and the action
      * type is [RequiredAction.Type.SUBMIT_TOOL_CALLS], this method can be used
      * to submit the outputs from the tool calls once they're all completed.
      * All outputs must be submitted in a single request.
@@ -71,4 +71,8 @@ interface RunHandler {
      * Cancels the run with the given id that is [RunStatus.IN_PROGRESS].
      */
     fun cancel(id: String): Run
+
+    fun steps(run: Run): RunStepHandler = steps(run.id)
+
+    fun steps(id: String): RunStepHandler
 }

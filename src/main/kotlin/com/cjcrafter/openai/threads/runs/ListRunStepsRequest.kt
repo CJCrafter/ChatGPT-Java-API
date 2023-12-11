@@ -6,16 +6,17 @@ import com.cjcrafter.openai.util.OpenAIDslMarker
 import org.jetbrains.annotations.ApiStatus
 
 /**
- * Represents a request to list all runs for a Thread. If a thread has too many
- * runs, you may need to use the [after] or [before] parameters to page through
- * them via multiple requests.
+ * Represents a request to list all [RunStep]s in a [Run]. If a [Run] has too
+ * many steps, you may need to use the [after] or [before] parameters to page
+ * through them via multiple requests (Though it is extraordinarily rare to
+ * have more then 100 steps in 1 run).
  *
  * @property limit The maximum number of results to return, between 1 and 100 inclusive
  * @property order The order to return the list in
  * @property after The cursor to use for pagination
  * @property before The cursor to use for pagination
  */
-data class ListRunsRequest(
+data class ListRunStepsRequest(
     var limit: Int? = null,
     var order: ListOrder? = null,
     var after: String? = null,
@@ -34,12 +35,12 @@ data class ListRunsRequest(
     }
 
     @OpenAIDslMarker
-    class Builder internal constructor(): AbstractListRequestBuilder<ListRunsRequest>() {
+    class Builder internal constructor(): AbstractListRequestBuilder<ListRunStepsRequest>() {
 
         /**
          * Builds the [ListRunsRequest] object.
          */
-        override fun build(): ListRunsRequest = ListRunsRequest(limit, order, after, before)
+        override fun build(): ListRunStepsRequest = ListRunStepsRequest(limit, order, after, before)
     }
 
     companion object {

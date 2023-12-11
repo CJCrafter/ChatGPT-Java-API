@@ -1,10 +1,21 @@
 package com.cjcrafter.openai.chat.tool
 
+import com.cjcrafter.openai.chat.ChatRequest
 import com.cjcrafter.openai.jackson.ToolChoiceDeserializer
 import com.cjcrafter.openai.jackson.ToolChoiceSerializer
 
 /**
- * Represents the configuration for tool choice. Defaults to [Auto].
+ * Sometimes, you may want chat to be forced to use a tool. Sometimes you may
+ * want to prevent chat from using a tool. This sealed class represents all
+ * options that can be used with the Chat endpoint.
+ *
+ * In general, you should use [ToolChoice.Auto] unless you have a specific
+ * reason not to.
+ *
+ * Use the helper methods in the chat request builder:
+ * * [ChatRequest.Builder.useAutoTool] -> [ToolChoice.Auto]
+ * * [ChatRequest.Builder.useNoTool] -> [ToolChoice.None]
+ * * [ChatRequest.Builder.useFunctionTool] -> [ToolChoice.Function]
  */
 sealed class ToolChoice {
 

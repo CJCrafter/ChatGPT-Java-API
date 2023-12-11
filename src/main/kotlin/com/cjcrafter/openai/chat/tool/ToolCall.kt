@@ -1,5 +1,8 @@
 package com.cjcrafter.openai.chat.tool
 
+import com.fasterxml.jackson.annotation.JsonSubTypes
+import com.fasterxml.jackson.annotation.JsonTypeInfo
+
 /**
  * Wraps a tool call by ChatGPT. You should check the [type] of the tool call,
  * and handle the request. For example, if the type is [Tool.Type.FUNCTION], you
@@ -10,17 +13,20 @@ package com.cjcrafter.openai.chat.tool
  * call.
  *
  * @property id The id of this call. You should use this to construct a [com.cjcrafter.openai.chat.ChatUser.TOOL] message.
- * @property type The type of tool call. Currently, the only type is [Tool.Type.FUNCTION].
- * @property function The function call containing the function name and arguments.
+ * @property type The type of tool call.
  */
-data class ToolCall(
-    var id: String,
-    var type: Tool.Type,
-    var function: FunctionCall,
-) {
-    internal fun update(delta: ToolCallDelta) {
-        // The only field that updates is function
-        if (delta.function != null)
-            function.update(delta.function)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonSubTypes(
+    JsonSubTypes.Type(FunctionToolCall::class, name = "function"),
+    JsonSubTypes.Type(RetrievalToolCall::class, name = "retrieval"),
+    JsonSubTypes.Type(CodeInterpreterToolCall::class, name = "code_interpreter"),
+)
+sealed class ToolCall {
+
+    abstract val id: String
+    abstract val type: Tool.Type
+
+    internal open fun update(delta: ToolCallDelta) {
+        // Nothing to update
     }
 }

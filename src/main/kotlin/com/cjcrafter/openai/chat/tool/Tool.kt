@@ -11,8 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes(
-    JsonSubTypes.Type(TextAnnotation.FileCitation::class, name = "file_citation"),
-    JsonSubTypes.Type(TextAnnotation.FilePath::class, name = "file_path"),
+    JsonSubTypes.Type(Tool.FunctionTool::class, name = "function"),
+    JsonSubTypes.Type(Tool.RetrievalTool::class, name = "retrieval"),
+    JsonSubTypes.Type(Tool.CodeInterpreterTool::class, name = "code_interpreter"),
 )
 sealed class Tool {
 
@@ -22,15 +23,25 @@ sealed class Tool {
      * @see Function.builder
      */
     data class FunctionTool(
-        var function: Function,
+        @JsonProperty(required = true) var function: Function,
     ): Tool() {
         override val type = Type.FUNCTION
     }
 
+    /**
+     * Represents a tool that retrieves data from uploaded files.
+     *
+     * Note that retrieval tools are only supported by [Assistant]s
+     */
     data object RetrievalTool: Tool() {
         override val type = Type.RETRIEVAL
     }
 
+    /**
+     * Represents a tool that runs Python code on the OpenAI server.
+     *
+     * Note that code interpreter tools are only supported by [Assistant]s
+     */
     data object CodeInterpreterTool: Tool() {
         override val type = Type.CODE_INTERPRETER
     }
@@ -58,6 +69,8 @@ sealed class Tool {
 
         /**
          * A tool that runs Python code on the OpenAI server.
+         *
+         * Note that code interpreter tools are only supported by [Assistant]s
          */
         @JsonProperty("code_interpreter")
         CODE_INTERPRETER,
