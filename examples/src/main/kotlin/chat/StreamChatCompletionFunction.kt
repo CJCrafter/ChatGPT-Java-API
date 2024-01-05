@@ -3,6 +3,7 @@ package chat
 import com.cjcrafter.openai.chat.*
 import com.cjcrafter.openai.chat.ChatMessage.Companion.toSystemMessage
 import com.cjcrafter.openai.chat.ChatMessage.Companion.toUserMessage
+import com.cjcrafter.openai.chat.tool.FunctionToolCall
 import com.cjcrafter.openai.chat.tool.Tool
 import com.cjcrafter.openai.chat.tool.ToolCall
 import com.cjcrafter.openai.exception.HallucinationException
@@ -87,7 +88,7 @@ fun handleToolCall(call: ToolCall, validTools: List<Tool>?): ChatMessage {
         if (call.type !== Tool.Type.FUNCTION)
             throw HallucinationException("Unknown tool call type: " + call.type)
 
-        val function = call.function
+        val function = (call as FunctionToolCall).function
         val arguments = function.tryParseArguments(validTools) // You can pass null here for less strict parsing
         val equation = arguments["equation"]!!.asText()
         val result = solveEquation(equation)

@@ -36,4 +36,11 @@ class RunHandlerImpl(
         val httpRequest = requestHelper.buildRequestNoBody("$endpoint/$id/cancel").addHeader("OpenAI-Beta", "assistants=v1").method("POST", null).build()
         return requestHelper.executeRequest(httpRequest, Run::class.java)
     }
+
+    private val stepHandlers = mutableMapOf<String, RunStepHandler>()
+    override fun steps(id: String): RunStepHandler {
+        return stepHandlers.getOrPut(id) {
+            RunStepHandlerImpl(requestHelper, "$endpoint/$id/steps", threadId, id)
+        }
+    }
 }

@@ -4,6 +4,8 @@ import com.cjcrafter.openai.assistants.Assistant
 import com.cjcrafter.openai.chat.tool.Tool
 import com.cjcrafter.openai.threads.runs.RunStatus.*
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.JsonSubTypes
+import com.fasterxml.jackson.annotation.JsonTypeInfo
 
 /**
  * Each [Run] is broken down into steps. It is common for a [Run] to only have
@@ -28,20 +30,20 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * @property metadata Metadata for this step. This can be useful for storing additional information about the object.
  */
 data class RunStep(
-    val id: String,
-    val createdAt: Int,
-    val assistantId: String,
-    val threadId: String,
-    val runId: String,
-    val type: Type,
-    val status: RunStatus,
-    val stepDetails: Details,
-    val lastError: RunError?,
-    val expiredAt: Int?,
-    val cancelledAt: Int?,
-    val failedAt: Int?,
-    val completedAt: Int?,
-    val metadata: Map<String, String>,
+    @JsonProperty(required = true) val id: String,
+    @JsonProperty("created_at", required = true) val createdAt: Int,
+    @JsonProperty("assistant_id", required = true) val assistantId: String,
+    @JsonProperty("thread_id", required = true) val threadId: String,
+    @JsonProperty("run_id", required = true) val runId: String,
+    @JsonProperty(required = true) val type: Type,
+    @JsonProperty(required = true) val status: RunStatus,
+    @JsonProperty("step_details", required = true) val stepDetails: Details,
+    @JsonProperty("last_error") val lastError: RunError?,
+    @JsonProperty("expired_at") val expiredAt: Int?,
+    @JsonProperty("cancelled_at") val cancelledAt: Int?,
+    @JsonProperty("failed_at") val failedAt: Int?,
+    @JsonProperty("completed_at") val completedAt: Int?,
+    @JsonProperty val metadata: Map<String, String> = emptyMap(),
 ) {
 
     /**
@@ -66,6 +68,11 @@ data class RunStep(
     /**
      * A sealed class that represents the details of a step.
      */
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+    @JsonSubTypes(
+        JsonSubTypes.Type(MessageCreationDetails::class, name = "message_creation"),
+        JsonSubTypes.Type(ToolCallsDetails::class, name = "tool_calls"),
+    )
     sealed class Details {
 
         /**

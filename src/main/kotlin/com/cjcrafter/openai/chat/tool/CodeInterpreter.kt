@@ -55,7 +55,7 @@ data class CodeInterpreter(
      * @property text The text output
      */
     data class LogOutput(
-        val text: String,
+        @JsonProperty(required = true) val logs: String,
     ) : Output() {
         override val type: Type = Type.LOGS
     }

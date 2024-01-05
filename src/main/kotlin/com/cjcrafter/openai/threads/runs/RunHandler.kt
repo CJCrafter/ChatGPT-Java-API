@@ -72,7 +72,16 @@ interface RunHandler {
      */
     fun cancel(id: String): Run
 
+    /**
+     * Gets the steps handler for the given run.
+     */
     fun steps(run: Run): RunStepHandler = steps(run.id)
 
+    /**
+     *
+     *
+     * @param id
+     * @return
+     */
     fun steps(id: String): RunStepHandler
 }

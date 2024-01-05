@@ -101,7 +101,7 @@ public class StreamChatCompletionFunction {
             if (call.getType() != Tool.Type.FUNCTION)
                 throw new HallucinationException("Unknown tool call type: " + call.getType());
 
-            FunctionCall function = call.getFunction();
+            FunctionCall function = ((FunctionToolCall) call).getFunction();
             Map<String, JsonNode> arguments = function.tryParseArguments(validTools); // You can pass null here for less strict parsing
             String equation = arguments.get("equation").asText();
             double result = solveEquation(equation);
