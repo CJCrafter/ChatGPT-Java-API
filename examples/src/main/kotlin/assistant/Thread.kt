@@ -68,7 +68,6 @@ fun main() {
                         when (content) {
                             is TextContent -> println(content.text.value)
                             is ImageContent -> println(content.imageFile.fileId)
-                            else -> println("Unhandled content type: $content")
                         }
 
                     }
@@ -78,20 +77,17 @@ fun main() {
                     for (toolCall in details.toolCalls) {
                         when (toolCall) {
                             is FunctionToolCall -> {
-
+                                // Give the assistant the function output
                             }
                             is RetrievalToolCall -> {
-
+                                // No need to do anything
                             }
                             is CodeInterpreterToolCall -> {
+                                // Show the code outputs to the user
                             }
                         }
                         println(toolCall)
                     }
-                }
-
-                else -> {
-                    println("Unhandled step type: ${step.stepDetails.type}")
                 }
             }
             println("Step: $step")
