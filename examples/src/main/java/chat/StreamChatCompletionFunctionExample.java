@@ -23,7 +23,7 @@ import java.util.Scanner;
  * 1 by 1 as they are generated. We will also add a Math tool so that the chatbot
  * can solve math problems with a math parser.
  */
-public class StreamChatCompletionFunction {
+public class StreamChatCompletionFunctionExample {
 
     public static void main(String[] args) {
 

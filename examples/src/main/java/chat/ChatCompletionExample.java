@@ -14,7 +14,7 @@ import java.util.Scanner;
 /**
  * In this Java example, we will be using the Chat API to create a simple chatbot.
  */
-public class ChatCompletion {
+public class ChatCompletionExample {
 
     public static void main(String[] args) {
 

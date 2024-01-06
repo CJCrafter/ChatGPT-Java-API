@@ -15,7 +15,7 @@ import java.util.Scanner;
  * Instead of waiting for the full response to generate, we will "stream" tokens
  * 1 by 1 as they are generated.
  */
-public class StreamChatCompletion {
+public class StreamChatCompletionExample {
 
     public static void main(String[] args) {
 

@@ -2,7 +2,6 @@ package files
 
 import com.cjcrafter.openai.files.FilePurpose
 import com.cjcrafter.openai.files.uploadFileRequest
-import com.cjcrafter.openai.files.listFilesRequest
 import com.cjcrafter.openai.openAI
 import io.github.cdimascio.dotenv.dotenv
 import java.io.File

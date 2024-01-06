@@ -7,7 +7,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 import java.util.Scanner;
 
-public class Assistant {
+public class AssistantExample {
 
     // To use dotenv, you need to add the "io.github.cdimascio:dotenv-kotlin:version"
     // dependency. Then you can add a .env file in your project directory.

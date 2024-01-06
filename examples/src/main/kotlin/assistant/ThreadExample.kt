@@ -3,7 +3,6 @@ package assistant
 import com.cjcrafter.openai.chat.tool.CodeInterpreterToolCall
 import com.cjcrafter.openai.chat.tool.FunctionToolCall
 import com.cjcrafter.openai.chat.tool.RetrievalToolCall
-import com.cjcrafter.openai.chat.tool.Tool
 import com.cjcrafter.openai.openAI
 import com.cjcrafter.openai.threads.create
 import com.cjcrafter.openai.threads.message.ImageContent
@@ -51,7 +50,7 @@ fun main() {
         // This is a known limitation in OpenAI, and they are working to address
         // this so that we can easily stream a response without nonsense like this.
         while (!run.status.isTerminal) {
-            Thread.sleep(2500)
+            java.lang.Thread.sleep(1000)
             run = openai.threads.runs(thread).retrieve(run)
         }
 
