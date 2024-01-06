@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>Chat</title>
+    <link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../../";</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+            <a href="../../../../index.html">
+                    <span>ChatGPT-Java-API</span>
+            </a>
+    </div>
+    <div>
+2.0.2-SNAPSHOT    </div>
+    <div class="pull-right d-flex">
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":dokkaHtml/main">jvm</button>
+        </div>
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="ChatGPT-Java-API::com.cjcrafter.openai/Models.Chat///PointingToDeclaration//769193423">
+  <div class="breadcrumbs"><a href="../../../../index.html">ChatGPT-Java-API</a><span class="delimiter">/</span><a href="../../index.html">com.cjcrafter.openai</a><span class="delimiter">/</span><a href="../index.html">Models</a><span class="delimiter">/</span><span class="current">Chat</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Chat</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="index.html">Chat</a></div><p class="paragraph">Holds all available Chat models. Chat models are used to generate text in a conversational manner. Chat models work using conversational memory.</p><p class="paragraph">Note that GPT-4 endpoints are only available to <a href="https://help.openai.com/en/articles/7102672-how-can-i-access-gpt-4">paying customers</a>.</p><h4 class="">See also</h4><div class="table"><div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../../-open-a-i/create-chat-completion.html"><span>OpenAI.</span><wbr></wbr><span>create</span><wbr></wbr><span>Chat</span><wbr></wbr><span><span>Completion</span></span></a></div></span></div><div></div></div></div><div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../../-open-a-i/stream-chat-completion.html"><span>OpenAI.</span><wbr></wbr><span>stream</span><wbr></wbr><span>Chat</span><wbr></wbr><span><span>Completion</span></span></a></div></span></div><div></div></div></div><div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../../-open-a-i/assistants.html"><span>OpenAI.</span><wbr></wbr><span>assistants</span></a></div></span></div><div></div></div></div></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,FUNCTION,PROPERTY">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="-1731633020%2FProperties%2F769193423" anchor-label="GPT_3_5_TURBO" id="-1731633020%2FProperties%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-g-p-t_3_5_-t-u-r-b-o.html"><span><span>GPT_3_5_TURBO</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1731633020%2FProperties%2F769193423"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-g-p-t_3_5_-t-u-r-b-o.html">GPT_3_5_TURBO</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Points to the currently supported version of gpt-3.5-turbo.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="246339731%2FProperties%2F769193423" anchor-label="GPT_3_5_TURBO_0301" id="246339731%2FProperties%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-g-p-t_3_5_-t-u-r-b-o_0301.html"><span><span>GPT_3_5_TURBO_0301</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="246339731%2FProperties%2F769193423"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-g-p-t_3_5_-t-u-r-b-o_0301.html"><strike>GPT_3_5_TURBO_0301</strike></a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Snapshot of <code class="lang-kotlin">gpt-3.5-turbo</code> from March 1st, 2023. This model version will be deprecated on June 13th, 2024. Has a context window of 4,096 tokens with training data up to September 2021.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="505783727%2FProperties%2F769193423" anchor-label="GPT_3_5_TURBO_0613" id="505783727%2FProperties%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-g-p-t_3_5_-t-u-r-b-o_0613.html"><span><span>GPT_3_5_TURBO_0613</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="505783727%2FProperties%2F769193423"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-g-p-t_3_5_-t-u-r-b-o_0613.html"><strike>GPT_3_5_TURBO_0613</strike></a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Snapshot of <code class="lang-kotlin">gpt-3.5-turbo</code> from June 13th, 2023. This model version will be deprecated on June 13th, 2024. Has a context window of 4,096 tokens with training data up to September 2021.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1604013553%2FProperties%2F769193423" anchor-label="GPT_3_5_TURBO_1106" id="1604013553%2FProperties%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-g-p-t_3_5_-t-u-r-b-o_1106.html"><span><span>GPT_3_5_TURBO_1106</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1604013553%2FProperties%2F769193423"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-g-p-t_3_5_-t-u-r-b-o_1106.html">GPT_3_5_TURBO_1106</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Has a context window of 16,385 tokens with training data up to September 2021. This model has improved instruction following, JSON mode, reproducible outputs, parallel function calling, and more. Returns a maximum of 4,096 output tokens.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1712791741%2FProperties%2F769193423" anchor-label="GPT_3_5_TURBO_16k" id="1712791741%2FProperties%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-g-p-t_3_5_-t-u-r-b-o_16k.html"><span><span>GPT_3_5_TURBO_16k</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1712791741%2FProperties%2F769193423"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-g-p-t_3_5_-t-u-r-b-o_16k.html">GPT_3_5_TURBO_16k</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Points to the currently supported version of gpt-3.5-turbo.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1665916650%2FProperties%2F769193423" anchor-label="GPT_3_5_TURBO_16k_0613" id="-1665916650%2FProperties%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-g-p-t_3_5_-t-u-r-b-o_16k_0613.html"><span><span>GPT_3_5_TURBO_16k_0613</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1665916650%2FProperties%2F769193423"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-g-p-t_3_5_-t-u-r-b-o_16k_0613.html"><strike>GPT_3_5_TURBO_16k_0613</strike></a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Snapshot of <code class="lang-kotlin">gpt-3.5-turbo-16k</code> from June 13th, 2023. This model version will be deprecated on June 13th, 2024. Has a context window of 16,385 tokens with training data up to September 2021.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1485242824%2FProperties%2F769193423" anchor-label="GPT_4" id="-1485242824%2FProperties%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-g-p-t_4.html"><span><span>GPT_4</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1485242824%2FProperties%2F769193423"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-g-p-t_4.html">GPT_4</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Points to the currently supported version of <code class="lang-kotlin">gpt-4</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="809416061%2FProperties%2F769193423" anchor-label="GPT_4_0314" id="809416061%2FProperties%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-g-p-t_4_0314.html"><span><span>GPT_4_0314</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="809416061%2FProperties%2F769193423"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-g-p-t_4_0314.html"><strike>GPT_4_0314</strike></a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Snapshot of <code class="lang-kotlin">gpt-4</code> from March 14th 2023 with function calling support. This model version will be deprecated on June 13th, 2024. Has a context window of 8,192 tokens with training data up to September</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="14186619%2FProperties%2F769193423" anchor-label="GPT_4_0613" id="14186619%2FProperties%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-g-p-t_4_0613.html"><span><span>GPT_4_0613</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="14186619%2FProperties%2F769193423"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-g-p-t_4_0613.html">GPT_4_0613</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Snapshot of <code class="lang-kotlin">gpt-4</code> from June 13th, 2023 with improved function calling support. Has a context window of 8,192 tokens with training data up to September 2021.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1713053068%2FProperties%2F769193423" anchor-label="GPT_4_1106_PREVIEW" id="-1713053068%2FProperties%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-g-p-t_4_1106_-p-r-e-v-i-e-w.html"><span><span>GPT_4_1106_PREVIEW</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1713053068%2FProperties%2F769193423"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-g-p-t_4_1106_-p-r-e-v-i-e-w.html">GPT_4_1106_PREVIEW</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph"><code class="lang-kotlin">gpt-4</code> Turbo. Has a context window of 128,000 tokens with training data up to April 2023. This model has improved instruction following, JSON mode, reproducible output, parallel function calling, and more. Returns a maximum of 4,096 output tokens.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="804687915%2FProperties%2F769193423" anchor-label="GPT_4_32k" id="804687915%2FProperties%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-g-p-t_4_32k.html"><span><span>GPT_4_32k</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="804687915%2FProperties%2F769193423"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-g-p-t_4_32k.html">GPT_4_32k</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Points to the currently supported version of <code class="lang-kotlin">gpt-4</code> with a 32k context window.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2067620714%2FProperties%2F769193423" anchor-label="GPT_4_32k_0314" id="2067620714%2FProperties%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-g-p-t_4_32k_0314.html"><span><span>GPT_4_32k_0314</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2067620714%2FProperties%2F769193423"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-g-p-t_4_32k_0314.html"><strike>GPT_4_32k_0314</strike></a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Snapshot of <code class="lang-kotlin">gpt-4</code> from March 14th 2023 with function calling support. This model version will be deprecated on June 13th, 2024. Has a context window of 32,768 tokens with training data up to September</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1272391272%2FProperties%2F769193423" anchor-label="GPT_4_32k_0613" id="1272391272%2FProperties%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-g-p-t_4_32k_0613.html"><span><span>GPT_4_32k_0613</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1272391272%2FProperties%2F769193423"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-g-p-t_4_32k_0613.html">GPT_4_32k_0613</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Snapshot of <code class="lang-kotlin">gpt-4-32k</code> from June 13th, 2023 with improved function calling support. Has a context window of 32,768 tokens with training data up to September 2021.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-275769998%2FProperties%2F769193423" anchor-label="GPT_4_VISION_PREVIEW" id="-275769998%2FProperties%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-g-p-t_4_-v-i-s-i-o-n_-p-r-e-v-i-e-w.html"><span><span>GPT_4_VISION_PREVIEW</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-275769998%2FProperties%2F769193423"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-g-p-t_4_-v-i-s-i-o-n_-p-r-e-v-i-e-w.html">GPT_4_VISION_PREVIEW</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph"><code class="lang-kotlin">gpt-4</code> Turbo with vision. Has a context window of 128,000 tokens with training data up to April 2023. Has the same capabilities as <a href="-g-p-t_4_1106_-p-r-e-v-i-e-w.html">GPT_4_1106_PREVIEW</a>, but can also understand images.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+    </div>
+</div>
+</body>
+</html>

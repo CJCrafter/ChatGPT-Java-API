@@ -40,7 +40,7 @@
             </a>
     </div>
     <div>
-2.0.2    </div>
+2.0.2-SNAPSHOT    </div>
     <div class="pull-right d-flex">
         <div class="filter-section" id="filter-section">
                 <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":dokkaHtml/main">jvm</button>
@@ -58,7 +58,7 @@
   <div class="breadcrumbs"><a href="../../../index.html">ChatGPT-Java-API</a><span class="delimiter">/</span><a href="../index.html">com.cjcrafter.openai.chat.tool</a><span class="delimiter">/</span><span class="current">ToolChoice</span></div>
   <div class="cover ">
     <h1 class="cover"><span>Tool</span><wbr></wbr><span><span>Choice</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="index.html">ToolChoice</a></div><p class="paragraph">Represents the configuration for tool choice. Defaults to <a href="-auto/index.html">Auto</a>.</p><h4 class="">Inheritors</h4><div class="table"><div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-auto/index.html">Auto</a></div></span></div><div></div></div></div><div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-none/index.html">None</a></div></span></div><div></div></div></div><div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-function/index.html">Function</a></div></span></div><div></div></div></div></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="index.html">ToolChoice</a></div><p class="paragraph">Sometimes, you may want chat to be forced to use a tool. Sometimes you may want to prevent chat from using a tool. This sealed class represents all options that can be used with the Chat endpoint.</p><p class="paragraph">In general, you should use <a href="-auto/index.html">ToolChoice.Auto</a> unless you have a specific reason not to.</p><p class="paragraph">Use the helper methods in the chat request builder:</p><ul><li><p class="paragraph"><a href="../../com.cjcrafter.openai.chat/-chat-request/-builder/use-auto-tool.html">ChatRequest.Builder.useAutoTool</a> -><a href="-auto/index.html">ToolChoice.Auto</a></p></li><li><p class="paragraph"><a href="../../com.cjcrafter.openai.chat/-chat-request/-builder/use-no-tool.html">ChatRequest.Builder.useNoTool</a> -><a href="-none/index.html">ToolChoice.None</a></p></li><li><p class="paragraph"><a href="../../com.cjcrafter.openai.chat/-chat-request/-builder/use-function-tool.html">ChatRequest.Builder.useFunctionTool</a> -><a href="-function/index.html">ToolChoice.Function</a></p></li></ul><h4 class="">Inheritors</h4><div class="table"><div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-auto/index.html">Auto</a></div></span></div><div></div></div></div><div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-none/index.html">None</a></div></span></div><div></div></div></div><div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-function/index.html">Function</a></div></span></div><div></div></div></div></div></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,FUNCTION,PROPERTY">Members</button></div>
@@ -75,7 +75,7 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-auto/index.html">Auto</a> : <a href="index.html">ToolChoice</a></div><div class="brief "><p class="paragraph">Lets ChatGPT automatically decide whether to use a tool, and which tool to use. This is the default value (when <code class="lang-kotlin">toolChoice</code> is <code class="lang-kotlin">null</code>).</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">object </span><a href="-auto/index.html">Auto</a> : <a href="index.html">ToolChoice</a></div><div class="brief "><p class="paragraph">Lets ChatGPT automatically decide whether to use a tool, and which tool to use. This is the default value (when <code class="lang-kotlin">toolChoice</code> is <code class="lang-kotlin">null</code>).</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -120,7 +120,7 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-none/index.html">None</a> : <a href="index.html">ToolChoice</a></div><div class="brief "><p class="paragraph">Prevents ChatGPT from using any tool.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">object </span><a href="-none/index.html">None</a> : <a href="index.html">ToolChoice</a></div><div class="brief "><p class="paragraph">Prevents ChatGPT from using any tool.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -131,7 +131,7 @@
   </div>
 </div>
       <div class="footer">
-        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2023 Copyright</span><span
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span
                 class="pull-right"><span>Generated by </span><a
                 href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
       </div>

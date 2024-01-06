@@ -40,7 +40,7 @@
             </a>
     </div>
     <div>
-2.0.2    </div>
+2.0.2-SNAPSHOT    </div>
     <div class="pull-right d-flex">
         <div class="filter-section" id="filter-section">
                 <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":dokkaHtml/main">jvm</button>
@@ -58,48 +58,14 @@
   <div class="breadcrumbs"><a href="../../../index.html">ChatGPT-Java-API</a><span class="delimiter">/</span><a href="../index.html">com.cjcrafter.openai.chat.tool</a><span class="delimiter">/</span><span class="current">ToolCall</span></div>
   <div class="cover ">
     <h1 class="cover"><span>Tool</span><wbr></wbr><span><span>Call</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="index.html">ToolCall</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">var </span>id<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">var </span>type<span class="token operator">: </span><a href="../-tool-type/index.html">ToolType</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">var </span>function<span class="token operator">: </span><a href="../-function-call/index.html">FunctionCall</a></span></span><span class="token punctuation">)</span></div><p class="paragraph">Wraps a tool call by ChatGPT. You should check the <a href="type.html">type</a> of the tool call, and handle the request. For example, if the type is <a href="../-tool-type/-f-u-n-c-t-i-o-n/index.html">ToolType.FUNCTION</a>, you should call the function and return the result.</p><p class="paragraph">When making subsequent requests to chat completions, you should make sure to pass the message that contained this tool call, and the result of the tool call.</p></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="index.html">ToolCall</a></div><p class="paragraph">Wraps a tool call by ChatGPT. You should check the <a href="type.html">type</a> of the tool call, and handle the request. For example, if the type is <a href="../-tool/-type/-f-u-n-c-t-i-o-n/index.html">Tool.Type.FUNCTION</a>, you should call the function and return the result.</p><p class="paragraph">When making subsequent requests to chat completions, you should make sure to pass the message that contained this tool call, and the result of the tool call.</p><h4 class="">Inheritors</h4><div class="table"><div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../-code-interpreter-tool-call/index.html">CodeInterpreterToolCall</a></div></span></div><div></div></div></div><div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../-function-tool-call/index.html">FunctionToolCall</a></div></span></div><div></div></div></div><div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../-retrieval-tool-call/index.html">RetrievalToolCall</a></div></span></div><div></div></div></div></div></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,FUNCTION,PROPERTY">Members</button></div>
     <div class="tabs-section-body">
-      <div data-togglable="CONSTRUCTOR">
-        <h2 class="">Constructors</h2>
-        <div class="table"><a data-name="-1882372578%2FConstructors%2F769193423" anchor-label="ToolCall" id="-1882372578%2FConstructors%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
-          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="-tool-call.html"><span>Tool</span><wbr></wbr><span><span>Call</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1882372578%2FConstructors%2F769193423"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">id<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">type<span class="token operator">: </span><a href="../-tool-type/index.html">ToolType</a><span class="token punctuation">, </span></span><span class="parameter ">function<span class="token operator">: </span><a href="../-function-call/index.html">FunctionCall</a></span></span><span class="token punctuation">)</span></div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       <div data-togglable="PROPERTY">
         <h2 class="">Properties</h2>
-        <div class="table"><a data-name="726132212%2FProperties%2F769193423" anchor-label="function" id="726132212%2FProperties%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
-          <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="function.html"><span><span>function</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="726132212%2FProperties%2F769193423"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="function.html">function</a><span class="token operator">: </span><a href="../-function-call/index.html">FunctionCall</a></div><div class="brief "><p class="paragraph">The function call containing the function name and arguments.</p></div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="240215377%2FProperties%2F769193423" anchor-label="id" id="240215377%2FProperties%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+        <div class="table"><a data-name="240215377%2FProperties%2F769193423" anchor-label="id" id="240215377%2FProperties%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
           <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
@@ -109,7 +75,7 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="id.html">id</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">The id of this call. You should use this to construct a <a href="../../com.cjcrafter.openai.chat/-chat-user/-t-o-o-l/index.html">com.cjcrafter.openai.chat.ChatUser.TOOL</a> message.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="id.html">id</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">The id of this call. You should use this to construct a <a href="../../com.cjcrafter.openai.chat/-chat-user/-t-o-o-l/index.html">com.cjcrafter.openai.chat.ChatUser.TOOL</a> message.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -124,7 +90,7 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="type.html">type</a><span class="token operator">: </span><a href="../-tool-type/index.html">ToolType</a></div><div class="brief "><p class="paragraph">The type of tool call. Currently, the only type is <a href="../-tool-type/-f-u-n-c-t-i-o-n/index.html">ToolType.FUNCTION</a>.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="type.html">type</a><span class="token operator">: </span><a href="../-tool/-type/index.html">Tool.Type</a></div><div class="brief "><p class="paragraph">The type of tool call.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -135,7 +101,7 @@
   </div>
 </div>
       <div class="footer">
-        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2023 Copyright</span><span
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span
                 class="pull-right"><span>Generated by </span><a
                 href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
       </div>

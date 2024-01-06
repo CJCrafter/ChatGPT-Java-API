@@ -40,7 +40,7 @@
             </a>
     </div>
     <div>
-2.0.2    </div>
+2.0.2-SNAPSHOT    </div>
     <div class="pull-right d-flex">
         <div class="filter-section" id="filter-section">
                 <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":dokkaHtml/main">jvm</button>
@@ -58,24 +58,24 @@
   <div class="breadcrumbs"><a href="../../../index.html">ChatGPT-Java-API</a><span class="delimiter">/</span><a href="../index.html">com.cjcrafter.openai.chat.tool</a><span class="delimiter">/</span><span class="current">FunctionCall</span></div>
   <div class="cover ">
     <h1 class="cover"><span>Function</span><wbr></wbr><span><span>Call</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="index.html">FunctionCall</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">var </span>name<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">var </span>arguments<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div><p class="paragraph">Represents a function call by ChatGPT. When ChatGPT calls a function, you should be parsing the arguments, calling some method (getting current weather at a location, getting a stock price, modifying a database, etc.), and then replying to ChatGPT with the result.</p><p class="paragraph">ChatGPT may <i>hallucinate</i>, or make up, function calls. To handle hallucinations, we have provided <a href="try-parse-arguments.html">tryParseArguments</a>.</p></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="index.html">FunctionCall</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">var </span>name<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">var </span>arguments<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">var </span>output<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span></div><p class="paragraph">Represents a function call by either a chat completion, or an <a href="../../com.cjcrafter.openai.assistants/-assistant/index.html">Assistant</a>.</p><p class="paragraph">When a function call is made, you MUST respond with the result of the function. This means that you should parse the arguments, call some function (an API call, getting current weather, getting a stock price, modifying a database, etc.), and sending the result of that function back.</p><p class="paragraph">For chat completions (<a href="../../com.cjcrafter.openai/-open-a-i/create-chat-completion.html">OpenAI.createChatCompletion</a>), you should send the result of the function as a <a href="../../com.cjcrafter.openai.chat/-chat-message/index.html">com.cjcrafter.openai.chat.ChatMessage</a> with the corresponding <a href="../-tool-call/id.html">ToolCall.id</a> as the function id.</p><p class="paragraph">For <a href="../../com.cjcrafter.openai.assistants/-assistant/index.html">Assistant</a>s, you should use <a href="../../com.cjcrafter.openai.threads.runs/-run-handler/submit-tool-outputs.html">com.cjcrafter.openai.threads.runs.RunHandler.submitToolOutputs</a> with the corresponding <a href="../-tool-call/id.html">ToolCall.id</a> as the tool call id. For <a href="../../com.cjcrafter.openai.assistants/-assistant/index.html">Assistant</a>s, it is important to submit tool outputs <i>within a timely manner</i>, usually within 10 minutes of starting a <a href="../../com.cjcrafter.openai.threads.runs/-run/index.html">com.cjcrafter.openai.threads.runs.Run</a>. Otherwise, the <a href="../../com.cjcrafter.openai.threads.runs/-run/index.html">com.cjcrafter.openai.threads.runs.Run</a> will expire, and you will not be able to submit your tool call.</p><p class="paragraph">ChatGPT may <i>hallucinate</i>, or make up, function calls. To handle hallucinations, we have provided <a href="try-parse-arguments.html">tryParseArguments</a>.</p></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,FUNCTION,PROPERTY">Members</button></div>
     <div class="tabs-section-body">
       <div data-togglable="CONSTRUCTOR">
         <h2 class="">Constructors</h2>
-        <div class="table"><a data-name="-1211903661%2FConstructors%2F769193423" anchor-label="FunctionCall" id="-1211903661%2FConstructors%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+        <div class="table"><a data-name="1772802283%2FConstructors%2F769193423" anchor-label="FunctionCall" id="1772802283%2FConstructors%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
           <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-function-call.html"><span>Function</span><wbr></wbr><span><span>Call</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1211903661%2FConstructors%2F769193423"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1772802283%2FConstructors%2F769193423"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">name<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">arguments<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">name<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">arguments<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">output<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
@@ -133,13 +133,28 @@
               </div>
             </div>
           </div>
+<a data-name="758968043%2FProperties%2F769193423" anchor-label="output" id="758968043%2FProperties%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="output.html"><span><span>output</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="758968043%2FProperties%2F769193423"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="output.html">output</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">The result of the function call if it has been set, only used for <a href="../../com.cjcrafter.openai.assistants/-assistant/index.html">Assistant</a>s. You should not set this.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
       <div class="footer">
-        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2023 Copyright</span><span
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span
                 class="pull-right"><span>Generated by </span><a
                 href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
       </div>
