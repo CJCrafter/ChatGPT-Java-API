@@ -1,28 +1,50 @@
 package com.cjcrafter.openai.chat.tool
 
+import com.cjcrafter.openai.OpenAI
+import com.cjcrafter.openai.assistants.Assistant
 import com.cjcrafter.openai.exception.HallucinationException
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import org.jetbrains.annotations.ApiStatus
 
 /**
- * Represents a function call by ChatGPT. When ChatGPT calls a function, you
- * should be parsing the arguments, calling some method (getting current weather
- * at a location, getting a stock price, modifying a database, etc.), and then
- * replying to ChatGPT with the result.
+ * Represents a function call by either a chat completion, or an [Assistant].
  *
- * ChatGPT may *hallucinate*, or make up, function calls. To handle hallucinations,
+ * When a function call is made, you MUST respond with the result of the function.
+ * This means that you should parse the arguments, call some function (an API call,
+ * getting current weather, getting a stock price, modifying a database, etc.), and
+ * sending the result of that function back.
+ *
+ * For chat completions ([OpenAI.createChatCompletion]), you should send the result
+ * of the function as a [com.cjcrafter.openai.chat.ChatMessage] with the
+ * corresponding [ToolCall.id] as the function id.
+ *
+ * For [Assistant]s, you should use [com.cjcrafter.openai.threads.runs.RunHandler.submitToolOutputs]
+ * with the corresponding [ToolCall.id] as the tool call id. For [Assistant]s,
+ * it is important to submit tool outputs _within a timely manner_, usually
+ * within 10 minutes of starting a [com.cjcrafter.openai.threads.runs.Run].
+ * Otherwise, the [com.cjcrafter.openai.threads.runs.Run] will expire, and you
+ * will not be able to submit your tool call.
+ *
+ * ChatGPT may _hallucinate_, or make up, function calls. To handle hallucinations,
  * we have provided [tryParseArguments].
  *
  * @property name The name of the function which was called
  * @property arguments The raw json representation of the arguments
+ * @property output The result of the function call if it has been set, only used for [Assistant]s. You should not set this.
  */
 data class FunctionCall(
     var name: String,
     var arguments: String,
+    var output: String? = null,
 ) {
+
+    /**
+     * Used internally to update the function call. This is used when the chat
+     * completion is streamed via [OpenAI.streamChatCompletion]. This is not
+     * used by [Assistant]s.
+     */
     internal fun update(delta: FunctionCallDelta) {
         // The only field that updates is arguments
         arguments += delta.arguments
@@ -44,14 +66,14 @@ data class FunctionCall(
      * @param tools The list of tools that ChatGPT has access to, or null to skip advanced checking.
      * @return The parsed arguments.
      */
-
     @JvmOverloads
     @Throws(HallucinationException::class)
     fun tryParseArguments(tools: List<Tool>? = null): Map<String, JsonNode> {
         var parameters: FunctionParameters? = null
         if (tools != null) {
-            parameters = tools.find { it.type == ToolType.FUNCTION && it.function.name == name }?.function?.parameters
+            val functionTool: Tool.FunctionTool = tools.find { it is Tool.FunctionTool && it.function.name == name } as? Tool.FunctionTool
                 ?: throw HallucinationException("Unknown function: $name")
+            parameters = functionTool.function.parameters
         }
 
         try {

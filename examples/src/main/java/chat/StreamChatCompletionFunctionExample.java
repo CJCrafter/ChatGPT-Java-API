@@ -23,7 +23,7 @@ import java.util.Scanner;
  * 1 by 1 as they are generated. We will also add a Math tool so that the chatbot
  * can solve math problems with a math parser.
  */
-public class StreamChatCompletionFunction {
+public class StreamChatCompletionFunctionExample {
 
     public static void main(String[] args) {
 
@@ -46,7 +46,7 @@ public class StreamChatCompletionFunction {
         ChatRequest request = ChatRequest.builder()
                 .model("gpt-3.5-turbo")
                 .messages(messages)
-                .addTool(FunctionTool.builder()
+                .addTool(Function.builder()
                         .name("solve_math_problem")
                         .description("Returns the result of a math problem as a double")
                         .addStringParameter("equation", "The math problem for you to solve", true)
@@ -98,10 +98,10 @@ public class StreamChatCompletionFunction {
         // at tool calls (And you probably aren't very good at prompt
         // engineering yet!). OpenAI will often "Hallucinate" arguments.
         try {
-            if (call.getType() != ToolType.FUNCTION)
+            if (call.getType() != Tool.Type.FUNCTION)
                 throw new HallucinationException("Unknown tool call type: " + call.getType());
 
-            FunctionCall function = call.getFunction();
+            FunctionCall function = ((FunctionToolCall) call).getFunction();
             Map<String, JsonNode> arguments = function.tryParseArguments(validTools); // You can pass null here for less strict parsing
             String equation = arguments.get("equation").asText();
             double result = solveEquation(equation);

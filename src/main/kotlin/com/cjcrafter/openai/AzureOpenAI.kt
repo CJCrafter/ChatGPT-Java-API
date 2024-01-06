@@ -23,16 +23,6 @@ class AzureOpenAI @ApiStatus.Internal constructor(
     baseUrl: String = "https://api.openai.com",
     private val apiVersion: String = "2023-03-15-preview",
     private val modelName: String = ""
-) : OpenAIImpl(apiKey, organization, client, baseUrl) {
+) : OpenAIImpl(apiKey, organization, client, "$baseUrl/openai/deployments/$modelName/endpoint?api-version=$apiVersion") {
 
-    override fun buildRequest(request: Any, endpoint: String): Request {
-        val json = objectMapper.writeValueAsString(request)
-        val body: RequestBody = json.toRequestBody(mediaType)
-        return Request.Builder()
-            .url("$baseUrl/openai/deployments/$modelName/$endpoint?api-version=$apiVersion")
-            .addHeader("Content-Type", "application/json")
-            .addHeader("api-key", apiKey)
-            .apply { if (organization != null) addHeader("OpenAI-Organization", organization) }
-            .post(body).build()
-    }
 }

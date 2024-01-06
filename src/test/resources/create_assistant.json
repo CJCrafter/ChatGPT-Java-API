@@ -1,0 +1,12 @@
+{
+  "id": "asst_1TTP9rnSIROj9r8uhr5bloW8",
+  "object": "assistant",
+  "created_at": 1700254368,
+  "name": "MyAssistant",
+  "description": "Assists with tasks",
+  "model": "gpt-4",
+  "instructions": "Assist me",
+  "tools": [],
+  "file_ids": [],
+  "metadata": {}
+}

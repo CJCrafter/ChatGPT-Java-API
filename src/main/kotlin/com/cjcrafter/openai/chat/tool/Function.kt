@@ -18,18 +18,15 @@ import org.jetbrains.annotations.ApiStatus
  * @property parameters Which parameters can ChatGPT pass to the function
  * @property description A description of the function
  */
-data class FunctionTool internal constructor(
+data class Function internal constructor(
     @FunctionTag var name: String,
     var parameters: FunctionParameters,
     var description: String? = null,
-) : AbstractTool() {
-
+) {
     init {
         if (!name.matches(RegexInternals.FUNCTION))
             throw IllegalArgumentException("Function name must match ${RegexInternals.FUNCTION}")
     }
-
-    override fun getToolType() = ToolType.FUNCTION
 
     @OpenAIDslMarker
     class Builder internal constructor() {
@@ -124,10 +121,12 @@ data class FunctionTool internal constructor(
             parameters = FunctionParameters()
         }
 
-        fun build() = FunctionTool(
-            name = name ?: throw IllegalStateException("Name must be set"),
-            parameters = parameters ?: throw IllegalStateException("Parameters must be set"),
-            description = description,
+        fun build() = Tool.FunctionTool(
+            Function(
+                name = name ?: throw IllegalStateException("Name must be set"),
+                parameters = parameters ?: throw IllegalStateException("Parameters must be set"),
+                description = description,
+            )
         )
     }
 

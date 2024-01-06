@@ -12,12 +12,14 @@ package com.cjcrafter.openai.chat.tool
 data class ToolCallDelta(
     val index: Int,
     val id: String? = null,
-    val type: ToolType? = null,
+    val type: Tool.Type? = null,
     val function: FunctionCallDelta? = null,
 ) {
-    internal fun toToolCall() = ToolCall(
-        id = id ?: throw IllegalStateException("id must be set"),
-        type = type ?: throw IllegalStateException("type must be set"),
-        function = function?.toFunctionCall() ?: throw IllegalStateException("function must be set"),
-    )
+    internal fun toToolCall(): ToolCall {
+        // This is for chat, which is always a function tool call
+        return FunctionToolCall(
+            id = id ?: throw IllegalStateException("id must be set"),
+            function = function?.toFunctionCall() ?: throw IllegalStateException("function must be set"),
+        )
+    }
 }

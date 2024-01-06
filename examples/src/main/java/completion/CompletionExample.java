@@ -8,7 +8,7 @@ import io.github.cdimascio.dotenv.Dotenv;
  * In this Java example, we will be using the Legacy Completion API to generate
  * a response.
  */
-public class Completion {
+public class CompletionExample {
 
     public static void main(String[] args) {
 

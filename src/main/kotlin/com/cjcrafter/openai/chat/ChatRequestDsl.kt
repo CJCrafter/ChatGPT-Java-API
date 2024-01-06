@@ -1,6 +1,7 @@
 package com.cjcrafter.openai.chat
 
-import com.cjcrafter.openai.chat.tool.FunctionTool
+import com.cjcrafter.openai.chat.tool.Function
+import com.cjcrafter.openai.chat.tool.Tool
 
 /**
  * Creates a [ChatRequest] using the [ChatRequest.Builder] using Kotlin DSL.
@@ -8,6 +9,6 @@ import com.cjcrafter.openai.chat.tool.FunctionTool
 fun chatRequest(block: ChatRequest.Builder.() -> Unit) = ChatRequest.builder().apply(block).build()
 
 /**
- * Adds a [FunctionTool] to the [ChatRequest] using Kotlin DSL.
+ * Adds a [Tool.FunctionTool] to the [ChatRequest] using Kotlin DSL.
  */
-fun ChatRequest.Builder.function(block: FunctionTool.Builder.() -> Unit) = addTool(FunctionTool.builder().apply(block).build())
+fun ChatRequest.Builder.function(block: Function.Builder.() -> Unit) = addTool(Function.builder().apply(block).build())

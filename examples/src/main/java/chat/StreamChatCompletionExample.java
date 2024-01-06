@@ -3,7 +3,7 @@ package chat;
 import com.cjcrafter.openai.OpenAI;
 import com.cjcrafter.openai.chat.ChatMessage;
 import com.cjcrafter.openai.chat.ChatRequest;
-import com.cjcrafter.openai.chat.ChatResponse;
+import com.cjcrafter.openai.chat.ChatResponseChunk;
 import io.github.cdimascio.dotenv.Dotenv;
 
 import java.util.ArrayList;
@@ -12,8 +12,10 @@ import java.util.Scanner;
 
 /**
  * In this Java example, we will be using the Chat API to create a simple chatbot.
+ * Instead of waiting for the full response to generate, we will "stream" tokens
+ * 1 by 1 as they are generated.
  */
-public class ChatCompletion {
+public class StreamChatCompletionExample {
 
     public static void main(String[] args) {
 
@@ -24,6 +26,8 @@ public class ChatCompletion {
                 .apiKey(key)
                 .build();
 
+        // Notice that this is a *mutable* list. We will be adding messages later
+        // so we can continue the conversation.
         List<ChatMessage> messages = new ArrayList<>();
         messages.add(ChatMessage.toSystemMessage("Help the user with their problem."));
 
@@ -39,13 +43,21 @@ public class ChatCompletion {
             String input = scan.nextLine();
 
             messages.add(ChatMessage.toUserMessage(input));
-            ChatResponse response = openai.createChatCompletion(request);
-
             System.out.println("Generating Response...");
-            System.out.println(response.get(0).getMessage().getContent());
 
-            // Make sure to add the response to the messages list!
-            messages.add(response.get(0).getMessage());
+            for (ChatResponseChunk chunk : openai.streamChatCompletion(request)) {
+                // This is nullable! ChatGPT will return null AT LEAST ONCE PER MESSAGE.
+                String delta = chunk.get(0).getDeltaContent();
+                if (delta != null)
+                    System.out.print(delta);
+
+                // When the response is finished, we can add it to the messages list.
+                if (chunk.get(0).isFinished())
+                    messages.add(chunk.get(0).getMessage());
+            }
+
+            // Print a new line to separate the messages
+            System.out.println();
         }
     }
 }
