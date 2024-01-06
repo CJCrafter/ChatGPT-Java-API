@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: GitHub
+    url: https://github.com/CJCrafter/ChatGPT-Java-API/discussions
+    about: Ask for help on GitHub Discussions
