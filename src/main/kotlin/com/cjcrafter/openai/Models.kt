@@ -26,6 +26,10 @@ object Models {
      */
     object Chat {
 
+        /////////////////////////////////////////////////////
+        //                    GPT 4.0                      //
+        /////////////////////////////////////////////////////
+
         /**
          * `gpt-4` Turbo. Has a context window of 128,000 tokens with training
          * data up to April 2023. This model has improved instruction following,
@@ -166,6 +170,10 @@ object Models {
      */
     object Completion {
 
+        /////////////////////////////////////////////////////
+        //                    GPT 3.5                      //
+        /////////////////////////////////////////////////////
+
         /**
          * Similar to `text-davinci-003` but compatible with the legacy
          * completions endpoint.
@@ -181,7 +189,7 @@ object Models {
         @Deprecated(
             message = "This model will be removed on January 4th 2024",
             replaceWith = ReplaceWith("GPT_3_5_TURBO_INSTRUCT"),
-            level = DeprecationLevel.WARNING,
+            level = DeprecationLevel.ERROR,
         )
         const val TEXT_DAVINCI_003 = "text-davinci-003"
 
@@ -194,7 +202,7 @@ object Models {
         @Deprecated(
             message = "This model will be removed on January 4th 2024",
             replaceWith = ReplaceWith("GPT_3_5_TURBO_INSTRUCT"),
-            level = DeprecationLevel.WARNING,
+            level = DeprecationLevel.ERROR,
         )
         const val TEXT_DAVINCI_002 = "text-davinci-002"
 
@@ -206,13 +214,12 @@ object Models {
         @Deprecated(
             message = "This model will be removed on January 4th 2024",
             replaceWith = ReplaceWith("GPT_3_5_TURBO_INSTRUCT"),
-            level = DeprecationLevel.WARNING,
+            level = DeprecationLevel.ERROR,
         )
         const val CODE_DAVINCI_002 = "code-davinci-002"
 
         /////////////////////////////////////////////////////
         //                    GPT 3.0                      //
-        //  Technically, the models above are part of 3.5  //
         /////////////////////////////////////////////////////
 
         /**
