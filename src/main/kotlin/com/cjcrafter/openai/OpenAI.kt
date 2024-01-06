@@ -132,14 +132,19 @@ interface OpenAI {
      * Returns the handler for the assistants endpoint. This handler can be used
      * to create, retrieve, and delete assistants.
      */
+    @get:ApiStatus.Experimental
     val assistants: AssistantHandler
 
     /**
      * Returns the handler for the threads endpoint. This handler can be used
      * to create, retrieve, and delete threads.
      */
+    @get:ApiStatus.Experimental
     val threads: ThreadHandler
 
+    /**
+     * Constructs a default [OpenAI] instance.
+     */
     @OpenAIDslMarker
     open class Builder internal constructor() {
         protected var apiKey: String? = null
@@ -147,11 +152,44 @@ interface OpenAI {
         protected var client: OkHttpClient = OkHttpClient()
         protected var baseUrl: String = "https://api.openai.com"
 
+        /**
+         * Sets the API key to use for requests. This is required.
+         *
+         * Your API key can be found at: [https://platform.openai.com/api-keys](https://platform.openai.com/api-keys).
+         *
+         * @param apiKey The API key to use for requests, starting with `sk-`
+         */
         fun apiKey(apiKey: String) = apply { this.apiKey = apiKey }
+
+        /**
+         * If you belong to multiple organizations, you can specify which one to use.
+         * Defaults to your default organization configured in the OpenAI dashboard.
+         *
+         * @param organization The organization ID to use for requests, starting with `org-`
+         */
         fun organization(organization: String?) = apply { this.organization = organization }
+
+        /**
+         * Sets the [OkHttpClient] used to make requests. Modify this if you want to
+         * change the timeout, add interceptors, add a proxy, etc.
+         *
+         * @param client The client to use for requests
+         */
         fun client(client: OkHttpClient) = apply { this.client = client }
+
+        /**
+         * Sets the base URL to use for requests. This is useful for testing.
+         * This can also be used to use the Azure OpenAI API, though we
+         * recommend using [azureBuilder] instead for that. Defaults to
+         * `https://api.openai.com`.
+         *
+         * @param baseUrl The base url
+         */
         fun baseUrl(baseUrl: String) = apply { this.baseUrl = baseUrl }
 
+        /**
+         * Builds the OpenAI instance.
+         */
         @Contract(pure = true)
         open fun build(): OpenAI {
             return OpenAIImpl(
@@ -168,9 +206,19 @@ interface OpenAI {
         private var apiVersion: String? = null
         private var modelName: String? = null
 
+        /**
+         * Sets the azure api version
+         */
         fun apiVersion(apiVersion: String) = apply { this.apiVersion = apiVersion }
+
+        /**
+         * Sets the azure model name
+         */
         fun modelName(modelName: String) = apply { this.modelName = modelName }
 
+        /**
+         * Builds the OpenAI instance.
+         */
         @Contract(pure = true)
         override fun build(): OpenAI {
             return AzureOpenAI(
