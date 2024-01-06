@@ -36,6 +36,10 @@ data class ModifyThreadRequest(
     }
 
     companion object {
+
+        /**
+         * Creates a new [ModifyThreadRequest] builder.
+         */
         @JvmStatic
         fun builder() = Builder()
     }

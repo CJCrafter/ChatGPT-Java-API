@@ -1,8 +1,13 @@
 package com.cjcrafter.openai.threads.runs
 
+import com.cjcrafter.openai.assistants.Assistant
 import com.cjcrafter.openai.util.OpenAIDslMarker
 import com.fasterxml.jackson.annotation.JsonProperty
 
+/**
+ * A data class holding your tool's outputs. Used after an [Assistant] makes
+ * a tool call.
+ */
 data class SubmitToolOutputs(
     @JsonProperty("tool_outputs") var toolOutputs: MutableList<ToolCallOutputs>,
 ) {
@@ -23,6 +28,10 @@ data class SubmitToolOutputs(
     }
 
     companion object {
+
+        /**
+         * Creates a new [SubmitToolOutputs] builder.
+         */
         @JvmStatic
         fun builder() = Builder()
     }

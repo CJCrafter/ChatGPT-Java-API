@@ -78,10 +78,7 @@ interface RunHandler {
     fun steps(run: Run): RunStepHandler = steps(run.id)
 
     /**
-     *
-     *
-     * @param id
-     * @return
+     * Gets the steps handler for the run with the given id.
      */
     fun steps(id: String): RunStepHandler
 }
