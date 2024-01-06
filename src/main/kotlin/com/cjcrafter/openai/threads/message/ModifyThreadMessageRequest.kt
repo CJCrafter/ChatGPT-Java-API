@@ -34,7 +34,7 @@ data class ModifyThreadMessageRequest(
          * @param value The value, which must be <= 512 characters
          * @throws IllegalArgumentException If the key or value is too long
          */
-        fun addMetadata(key: String, value: String) {
+        fun addMetadata(key: String, value: String) = apply {
             BuilderHelper.assertMetadata(key, value)
             if (metadata == null) metadata = mutableMapOf()
             BuilderHelper.tryAddMetadata(metadata!!)

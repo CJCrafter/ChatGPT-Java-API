@@ -26,6 +26,11 @@ data class CreateThreadMessageRequest(
         private var fileIds: MutableList<String>? = null
         private var metadata: MutableMap<String, String>? = null
 
+        /**
+         * Who is creating the message. This must always be [ThreadUser.USER].
+         *
+         * @param role The user creating the message
+         */
         fun role(role: ThreadUser) = apply {
             if (role != ThreadUser.USER)
                 throw IllegalArgumentException("role must be USER")
@@ -33,29 +38,60 @@ data class CreateThreadMessageRequest(
             this.role = role
         }
 
+        /**
+         * The content of the message.
+         *
+         * @param content The content of the message
+         */
         fun content(content: String) = apply {
             this.content = content
         }
 
+        /**
+         * The IDs of the files to attach to the message.
+         *
+         * @param fileIds The IDs of the files to attach to the message
+         */
         fun fileIds(fileIds: MutableList<String>) = apply {
             this.fileIds = fileIds
         }
 
+        /**
+         * The metadata to attach to the message.
+         *
+         * @param metadata The metadata to attach to the message
+         */
         fun metadata(metadata: MutableMap<String, String>) = apply {
             BuilderHelper.assertMetadata(metadata)
             this.metadata = metadata
         }
 
+        /**
+         * Adds a file to the list of files to attach to the message.
+         *
+         * @param file The file to attach to the message
+         */
         fun addFile(file: FileObject) = apply {
             if (fileIds == null) fileIds = mutableListOf()
             fileIds!!.add(file.id)
         }
 
+        /**
+         * Adds a file to the list of files to attach to the message.
+         *
+         * @param fileId The ID of the file to attach to the message
+         */
         fun addFile(fileId: String) = apply {
             if (fileIds == null) fileIds = mutableListOf()
             fileIds!!.add(fileId)
         }
 
+        /**
+         * Adds a metadata key-value pair to the message.
+         *
+         * @param key The key of the metadata
+         * @param value The value of the metadata
+         */
         fun addMetadata(key: String, value: String) = apply {
             BuilderHelper.assertMetadata(key, value)
             if (metadata == null) metadata = mutableMapOf()

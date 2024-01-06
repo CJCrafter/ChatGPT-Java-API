@@ -19,6 +19,12 @@ abstract class AbstractAssistantBuilder<T> protected constructor() {
     protected var fileIds: MutableList<String>? = null
     protected var metadata: MutableMap<String, String>? = null
 
+    /**
+     * The model to the [Assistant] should default to using if no model is
+     * specified. Use [com.cjcrafter.openai.Models] to get a list of models.
+     *
+     * @param model The model to use
+     */
     fun model(model: String) = apply { this.model = model }
 
     /**

@@ -1,5 +1,7 @@
 package com.cjcrafter.openai.assistants
 
+import org.jetbrains.annotations.Contract
+
 /**
  * Represents the handler for the assistants endpoint. This class holds all the
  * actions that can be performed on an assistant.
@@ -26,6 +28,7 @@ interface AssistantHandler {
      * @param assistant The assistant to retrieve
      * @return The new instance of the retrieved assistant
      */
+    @Contract(pure = true)
     fun retrieve(assistant: Assistant): Assistant = retrieve(assistant.id)
 
     /**
@@ -34,6 +37,7 @@ interface AssistantHandler {
      * @param id The id of the assistant to retrieve
      * @return The assistant with the given id
      */
+    @Contract(pure = true)
     fun retrieve(id: String): Assistant
 
     /**
@@ -59,6 +63,7 @@ interface AssistantHandler {
      *
      * @return The list of assistants
      */
+    @Contract(pure = true)
     fun list(): ListAssistantResponse = list(null)
 
     /**
@@ -67,6 +72,7 @@ interface AssistantHandler {
      * @param request The query parameters
      * @return The list of assistants
      */
+    @Contract(pure = true)
     fun list(request: ListAssistantRequest?): ListAssistantResponse // Cannot use @JvmOverloads in interfaces
 
     /**
