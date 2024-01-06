@@ -4,6 +4,7 @@ import com.cjcrafter.openai.assistants.Assistant
 import com.cjcrafter.openai.chat.tool.Tool
 import com.cjcrafter.openai.util.OpenAIDslMarker
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.jetbrains.annotations.Contract
 
 /**
  * A data class which represents a request to create a [Run].
@@ -81,6 +82,8 @@ data class CreateRunRequest(
         /**
          * Creates a new [Builder] for [CreateRunRequest].
          */
+        @JvmStatic
+        @Contract(pure = true)
         fun builder() = Builder()
     }
 }

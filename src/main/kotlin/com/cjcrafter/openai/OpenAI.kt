@@ -129,6 +129,13 @@ interface OpenAI {
     val files: FileHandler
 
     /**
+     * Returns the handler for the files endpoint. This method is purely
+     * syntactic sugar for Java users.
+     */
+    @Contract(pure = true)
+    fun files(): FileHandler = files
+
+    /**
      * Returns the handler for the assistants endpoint. This handler can be used
      * to create, retrieve, and delete assistants.
      */
@@ -136,11 +143,28 @@ interface OpenAI {
     val assistants: AssistantHandler
 
     /**
+     * Returns the handler for the assistants endpoint. This method is purely
+     * syntactic sugar for Java users.
+     */
+    @ApiStatus.Experimental
+    @Contract(pure = true)
+    fun assistants(): AssistantHandler = assistants
+
+    /**
      * Returns the handler for the threads endpoint. This handler can be used
      * to create, retrieve, and delete threads.
      */
     @get:ApiStatus.Experimental
     val threads: ThreadHandler
+
+    /**
+     * Returns the handler for the threads endpoint. This method is purely
+     * syntactic sugar for Java users.
+     */
+    @ApiStatus.Experimental
+    @Contract(pure = true)
+    fun threads(): ThreadHandler = threads
+
 
     /**
      * Constructs a default [OpenAI] instance.

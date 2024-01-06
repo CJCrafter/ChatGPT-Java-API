@@ -55,8 +55,7 @@ interface AssistantHandler {
     fun delete(id: String): AssistantDeletionStatus
 
     /**
-     * Lists assistants with default query parameters. This means that the
-     * latest 20 assistants will be returned.
+     * Lists the 20 most recent assistants.
      *
      * @return The list of assistants
      */

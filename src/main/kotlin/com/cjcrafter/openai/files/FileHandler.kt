@@ -1,5 +1,7 @@
 package com.cjcrafter.openai.files
 
+import org.jetbrains.annotations.Contract
+
 /**
  * Represents the handler for the files endpoint. This class holds all the
  * actions that can be performed on a file.
@@ -28,6 +30,7 @@ interface FileHandler {
      * @param file The file to retrieve
      * @return The new instance of the retrieved file
      */
+    @Contract(pure = true)
     fun retrieve(file: FileObject): FileObject = retrieve(file.id)
 
     /**
@@ -36,6 +39,7 @@ interface FileHandler {
      * @param id The id of the file to retrieve
      * @return The file with the given id
      */
+    @Contract(pure = true)
     fun retrieve(id: String): FileObject
 
     /**
@@ -44,6 +48,7 @@ interface FileHandler {
      * @param file The file to retrieve the content of
      * @return The content of the file
      */
+    @Contract(pure = true)
     fun retrieveContents(file: FileObject): String = retrieveContents(file.id)
 
     /**
@@ -52,6 +57,7 @@ interface FileHandler {
      * @param id The id of the file to retrieve the content of
      * @return The content of the file
      */
+    @Contract(pure = true)
     fun retrieveContents(id: String): String
 
     /**
@@ -73,10 +79,11 @@ interface FileHandler {
     fun delete(id: String): FileDeletionStatus
 
     /**
-     * Lists files with default query parameters.
+     * Lists the 20 most recent files.
      *
      * @return The list of files
      */
+    @Contract(pure = true)
     fun list(): ListFilesResponse = list(null)
 
     /**
@@ -85,5 +92,6 @@ interface FileHandler {
      * @param request The query parameters
      * @return The list of assistants
      */
+    @Contract(pure = true)
     fun list(request: ListFilesRequest?): ListFilesResponse // Cannot use @JvmOverloads in interfaces
 }
