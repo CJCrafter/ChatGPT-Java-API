@@ -1,30 +1,32 @@
 <div align="center">
 
 # ChatGPT Java API
-  [![Maven Central](https://img.shields.io/maven-central/v/com.cjcrafter/openai?color=blue&label=Download)](https://central.sonatype.com/namespace/com.cjcrafter)
+  [![Maven Central](https://img.shields.io/maven-central/v/com.cjcrafter/openai?color=blue&label=Download)](https://central.sonatype.com/artifact/com.cjcrafter/openai)
   [![](https://img.shields.io/badge/-docs%20-blueviolet?logo=Kotlin&colorA=gray)](https://openai.cjcrafter.com/)
   [![](https://img.shields.io/badge/-examples%20-orange?logo=Read+The+Docs&colorA=gray)](https://github.com/CJCrafter/ChatGPT-Java-API/tree/master/examples/src/main)
   [![](https://img.shields.io/github/discussions/CJCrafter/ChatGPT-Java-API)](https://github.com/CJCrafter/ChatGPT-Java-API/discussions)
   [![License](https://img.shields.io/github/license/CJCrafter/ChatGPT-Java-API)](https://github.com/CJCrafter/ChatGPT-Java-API/blob/master/LICENSE)
 
-An unofficial, easy-to-use Java/Kotlin OpenAI API for ChatGPT, Text Completions, and more!
+An unofficial, easy-to-use Java/Kotlin OpenAI API for ChatGPT, Assistants, and more!
 </div>
 
 ## Features
-* [Completions](https://platform.openai.com/docs/api-reference/completions)
+* [Completions](https://github.com/CJCrafter/ChatGPT-Java-API/blob/master/src/main/kotlin/com/cjcrafter/openai/OpenAI.kt#L44-L57)
   * Streaming support via `OpenAI#streamCompletion`
-* [Chat Completions](https://platform.openai.com/docs/api-reference/chat)
+* [Chat Completions](https://github.com/CJCrafter/ChatGPT-Java-API/blob/master/src/main/kotlin/com/cjcrafter/openai/OpenAI.kt#L84-L92)
   * Streaming support via `OpenAI#streamChatCompletion`
   * Functions support, check out the [java examples](https://github.com/CJCrafter/ChatGPT-Java-API/blob/master/examples/src/main/java/chat/StreamChatCompletionFunction.java#L49) and [kotlin examples](https://github.com/CJCrafter/ChatGPT-Java-API/blob/master/examples/src/main/kotlin/chat/StreamChatCompletionFunction.kt#L37)
-  * [Azure OpenAI](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference) support via `AzureOpenAI` class
-* [Embeddings](https://platform.openai.com/docs/api-reference/embeddings) (New!)
-* [Files](https://platform.openai.com/docs/api-reference/files) (New!)
+  * [Azure Support](https://github.com/CJCrafter/ChatGPT-Java-API/blob/master/src/main/kotlin/com/cjcrafter/openai/OpenAI.kt#L271-L276) 
+* [Embeddings](https://github.com/CJCrafter/ChatGPT-Java-API/blob/master/src/main/kotlin/com/cjcrafter/openai/OpenAI.kt#L113-L123) (New!)
+* [Files](https://github.com/CJCrafter/ChatGPT-Java-API/blob/master/src/main/kotlin/com/cjcrafter/openai/files/FileHandler.kt) (New!)
+* [Assistants](https://github.com/CJCrafter/ChatGPT-Java-API/blob/master/src/main/kotlin/com/cjcrafter/openai/assistants/AssistantHandler.kt) (New!)
+  * Which includes [Threads](), [Runs](), and everything else you'll need to run your assistants! 
 
 ## Installation
 For Kotlin DSL (`build.gradle.kts`), add this to your dependencies block:
 ```kotlin
 dependencies {
-    implementation("com.cjcrafter:openai:2.0.2")
+    implementation("com.cjcrafter:openai:2.1.0")
 }
 ```
 For Maven projects, add this to your `pom.xml` file in the `<dependencies>` block:
@@ -32,10 +34,10 @@ For Maven projects, add this to your `pom.xml` file in the `<dependencies>` bloc
 <dependency>
     <groupId>com.cjcrafter</groupId>
     <artifactId>openai</artifactId>
-    <version>2.0.2</version>
+    <version>2.1.0</version>
 </dependency>
 ```
-See the [maven repository](https://central.sonatype.com/artifact/com.cjcrafter/openai/2.0.2) for gradle/ant/etc.
+See the [maven repository](https://central.sonatype.com/artifact/com.cjcrafter/openai/2.1.0) for gradle/ant/etc.
 
 
 ## Working Example
