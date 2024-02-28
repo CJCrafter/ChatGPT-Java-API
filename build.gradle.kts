@@ -1,7 +1,7 @@
 import com.github.breadmoirai.githubreleaseplugin.GithubReleaseTask
 
 group = "com.cjcrafter"
-version = "2.0.2-SNAPSHOT"
+version = "2.1.0"
 
 plugins {
     `java-library`
