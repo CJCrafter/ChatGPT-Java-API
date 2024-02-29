@@ -8,7 +8,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 import java.util.Comparator;
 import java.util.Scanner;
 
-public class CreateModerations {
+public class ModerationsExample {
 
     // To use dotenv, you need to add the "io.github.cdimascio:dotenv-kotlin:version"
     // dependency. Then you can add a .env file in your project directory.
