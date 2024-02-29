@@ -8,12 +8,11 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * @property id The id of the moderation request. Always starts with "modr-".
  * @property model The model which was used to moderate the content.
  * @property results The results of the moderation request.
- * @constructor Create empty Moderation
  */
 data class Moderation(
     @JsonProperty(required = true) val id: String,
     @JsonProperty(required = true) val model: String,
-    @JsonProperty(required = true) val results: Results,
+    @JsonProperty(required = true) val results: List<Result>,
 ) {
     /**
      * The results of the moderation request.
@@ -21,9 +20,8 @@ data class Moderation(
      * @property flagged If any categories were flagged.
      * @property categories The categories that were flagged.
      * @property categoryScores The scores of each category.
-     * @constructor Create empty Results
      */
-    data class Results(
+    data class Result(
         @JsonProperty(required = true) val flagged: Boolean,
         @JsonProperty(required = true) val categories: Map<String, Boolean>,
         @JsonProperty("category_scores", required = true) val categoryScores: Map<String, Double>,
