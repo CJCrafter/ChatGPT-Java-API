@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * @property input The input(s) to convert to embeddings.
  * @property model Which [model](https://platform.openai.com/docs/models/embeddings) to use to generate the embeddings.
  * @property encodingFormat Determines how the embeddings are encoded. Defaults to [EncodingFormat.FLOAT].
+ * @property dimensions The number of dimensions to use for the embeddings.
  * @property user The user ID to associate with this request.
  * @constructor Create empty Embeddings request
  */
@@ -19,6 +20,7 @@ data class EmbeddingsRequest internal constructor(
     var input: Any,
     var model: String,
     @JsonProperty("encoding_format") var encodingFormat: EncodingFormat? = null,
+    var dimensions: Int? = null,
     var user: String? = null,
 ) {
 
@@ -30,12 +32,14 @@ data class EmbeddingsRequest internal constructor(
         private var input: Any? = null
         private var model: String? = null
         private var encodingFormat: EncodingFormat? = null
+        private var dimensions: Int? = null
         private var user: String? = null
 
         fun input(input: String) = apply { this.input = input }
         fun input(input: List<String>) = apply { this.input = input }
         fun model(model: String) = apply { this.model = model }
         fun encodingFormat(encodingFormat: EncodingFormat) = apply { this.encodingFormat = encodingFormat }
+        fun dimensions(dimensions: Int) = apply { this.dimensions = dimensions }
         fun user(user: String) = apply { this.user = user }
 
         fun build(): EmbeddingsRequest {
@@ -43,7 +47,8 @@ data class EmbeddingsRequest internal constructor(
                 input = input ?: throw IllegalStateException("input must be defined to use EmbeddingsRequest"),
                 model = model ?: throw IllegalStateException("model must be defined to use EmbeddingsRequest"),
                 encodingFormat = encodingFormat,
-                user = user
+                dimensions = dimensions,
+                user = user,
             )
         }
     }
