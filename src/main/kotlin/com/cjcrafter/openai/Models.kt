@@ -32,6 +32,19 @@ object Models {
 
         /**
          * `gpt-4` Turbo. Has a context window of 128,000 tokens with training
+         * data up to April 2023. This model is intended to reduce "laziness"
+         * where the model doesn't complete the task. Returns a maximum of 4,096
+         * output tokens.
+         */
+        const val GPT_4_0125_PREVIEW = "gpt-4-0125-preview"
+
+        /**
+         * Points to the currently supported version of `gpt-4` turbo.
+         */
+        const val GPT_4_TURBO_PREVIEW = "gpt-4-turbo-preview"
+
+        /**
+         * `gpt-4` Turbo. Has a context window of 128,000 tokens with training
          * data up to April 2023. This model has improved instruction following,
          * JSON mode, reproducible output, parallel function calling, and more.
          * Returns a maximum of 4,096 output tokens.
@@ -39,11 +52,17 @@ object Models {
         const val GPT_4_1106_PREVIEW = "gpt-4-1106-preview"
 
         /**
+         * Points to the currently supported version of `gpt-4` turbo with
+         * vision.
+         */
+        const val GPT_4_VISION_PREVIEW = "gpt-4-vision-preview"
+
+        /**
          * `gpt-4` Turbo with vision. Has a context window of 128,000 tokens with
          * training data up to April 2023. Has the same capabilities as
          * [GPT_4_1106_PREVIEW], but can also understand images.
          */
-        const val GPT_4_VISION_PREVIEW = "gpt-4-vision-preview"
+        const val GPT_4_1106_VISION_PREVIEW = "gpt-4-1106-vision-preview"
 
         /**
          * Points to the currently supported version of `gpt-4`.
@@ -102,6 +121,12 @@ object Models {
         /////////////////////////////////////////////////////
         //                    GPT 3.5                      //
         /////////////////////////////////////////////////////
+
+        /**
+         * Snapshot of `gpt-3.5-turbo` with higher accuracy in responding in
+         * requested formats. Returns a maximum of 4,096 output tokens.
+         */
+        const val GPT_3_5_TURBO_0125 = "gpt-3.5-turbo-0125"
 
         /**
          * Has a context window of 16,385 tokens with training data up to
