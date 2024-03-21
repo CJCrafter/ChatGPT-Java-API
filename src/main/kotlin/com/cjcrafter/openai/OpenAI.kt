@@ -10,6 +10,7 @@ import com.cjcrafter.openai.completions.CompletionResponseChunk
 import com.cjcrafter.openai.embeddings.EmbeddingsRequest
 import com.cjcrafter.openai.embeddings.EmbeddingsResponse
 import com.cjcrafter.openai.files.*
+import com.cjcrafter.openai.moderations.ModerationHandler
 import com.cjcrafter.openai.threads.ThreadHandler
 import com.cjcrafter.openai.threads.message.TextAnnotation
 import com.cjcrafter.openai.util.OpenAIDslMarker
@@ -134,6 +135,19 @@ interface OpenAI {
      */
     @Contract(pure = true)
     fun files(): FileHandler = files
+
+    /**
+     * Returns the handler for the moderations endpoint. This handler can be used
+     * to create moderations.
+     */
+    val moderations: ModerationHandler
+
+    /**
+     * Returns the handler for the moderations endpoint. This method is purely
+     * syntactic sugar for Java users.
+     */
+    @Contract(pure = true)
+    fun moderations(): ModerationHandler = moderations
 
     /**
      * Returns the handler for the assistants endpoint. This handler can be used

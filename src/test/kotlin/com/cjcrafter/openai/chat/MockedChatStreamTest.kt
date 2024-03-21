@@ -2,6 +2,9 @@ package com.cjcrafter.openai.chat
 
 import com.cjcrafter.openai.MockedTest
 import com.cjcrafter.openai.chat.ChatMessage.Companion.toSystemMessage
+import com.cjcrafter.openai.chat.tool.FunctionToolCall
+import com.cjcrafter.openai.chat.tool.Tool
+import com.cjcrafter.openai.chat.tool.ToolCall
 import okhttp3.mockwebserver.MockResponse
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -46,9 +49,9 @@ class MockedChatStreamTest : MockedTest() {
 
         // Assertions
         assertEquals(ChatUser.ASSISTANT, toolMessage.role, "Tool call should be from the assistant")
-        assertEquals(ToolType.FUNCTION, toolMessage.toolCalls?.get(0)?.type, "Tool call should be a function")
-        assertEquals("solve_math_problem", toolMessage.toolCalls?.get(0)?.function?.name)
-        assertEquals("3/2", toolMessage.toolCalls?.get(0)?.function?.tryParseArguments()?.get("equation")?.asText())
+        assertEquals(Tool.Type.FUNCTION, toolMessage.toolCalls?.get(0)?.type, "Tool call should be a function")
+        assertEquals("solve_math_problem", (toolMessage.toolCalls?.get(0) as? FunctionToolCall)?.function?.name)
+        assertEquals("3/2", (toolMessage.toolCalls?.get(0) as? FunctionToolCall)?.function?.tryParseArguments()?.get("equation")?.asText())
 
         assertEquals(ChatUser.ASSISTANT, message.role, "Message should be from the assistant")
         assertEquals("The result of 3 divided by 2 is 1.5.", message.content)

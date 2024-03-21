@@ -9,6 +9,8 @@ import com.cjcrafter.openai.completions.CompletionResponseChunk
 import com.cjcrafter.openai.embeddings.EmbeddingsRequest
 import com.cjcrafter.openai.embeddings.EmbeddingsResponse
 import com.cjcrafter.openai.files.*
+import com.cjcrafter.openai.moderations.ModerationHandler
+import com.cjcrafter.openai.moderations.ModerationHandlerImpl
 import com.cjcrafter.openai.threads.ThreadHandler
 import com.cjcrafter.openai.threads.ThreadHandlerImpl
 import com.fasterxml.jackson.databind.JavaType
@@ -127,23 +129,28 @@ open class OpenAIImpl @ApiStatus.Internal constructor(
         return requestHelper.executeRequest(httpRequest, EmbeddingsResponse::class.java)
     }
 
-    private var files0: FileHandlerImpl? = null
-    override val files: FileHandler
-        get() = files0 ?: FileHandlerImpl(requestHelper, FILES_ENDPOINT).also { files0 = it }
+    override val files: FileHandler by lazy {
+        FileHandlerImpl(requestHelper, FILES_ENDPOINT)
+    }
 
-    private var assistants0: AssistantHandlerImpl? = null
-    override val assistants: AssistantHandler
-        get() = assistants0 ?: AssistantHandlerImpl(requestHelper, ASSISTANTS_ENDPOINT).also { assistants0 = it }
+    override val moderations: ModerationHandler by lazy {
+        ModerationHandlerImpl(requestHelper, MODERATIONS_ENDPOINT)
+    }
 
-    private var threads0: ThreadHandlerImpl? = null
-    override val threads: ThreadHandler
-        get() = threads0 ?: ThreadHandlerImpl(requestHelper, THREADS_ENDPOINT).also { threads0 = it }
+    override val assistants: AssistantHandler by lazy {
+        AssistantHandlerImpl(requestHelper, ASSISTANTS_ENDPOINT)
+    }
+
+    override val threads: ThreadHandler by lazy {
+        ThreadHandlerImpl(requestHelper, THREADS_ENDPOINT)
+    }
 
     companion object {
         const val COMPLETIONS_ENDPOINT = "v1/completions"
         const val CHAT_ENDPOINT = "v1/chat/completions"
         const val EMBEDDINGS_ENDPOINT = "v1/embeddings"
         const val FILES_ENDPOINT = "v1/files"
+        const val MODERATIONS_ENDPOINT = "v1/moderations"
         const val ASSISTANTS_ENDPOINT = "v1/assistants"
         const val THREADS_ENDPOINT = "v1/threads"
     }

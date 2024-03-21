@@ -19,7 +19,7 @@ class FunctionCallTest {
                 name("enum_checker")
                 description("This function is used to test the enum parameter")
                 addEnumParameter("enum", mutableListOf("a", "b", "c"))
-            }.toTool()
+            }
         )
         @Language("json")
         val json = "{\"name\": \"enum_checker\", \"arguments\": \"{\\\"enum\\\": \\\"d\\\"}\"}" // d is not a valid enum
@@ -37,7 +37,7 @@ class FunctionCallTest {
                 name("enum_checker")
                 description("This function is used to test the enum parameter")
                 addEnumParameter("enum", mutableListOf("a", "b", "c"))
-            }.toTool()
+            }
         )
         @Language("json")
         val json = "{\"name\": \"enum_checker\", \"arguments\": \"{\\\"enum\\\": \\\"a\\\"}\"}" // a is a valid enum
@@ -55,7 +55,7 @@ class FunctionCallTest {
                 name("integer_checker")
                 description("This function is used to test the integer parameter")
                 addIntegerParameter("integer", "test parameter")
-            }.toTool()
+            }
         )
         @Language("json")
         val json = "{\"name\": \"integer_checker\", \"arguments\": \"{\\\"integer\\\": \\\"not an integer\\\"}\"}" // not an integer
@@ -73,7 +73,7 @@ class FunctionCallTest {
                 name("integer_checker")
                 description("This function is used to test the integer parameter")
                 addIntegerParameter("integer", "test parameter")
-            }.toTool()
+            }
         )
         @Language("json")
         val json = "{\"name\": \"integer_checker\", \"arguments\": \"{\\\"integer\\\": 1}\"}" // 1 is an integer
@@ -91,7 +91,7 @@ class FunctionCallTest {
                 name("boolean_checker")
                 description("This function is used to test the boolean parameter")
                 addBooleanParameter("is_true", "test parameter")
-            }.toTool()
+            }
         )
         @Language("json")
         val json = "{\"name\": \"boolean_checker\", \"arguments\": \"{\\\"boolean\\\": \\\"not a boolean\\\"}\"}" // not a boolean
@@ -109,7 +109,7 @@ class FunctionCallTest {
                 name("boolean_checker")
                 description("This function is used to test the boolean parameter")
                 addBooleanParameter("is_true", "test parameter")
-            }.toTool()
+            }
         )
         @Language("json")
         val json = "{\"name\": \"boolean_checker\", \"arguments\": \"{\\\"is_true\\\": true}\"}" // true is a boolean
@@ -128,7 +128,7 @@ class FunctionCallTest {
                 description("This function is used to test the required parameter")
                 addIntegerParameter("required", "test parameter", required = true)
                 addBooleanParameter("not_required", "test parameter")
-            }.toTool()
+            }
         )
         @Language("json")
         val json = "{\"name\": \"required_parameter_function\", \"arguments\": \"{\\\"not_required\\\": true}\"}" // missing required parameter
@@ -147,7 +147,7 @@ class FunctionCallTest {
                 description("This function is used to test the required parameter")
                 addIntegerParameter("required", "test parameter", required = true)
                 addBooleanParameter("not_required", "test parameter")
-            }.toTool()
+            }
         )
         @Language("json")
         val json = "{\"name\": \"required_parameter_function\", \"arguments\": \"{\\\"required\\\": 1, \\\"not_required\\\": true}\"}" // has required parameter
@@ -165,7 +165,7 @@ class FunctionCallTest {
                 name("function_name_checker")
                 description("This function is used to test the function name")
                 noParameters()
-            }.toTool()
+            }
         )
         @Language("json")
         val json = "{\"name\": \"invalid_function_name\", \"arguments\": \"{}\"}" // invalid function name
