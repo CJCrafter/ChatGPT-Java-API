@@ -21,6 +21,7 @@ data class CreateRunRequest(
     var instructions: String? = null,
     var tools: List<Tool>? = null,
     var metadata: Map<String, String>? = null,
+    var stream: Boolean? = null,
 ) {
 
     /**

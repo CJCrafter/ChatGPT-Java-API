@@ -20,6 +20,9 @@ interface RunHandler {
      */
     fun create(request: CreateRunRequest): Run
 
+    // TODO
+    fun stream(request: CreateRunRequest): Any
+
     /**
      * Retrieves the updated run object from the given run.
      *

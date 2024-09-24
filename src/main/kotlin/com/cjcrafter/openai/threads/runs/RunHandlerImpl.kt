@@ -8,8 +8,15 @@ class RunHandlerImpl(
     override val threadId: String,
 ): RunHandler {
     override fun create(request: CreateRunRequest): Run {
+        request.stream = false
         val httpRequest = requestHelper.buildRequest(request, endpoint).addHeader("OpenAI-Beta", "assistants=v1").build()
         return requestHelper.executeRequest(httpRequest, Run::class.java)
+    }
+
+    override fun stream(request: CreateRunRequest): Any {
+        request.stream = true
+        val httpRequest = requestHelper.buildRequest(request, endpoint).addHeader("OpenAI-Beta", "assistants=v1").build()
+        return requestHelper.executeRequest(httpRequest)
     }
 
     override fun retrieve(id: String): Run {
