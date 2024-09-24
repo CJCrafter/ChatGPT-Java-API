@@ -7,7 +7,7 @@ plugins {
     `java-library`
     `maven-publish`
     signing
-    id("io.codearte.nexus-staging") version "0.30.0"
+    id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
     kotlin("jvm") version "1.9.20"
     id("org.jetbrains.dokka") version "1.8.10" // KDoc Documentation Builder
     id("com.github.breadmoirai.github-release") version "2.4.1"
@@ -20,10 +20,10 @@ repositories {
 dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
-    implementation("com.fasterxml.jackson.core:jackson-core:2.15.3")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.15.3")
-    implementation("com.fasterxml.jackson.core:jackson-annotations:2.15.3")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.3")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.17.2")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.17.2")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:2.17.2")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.17.2")
 
     implementation("org.slf4j:slf4j-api:2.0.9")
 
@@ -62,27 +62,24 @@ val sourcesJar by tasks.registering(Jar::class) {
     from(sourceSets.main.get().allSource)
 }
 
-nexusStaging {
-    serverUrl = "https://s01.oss.sonatype.org/service/local/"
-    packageGroup = "com.cjcrafter"
-    stagingProfileId = findProperty("OSSRH_ID").toString()
-    username = findProperty("OSSRH_USERNAME").toString()
-    password = findProperty("OSSRH_PASSWORD").toString()
-    numberOfRetries = 30
-    delayBetweenRetriesInMillis = 3000
+nexusPublishing {
+    repositories {
+        sonatype {
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+            username.set(System.getenv("OSSRH_USERNAME") ?: findProperty("OSSRH_USERNAME").toString())
+            password.set(System.getenv("OSSRH_PASSWORD") ?: findProperty("OSSRH_PASSWORD").toString())
+        }
+    }
 }
 
-// Signing artifacts
 signing {
     isRequired = true
-    //useGpgCmd()
-
     useInMemoryPgpKeys(
-        findProperty("SIGNING_KEY_ID").toString(),
-        findProperty("SIGNING_PRIVATE_KEY").toString(),
-        findProperty("SIGNING_PASSWORD").toString()
+        System.getenv("SIGNING_KEY_ID") ?: findProperty("SIGNING_KEY_ID").toString(),
+        System.getenv("SIGNING_PRIVATE_KEY") ?: findProperty("SIGNING_PRIVATE_KEY").toString(),
+        System.getenv("SIGNING_PASSWORD") ?: findProperty("SIGNING_PASSWORD").toString(),
     )
-    //sign(configurations["archives"])
     sign(publishing.publications)
 }
 
@@ -123,20 +120,10 @@ publishing {
             }
         }
     }
-
-    repositories {
-        maven {
-            url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2")
-            credentials {
-                username = findProperty("OSSRH_USERNAME").toString()
-                password = findProperty("OSSRH_PASSWORD").toString()
-            }
-        }
-    }
 }
 
 // After publishing, the nexus plugin will automatically close and release
-tasks.named("publish") {
+tasks.named("publishToSonatypeRepository") {
     finalizedBy("closeAndReleaseRepository", "createGithubRelease")
 }
 
